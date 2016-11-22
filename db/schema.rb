@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161122224312) do
+ActiveRecord::Schema.define(version: 20161122225919) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "routes", force: :cascade do |t|
+    t.string   "route_id"
+    t.string   "agency_id"
+    t.string   "route_short_name"
+    t.string   "route_long_name"
+    t.string   "route_desc"
+    t.string   "route_type"
+    t.string   "route_url"
+    t.string   "route_text_color"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
 
   create_table "stations", force: :cascade do |t|
     t.string   "stop_id",        null: false
@@ -25,6 +38,32 @@ ActiveRecord::Schema.define(version: 20161122224312) do
     t.string   "parent_station"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+  end
+
+  create_table "stoptimes", force: :cascade do |t|
+    t.string   "trip_id"
+    t.string   "arrival_time"
+    t.string   "departure_time"
+    t.string   "stop_id"
+    t.string   "stop_sequence"
+    t.string   "stop_headsign"
+    t.string   "pickup_type"
+    t.string   "drop_off_type"
+    t.string   "shape_dist_traveled"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  create_table "trips", force: :cascade do |t|
+    t.string   "route_id"
+    t.string   "service_id"
+    t.string   "trip_id"
+    t.string   "trip_headsign"
+    t.string   "direction_id"
+    t.string   "block_id"
+    t.string   "shape_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
 end
