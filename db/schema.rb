@@ -18,7 +18,8 @@ ActiveRecord::Schema.define(version: 20161123163234) do
   create_table "lines", force: :cascade do |t|
     t.string   "line_identifier"
     t.string   "day"
-    t.string   "time"
+    t.datetime "time_start"
+    t.datetime "time_stop"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
   end
@@ -69,6 +70,12 @@ ActiveRecord::Schema.define(version: 20161123163234) do
     t.string   "shape_dist_traveled"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+  end
+
+  create_table "trainpaths", force: :cascade do |t|
+    t.string   "line_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "trips", force: :cascade do |t|

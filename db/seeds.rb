@@ -37,35 +37,130 @@ csv.each do |row|
   station.parent_station = row['parent_station'];
   station.save
 end
-line1 = Line.new(line_identifier:"1", day:"all", time:"all")
+
+standardStartTime = DateTime.parse("12:00:00 AM")
+standardEndTime = DateTime.parse("11:59:59 PM")
+
+
+line1 = Line.new(line_identifier:"1", day:"all", time_start: standardStartTime, time_stop: standardEndTime)
 line1.stations = Station.where(id: 1..38)
 line1.save!
 
-lineL = Line.new(line_identifier:"L", day:"all", time:"all")
+lineL = Line.new(line_identifier:"L", day:"all", time_start: standardStartTime, time_stop: standardEndTime)
 lineL.stations = Station.where(id: 155..178)
 lineL.save!
 
-line6 = Line.new(line_identifier:"L", day:"all", time:"all")
-line6.stations = Station.where(id: 117..154)
-line6.save!
+dayStart = DateTime.parse("6:00:00 AM")
+dayEnd = DateTime.parse("12:00:00 AM")
 
-line2day = Line.new(line_identifier:"2", day:"all", time:"day")
+line2day = Line.new(line_identifier:"2", day:"all", time_start: dayStart, time_stop: dayEnd)
 line2day.stations = Station.where(id: [39..62,18,21,25,26,30,35,63..81])
 line2day.save!
 
-line2night = Line.new(line_identifier:"2", day:"all", time:"night")
+lateNightStart = DateTime.parse("12:00:00 AM")
+lateNightEnd = DateTime.parse("6:00:00 AM")
+
+line2night = Line.new(line_identifier:"2", day:"all", time_start: lateNightStart, time_stop: lateNightEnd)
 line2night.stations = Station.where(id: [39..62,18..35,63..81])
 line2night.save!
 
-line3day = Line.new(line_identifier:"3", day:"all", time"day")
-line3day.stations = Station.where(id: [92..93,59..62,18,21,25,26,30,35,63..91])
+late3NightStart = DateTime.parse("11:30:00 AM")
+late3NightEnd = DateTime.parse("6:00:00 AM")
 
-line3night = Line.new(line_identifier:"3", day:"all", time"night")
+line3day = Line.new(line_identifier:"3", day:"all", time_start: late3NightEnd, time_stop: late3NightStart)
+line3day.stations = Station.where(id: [92..93,59..62,18,21,25,26,30,35,63..91])
+line3day.save!
+
+
+line3night = Line.new(line_identifier:"3", day:"all", time_start: late3NightStart, time_stop: late3NightEnd)
 line3night.stations = Station.where(id: [92..93,59..62,18,21,25])
+line3night.save!
+
+line6 = Line.new(line_identifier:"L", day:"all", time_start: standardStartTime, time_stop: standardEndTime)
+line6.stations = Station.where(id: 117..154)
+line6.save!
 
 # line4
+# has stations it skips during rush hour 7-9 & 4:45-6:20 PM
+# has stations it stops at late night only
+
+line4day1Start = DateTime.parse("07:00:00 AM")
+line4day1End = DateTime.parse("09:00:00 AM")
+
+line4day1 = Line.new(line_identifier:"4", day:"all", time_start: line4day1Start, time_stop: line4day1End)
+line4day1.stations = Station.where(id: [94..106,135,140,143,145,149,154,108..111,69..70,74,84])
+line4day1.save!
+
+line4day2Start = DateTime.parse("04:45:00 AM")
+line4day2End = DateTime.parse("06:20:00 PM")
+
+line4day2 = Line.new(line_identifier:"4", day:"all", time_start: line4day2Start, time_stop: line4day2End)
+line4day2.stations = Station.where(id: [94..106,135,140,143,145,149,154,108..111,69..70,74,84])
+line4day2.save!
+
+
+
+start = DateTime.parse("06:00:00 AM")
+endTime = DateTime.parse("7:00:00 AM")
+
+line4NRH = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
+line4NRH.stations = Station.where(id: [94..107,135,140,143,145,149,154,108..111,69..70,74,84])
+line4NRH.save!
+
+start = DateTime.parse("06:20:00 PM")
+endTime = DateTime.parse("11:00:00 PM")
+
+line4NRH = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
+line4NRH.stations = Station.where(id: [94..107,135,140,143,145,149,154,108..111,69..70,74,84])
+line4NRH.save!
+
+start = DateTime.parse("09:00:00 AM")
+endTime = DateTime.parse("04:45:00 PM")
+
+line4NRH = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
+line4NRH.stations = Station.where(id: [94..107,135,140,143,145,149,154,108..111,69..70,74,84])
+line4NRH.save!
+
+# MANHATTAN AND BROOKLYN LATENIGHT
+start = DateTime.parse("01:00:00 AM")
+endTime = DateTime.parse("05:00:00 AM")
+
+line4NRH = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
+line4NRH.stations = Station.where(id: [94..107,135..154, 108..111, 69..74, 82..91])
+line4NRH.save!
+
+# BROOKLYN BUT NOT MANHATTAN
+start = DateTime.parse("11:00:00 PM")
+endTime = DateTime.parse("01:00:00 AM")
+
+line4NRH = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
+line4NRH.stations = Station.where(id: [94..107,135, 140, 143, 145, 149, 154, 108..111,69..74, 82..91 ])
+line4NRH.save!
+
+start = DateTime.parse("05:00:00 AM")
+endTime = DateTime.parse("06:00:00 AM")
+
+line4NRH = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
+line4NRH.stations = Station.where(id: [94..107,135, 140, 143, 145, 149, 154, 108..111,69..74, 82..91 ])
+line4NRH.save!
+
+
+line4NRH = Line.new(line_identifier:"5", day:"all", time_start: standardStartTime, time_stop: standardEndTime)
+line4NRH.stations = Station.where(id: [112..116,40..58,135,140,143,145,149,154,108..111, 69..70,74..81])
+line4NRH.save!
+
+
+
+
+
+
 
 # line5
+# has stations it skips part-time
+# train operates in only one direction during rush hour (towards Manhattan AM rush hour, away from Manhattan PM rush hour)
+
+
+
 
 # csv_text = File.read(Rails.root.join('lib', 'seeds', 'trips.csv'))
 # csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
