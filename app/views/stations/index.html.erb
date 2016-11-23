@@ -49,7 +49,22 @@
             infowindow.open(map, marker);
           });
         <% end %>
+        <% line = @lines[0] %>
+          var coordinates = [];
+            <% line.each do |station| %>
+              coordinates.push({lat: <%=station.latitude%>, lng:<%=station.longitude%>});
+            <% end %>
 
+            var linePath = new google.maps.Polyline({
+              path: coordinates,
+              geodesic: true,
+              strokeColor: '#FF0000',
+              strokeOpacity: 1.0,
+              strokeWeight: 2
+            });
+            coordinates = [];
+
+        linePath.setMap(map);
 
 
         map.fitBounds(bounds);
@@ -58,6 +73,7 @@
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=GOOGLEKEY&callback=initMap">
+
     </script>
   </body>
 </html>
