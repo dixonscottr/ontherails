@@ -26,7 +26,6 @@ gem 'jbuilder', '~> 2.5'
 gem 'react-rails'
 gem 'better_errors'
 gem 'bootstrap-sass'
-gem ''
 
 gem 'gtfs-realtime-bindings'
 

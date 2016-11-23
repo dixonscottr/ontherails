@@ -15,4 +15,31 @@
 //= require react
 //= require react_ujs
 //= require components
-//= require_tree .
+// //= require_tree .
+//
+
+$('document').ready(function() {
+  $('form').submit(function(event) {
+    event.preventDefault();
+    var $form = $(this);
+    var url = $form.attr('action');
+    $.ajax({
+      url: url,
+      method: 'get'
+    }).done(function(responseJSON){
+      // debugger;
+      for(var i = 0; i < Object.keys(responseJSON).length; i++) {
+        var route_id = responseJSON[i]['route_id'];
+        var trip_id = responseJSON[i]['trip_id'];
+        var numStops = Object.keys(responseJSON[i]['stop_time']).length
+        var lastStop = responseJSON[i]['stop_time'][numStops - 1].stop_id
+        $('.train-locations').append(
+          '<p>Number ' + i +  ':<p></p> route_id: ' + route_id + '</p><p>trip_id: ' + trip_id + '<p>latest stop: ' + lastStop + '</p><br />'
+
+        )
+      };
+      // reponse.forEach(fu
+      // $('.train-locations').append()
+    });
+  })
+});
