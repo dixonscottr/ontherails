@@ -65,6 +65,8 @@ GEM
     ffi (1.9.14)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
+    gtfs-realtime-bindings (0.0.5)
+      protobuf (>= 3.0)
     i18n (0.7.0)
     jbuilder (2.6.0)
       activesupport (>= 3.0.0, < 5.1)
@@ -81,6 +83,7 @@ GEM
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
     method_source (0.8.2)
+    middleware (0.1.0)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
@@ -91,6 +94,11 @@ GEM
     nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
     pg (0.19.0)
+    protobuf (3.6.12)
+      activesupport (>= 3.2)
+      middleware
+      thor
+      thread_safe
     puma (3.6.1)
     rack (2.0.1)
     rack-test (0.6.3)
@@ -171,6 +179,7 @@ DEPENDENCIES
   better_errors
   byebug
   coffee-rails (~> 4.2)
+  gtfs-realtime-bindings
   jbuilder (~> 2.5)
   jquery-rails
   listen (~> 3.0.5)

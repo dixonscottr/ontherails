@@ -27,6 +27,9 @@ gem 'jbuilder', '~> 2.5'
 gem 'react-rails'
 gem 'better_errors'
 
+gem 'gtfs-realtime-bindings'
+
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
