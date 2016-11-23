@@ -8,7 +8,8 @@ class Station < ApplicationRecord
   #     errors.add(:train_invalid, "no valid trains go to this station")
   #   end
   # end
-
+  has_many :stationlines
+  has_many :lines, through: :stationlines
 
   validates :latitude, uniqueness: { scope: :longitude }
 

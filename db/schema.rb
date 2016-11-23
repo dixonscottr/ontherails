@@ -10,21 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161123141428) do
+ActiveRecord::Schema.define(version: 20161123163234) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "lines", force: :cascade do |t|
-    t.integer  "station_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["station_id"], name: "index_lines_on_station_id", using: :btree
-  end
-
-  create_table "major_routes", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "line_identifier"
+    t.string   "day"
+    t.datetime "time_start"
+    t.datetime "time_stop"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
   create_table "routes", force: :cascade do |t|
@@ -38,6 +35,15 @@ ActiveRecord::Schema.define(version: 20161123141428) do
     t.string   "route_text_color"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+  end
+
+  create_table "stationlines", force: :cascade do |t|
+    t.integer  "station_id"
+    t.integer  "line_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["line_id"], name: "index_stationlines_on_line_id", using: :btree
+    t.index ["station_id"], name: "index_stationlines_on_station_id", using: :btree
   end
 
   create_table "stations", force: :cascade do |t|
@@ -64,6 +70,12 @@ ActiveRecord::Schema.define(version: 20161123141428) do
     t.string   "shape_dist_traveled"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+  end
+
+  create_table "trainpaths", force: :cascade do |t|
+    t.string   "line_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "trips", force: :cascade do |t|
