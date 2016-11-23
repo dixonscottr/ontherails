@@ -37,6 +37,35 @@ csv.each do |row|
   station.parent_station = row['parent_station'];
   station.save
 end
+line1 = Line.new(line_identifier:"1", day:"all", time:"all")
+line1.stations = Station.where(id: 1..38)
+line1.save!
+
+lineL = Line.new(line_identifier:"L", day:"all", time:"all")
+lineL.stations = Station.where(id: 155..178)
+lineL.save!
+
+line6 = Line.new(line_identifier:"L", day:"all", time:"all")
+line6.stations = Station.where(id: 117..154)
+line6.save!
+
+line2day = Line.new(line_identifier:"2", day:"all", time:"day")
+line2day.stations = Station.where(id: [39..62,18,21,25,26,30,35,63..81])
+line2day.save!
+
+line2night = Line.new(line_identifier:"2", day:"all", time:"night")
+line2night.stations = Station.where(id: [39..62,18..35,63..81])
+line2night.save!
+
+line3day = Line.new(line_identifier:"3", day:"all", time"day")
+line3day.stations = Station.where(id: [92..93,59..62,18,21,25,26,30,35,63..91])
+
+line3night = Line.new(line_identifier:"3", day:"all", time"night")
+line3night.stations = Station.where(id: [92..93,59..62,18,21,25])
+
+# line4
+
+# line5
 
 # csv_text = File.read(Rails.root.join('lib', 'seeds', 'trips.csv'))
 # csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
