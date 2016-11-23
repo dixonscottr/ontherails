@@ -9,7 +9,5 @@ class Line < ApplicationRecord
         Station.find(station.station_id)
       end
     end
-
-
   end
 end

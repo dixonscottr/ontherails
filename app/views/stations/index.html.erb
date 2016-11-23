@@ -58,7 +58,7 @@
             var linePath = new google.maps.Polyline({
               path: coordinates,
               geodesic: true,
-              strokeColor: '#FF0000',
+              strokeColor: 'Green',
               strokeOpacity: 1.0,
               strokeWeight: 2
             });
@@ -73,7 +73,7 @@
       }
     </script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=GOOGLEKEY&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=<%=ENV["google_key"]%>&callback=initMap">
 
     </script>
   </body>
