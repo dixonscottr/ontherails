@@ -10,5 +10,13 @@
 
   <body>
     <%= yield %>
+    <footer>
+      <form id='train-updater' action='/update_trains' method='get'>
+        <input type='submit' value='Update these trains' />
+      </form>
+      <div class='train-locations'>
+        <h2>Things go here</h2>
+      </div>
+    </footer>
   </body>
 </html>

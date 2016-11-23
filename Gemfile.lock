@@ -39,6 +39,8 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     arel (7.1.4)
+    autoprefixer-rails (6.4.1)
+      execjs
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
@@ -47,15 +49,12 @@ GEM
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
       rack (>= 0.9.0)
+    bootstrap-sass (3.3.7)
+      autoprefixer-rails (>= 5.2.1)
+      sass (>= 3.3.4)
     builder (3.2.2)
     byebug (9.0.6)
     coderay (1.1.1)
-    coffee-rails (4.2.1)
-      coffee-script (>= 2.2.0)
-      railties (>= 4.0.0, < 5.2.x)
-    coffee-script (2.4.1)
-      coffee-script-source
-      execjs
     coffee-script-source (1.10.0)
     concurrent-ruby (1.0.2)
     connection_pool (2.2.0)
@@ -65,6 +64,8 @@ GEM
     ffi (1.9.14)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
+    gtfs-realtime-bindings (0.0.5)
+      protobuf (>= 3.0)
     i18n (0.7.0)
     jbuilder (2.6.0)
       activesupport (>= 3.0.0, < 5.1)
@@ -81,6 +82,7 @@ GEM
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
     method_source (0.8.2)
+    middleware (0.1.0)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
@@ -91,6 +93,11 @@ GEM
     nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
     pg (0.19.0)
+    protobuf (3.6.12)
+      activesupport (>= 3.2)
+      middleware
+      thor
+      thread_safe
     puma (3.6.1)
     rack (2.0.1)
     rack-test (0.6.3)
@@ -169,8 +176,9 @@ PLATFORMS
 
 DEPENDENCIES
   better_errors
+  bootstrap-sass
   byebug
-  coffee-rails (~> 4.2)
+  gtfs-realtime-bindings
   jbuilder (~> 2.5)
   jquery-rails
   listen (~> 3.0.5)

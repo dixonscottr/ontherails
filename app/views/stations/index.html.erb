@@ -22,9 +22,6 @@
     <div id="map"></div>
     <script>
 
-      // This example displays a marker at the center of Australia.
-      // When the user clicks the marker, an info window opens.
-
       function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 4
@@ -48,17 +45,19 @@
             title: 'STATION'
           });
           bounds.extend(marker.position);
-          // marker.addListener('click', function() {
-          //   infowindow.open(map, marker);
-          // });
+          marker.addListener('click', function() {
+            infowindow.open(map, marker);
+          });
         <% end %>
+
+
 
         map.fitBounds(bounds);
 
       }
     </script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAD_RUEIv_EzTGZTx3JdAX_DR335Ou44hU&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=GOOGLEKEY&callback=initMap">
     </script>
   </body>
 </html>

@@ -1,0 +1,2 @@
+class MajorRoute < ApplicationRecord
+end
