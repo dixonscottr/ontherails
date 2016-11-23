@@ -49,9 +49,9 @@
             infowindow.open(map, marker);
           });
         <% end %>
-        <% line = @lines[0] %>
+        <% @routes.each do |route| %>
           var coordinates = [];
-            <% line.each do |station| %>
+            <% route.each do |station| %>
               coordinates.push({lat: <%=station.latitude%>, lng:<%=station.longitude%>});
             <% end %>
 
@@ -65,6 +65,7 @@
             coordinates = [];
 
         linePath.setMap(map);
+        <%end %>
 
 
         map.fitBounds(bounds);
