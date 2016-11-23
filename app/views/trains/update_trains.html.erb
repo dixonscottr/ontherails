@@ -1,1 +1,3 @@
-<%= @updated_trips %>
+<% @updated_trips.each do |trip| %>
+<p><%= trip.to_json %></p>
+<% end %>
