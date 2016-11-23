@@ -52,27 +52,7 @@
           //   infowindow.open(map, marker);
           // });
         <% end %>
-        <% @trains["entity"].each do |train| %>
-          <% if train.key?("trip_update") %>
-            <% if train["trip_update"].key?("stop_time_update") %>
-              <% prevLoc = train["trip_update"]["stop_time_update"][-2] %>;
-              <% currentLoc = train["trip_update"]["stop_time_update"][-1]%>;
-              <% if currentLoc.key?("departure") %>
-              <% elsif currentLoc.key?("arrival") %>
-                <% station = Station.find_by(stop_id: train["trip_update"]["stop_time_update"][-1]["stop_id"][0..2]) %>
-                <% if station %>
-                  var location = {lat:<%=station.latitude%>, lng: <%=station.longitude%>};
-                  var marker = new google.maps.Marker({
-                    position: location,
-                    map: map,
-                    title: 'BLURBLURBLURB'
-                  });
-                  bounds.extend(marker.position);
-                <% end %>
-              <% end %>
-            <% end %>
-          <% end %>
-        <% end %>
+
 
 
         map.fitBounds(bounds);
