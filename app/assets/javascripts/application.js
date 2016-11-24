@@ -27,14 +27,20 @@ $('document').ready(function() {
       url: url,
       method: 'get'
     }).done(function(responseJSON){
-      // debugger;
+      var stationPos = {lat:-40, lng:40}
+
+      var marker = new google.maps.Marker({
+        position: stationPos,
+        map: map,
+        title: 'STATION'
+      });
+      debugger;
       for(var i = 0; i < Object.keys(responseJSON).length; i++) {
         var route_id = responseJSON[i]['route_id'];
         var trip_id = responseJSON[i]['trip_id'];
         var numStops = Object.keys(responseJSON[i]['stop_time']).length
         var lastStop = responseJSON[i]['stop_time'][0].stop_id
         var time = responseJSON[i]['stop_time'][0].arrival
-        debugger;
         // $('.train-locations').append(responseJSON);
         $('.train-locations').append(
 

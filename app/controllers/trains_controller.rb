@@ -4,20 +4,40 @@ class TrainsController < ApplicationController
     data=Net::HTTP.get(URI.parse("http://datamine.mta.info/mta_esi.php?key=5a44f5292fb0076e8f17017858ce3c58"))
     feed = Transit_realtime::FeedMessage.decode(data)
 
-    entities_with_trip_update = feed.entity.select do |item|
-      item if item.trip_update
+    entities_with_vehicle = feed.entity.select do |item|
+      item.vehicle
     end
+
+    entities_with_trip_update = feed.entity.select do |item|
+      item.trip_update
+    end
+
+    entities = []
+    feed.entity.each_with_index do |entity, idx|
+      if entity.vehicle
+        entities.push({})
+        entities[-1][:trip_id] = entity.vehicle.trip.trip_id
+        entities[-1][:route_id] = entity.vehicle.trip.route_id
+        entities[-1][:timestamp] = Time.at(entity.vehicle.timestamp)
+        entities[-1][:stop_id] = entity.vehicle.stop_id
+      end
+    end
+
+    # debugger
+
+
 
     hashed_entities = find_arrival_departure_times(entities_with_trip_update)
     # debugger
-    # latest_stops = find_latest_stop(entities_with_trip_update)
+    latest_stops = find_latest_stop(entities_with_trip_update)
     # @stations = hashed_entities.each_with_index do |entity|
     #   stop_to_find = entity[1][:stop_time][0][:stop_id]
     #   Station.where(stop_id: entity[:stop_time][0][:stop_id])
     # end
-    # render json: hashed_entities
+    render json: hashed_entities
+
     # debugger
-    @updated_trips = hashed_entities
+    # @updated_trips = entities
   end
 
   private
