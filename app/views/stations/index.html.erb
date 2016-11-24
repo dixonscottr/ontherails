@@ -8,7 +8,7 @@
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
-        height: 100%;
+        height: 50%;
       }
       /* Optional: Makes the sample page fill the window. */
       html, body {
@@ -23,7 +23,7 @@
     <script>
 
       function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
+        map = new google.maps.Map(document.getElementById('map'), {
           zoom: 4
         });
         var bounds = new google.maps.LatLngBounds();
@@ -74,7 +74,6 @@
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=<%=ENV["google_key"]%>&callback=initMap">
-
     </script>
   </body>
 </html>

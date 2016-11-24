@@ -29,6 +29,8 @@ gem 'bootstrap-sass'
 
 gem 'gtfs-realtime-bindings'
 
+gem 'figaro'
+
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
