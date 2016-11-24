@@ -46,10 +46,8 @@
           bounds.extend(marker.position);
           marker.addListener('click', function() {
             $.ajax({
-              url: "http://apps.mta.info/trainTime/getTimesByStation.aspx?stationID=<%=station.stop_id%>&time="+ (new Date).getTime(),
-              method: 'get',
-              Host: "apps.mta.info",
-              Origin: "apps.mta.info"
+              url: "https://apps.mta.info/trainTime/getTimesByStation.aspx?stationID=<%=station.stop_id%>&time="+ (new Date).getTime(),
+              method: 'get'
               }).done(function(responseJSON){
               debugger
               // var infowindow = new google.maps.InfoWindow({
