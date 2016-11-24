@@ -37,16 +37,15 @@
         <% @stations.each do |station| %>
 
           var stationPos = {lat:<%=station.latitude%>, lng:<%=station.longitude%>}
-          var stationId =  "<%=station.stop_id%>"
           var marker = new google.maps.Marker({
             position: stationPos,
             map: map,
-            title: stationId
+            title: "<%=station.stop_id%>"
           });
           bounds.extend(marker.position);
           marker.addListener('click', function() {
             $.ajax({
-              url: "https://apps.mta.info/trainTime/getTimesByStation.aspx?stationID=<%=station.stop_id%>&time="+ (new Date).getTime(),
+              url: "http://apps.mta.info/trainTime/getTimesByStation.aspx?stationID=<%=station.stop_id%>&time="+ (new Date).getTime(),
               method: 'get'
               }).done(function(responseJSON){
               debugger
