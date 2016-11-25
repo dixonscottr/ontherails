@@ -317,9 +317,10 @@ function initStations(args){
 function initRoutes(args)
 {
   linePaths = []
+
   args.forEach(function(route){
     var coordinates = [];
-      route.forEach(function(station){
+      route.stations.forEach(function(station){
         coordinates.push(station.stationPos);
       })
     var linePath = new google.maps.Polyline({
@@ -328,13 +329,12 @@ function initRoutes(args)
       strokeColor: 'Green',
       strokeOpacity: 1.0,
       strokeWeight: 2,
-      title: route[0].stop_id[0]
+      title: route.line_identifier
     });
     linePaths.push(linePath)
     coordinates = [];
     linePath.setMap(map);
   })
-
   return linePaths
 }
 
@@ -381,7 +381,6 @@ function updateStations(options)
 function updateRoutes(options)
 {
   linePaths.forEach(function(line){
-
     if (options.indexOf(line.title[0])==-1)
     {
       line.setVisible(false);
