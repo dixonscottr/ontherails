@@ -21,7 +21,7 @@
 function initMap(){
   var map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 40.774, lng: -73.955},
-    zoom: 14,
+    zoom: 11,
     styles:
     [
       {
@@ -259,17 +259,30 @@ function initMap(){
       }
     ]
   });
-  return map
+  map.addListener('center_changed', function() {
+             map.panTo(marker.getPosition());
+         });
+
+return map
 }
+
+
 
 function initStations(args){
   var bounds = new google.maps.LatLngBounds();
   stations = []
   args.forEach(function(station){
     var stationPos = station.stationPos
+    var symbolOne = {
+          path: 'M -2,0 0,-2 2,0 0,2 z',
+          strokeColor: '#F00',
+          fillColor: '#F00',
+          fillOpacity: 1
+        };
     var marker = new google.maps.Marker({
       position: stationPos,
       map: map,
+      icon: symbolOne,
       title: String(station.name),
       label: String(station.stop_id),
       trainLines: String(station.train_lines)
