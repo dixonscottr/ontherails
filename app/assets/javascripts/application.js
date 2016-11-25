@@ -140,7 +140,6 @@ $('document').ready(function() {
         map: map,
         title: 'STATION'
       });
-      debugger;
       for(var i = 0; i < Object.keys(responseJSON).length; i++) {
         var route_id = responseJSON[i]['route_id'];
         var trip_id = responseJSON[i]['trip_id'];
