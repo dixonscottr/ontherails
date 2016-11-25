@@ -19,7 +19,6 @@ class TrainsController < ApplicationController
         entities[-1][:trip_id] = entity.vehicle.trip.trip_id
         entities[-1][:route_id] = entity.vehicle.trip.route_id
         entities[-1][:timestamp] = Time.at(entity.vehicle.timestamp)
-        entities[-1][:stop_id] = entity.vehicle.stop_id
       end
     end
 
