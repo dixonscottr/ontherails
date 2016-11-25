@@ -155,6 +155,7 @@ function updateTrainPosition(responseJSON){
     if (stopTimes[0].arrival && stopTimes[0].departure){
       //Assume in this case, they are in the station at stopTimes[0]
       if (stopTimes[0].departure != stopTimes[0].arrival){
+
         realData.push(train)
         var stopId = stopTimes[0].stop_id.substr(0,3);
         var direction =stopTimes[0].stop_id.substr(3);
@@ -165,16 +166,17 @@ function updateTrainPosition(responseJSON){
         var trainMarker = new google.maps.Marker({
           position: {lat:currentStation[0].getPosition().lat(), lng:currentStation[0].getPosition().lng()},
           map: map,
-          label: routeId
+          label: routeId + " In Station"
         });
         trains.push(trainMarker);
-
       }
       else {
         //HERE WE ASSUME TRAIN IS MOVING
         var stopId = stopTimes[0].stop_id.substr(0,3);
         var direction =stopTimes[0].stop_id.substr(3);
-
+        var nextStation = stations.filter(function(station){
+          return (station.label === stopId)
+        })
         $.ajax({
           url: '/previous_station',
           method: 'post',
@@ -185,8 +187,21 @@ function updateTrainPosition(responseJSON){
             'direction': direction
           }
         }).done(function(response) {
-          debugger;
-          var stationHeadingFrom = response.station_heading_from;
+
+          var prevStation = stations.filter(function(station){
+            return (station.label === response.prev_station)
+          })
+          if (response.prev_station){
+            var lat = (prevStation[0].getPosition().lat() + nextStation[0].getPosition().lat())/2
+            var lng = (prevStation[0].getPosition().lng() + nextStation[0].getPosition().lng())/2
+
+            var trainMarker = new google.maps.Marker({
+              position:{lat: lat, lng:lng},
+              map: map,
+              label: routeId + " " + direction + " On Go"
+            });
+            trains.push(trainMarker);
+          }
         });
 
       }
