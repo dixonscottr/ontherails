@@ -1,5 +1,5 @@
 
-<div id="map"></div>
+<div class='mapContainer' id="map"></div>
 <script>
 function initializeMap(){
   map = initMap();
@@ -9,6 +9,7 @@ function initializeMap(){
   var contentString = "";
 
 }
+
 </script>
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['google_key'] %>&callback=initializeMap">

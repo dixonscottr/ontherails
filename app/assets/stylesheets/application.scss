@@ -1,0 +1,178 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+ @import "bootstrap-sprockets";
+ @import "bootstrap";
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.mapContainer{
+  margin: 0 auto;
+}
+
+#menu_container {
+  display: inline-block;;
+  height: 800px;
+  width: 25%;
+  border-radius: 16px 16px;
+  border-color: #fff;
+  border-style: solid;
+  box-shadow: 2px 2px 10px #B1B1B1;
+  margin-top: 25px;
+  border-width: 7px;
+}
+
+#map {
+  display: inline-block;
+  height: 800px;
+  width: 65%;
+  border-radius: 16px 16px;
+  border-color: #fff;
+  border-style: solid;
+  box-shadow: 2px 2px 10px #B1B1B1;
+  margin-top: 25px;
+  border-width: 7px;
+
+}
+
+  #map-canvas {
+    height: 384px;
+    width: 100%;
+  }
+
+  .circle {
+    display: block;
+    height: 50px;
+    width: 50px;
+    background-color: red;
+    border-radius: 50px;
+    position: relative;
+  }
+
+  #start {
+    position: absolute;
+    top: 500px;
+  }
+
+  #interpolate {
+    width: 2em;
+    height: 2em;
+  }
+
+  #coords {
+    resize: vertical;
+    min-height: 75px;
+    max-height: 200px;
+  }
+
+  .block {
+    clear: both;
+    margin: 1.5em auto;
+    text-align: center;
+  }
+
+  #legend {
+    float: center;
+    margin: 5px 15px;
+    font-size: 13px;
+  }
+
+  .button {
+  display: inline-block;
+  position: relative;
+  border: 0;
+  padding: 0 1.7em;
+  min-width: 120px;
+  height: 32px;
+  line-height: 32px;
+  border-radius: 2px;
+  font-size: 0.9em;
+  background-color: #fff;
+  color: #646464;
+}
+
+.button.narrow {
+  width: 60px;
+}
+
+.button.grey {
+  background-color: #eee;
+}
+
+.button.blue {
+  background-color: #4285f4;
+  color: #fff;
+}
+
+.button.green {
+  background-color: #0f9d58;
+  color: #fff;
+}
+
+.button.raised {
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 0.2s;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
+.button.raised:active {
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+  transition-delay: 0s;
+}
+
+.floating {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 5;
+  background-color: rgba(255, 255, 255, 0.75);
+  padding: 1px;
+  border: 1px solid #999;
+  text-align: center;
+  line-height: 18px;
+}
+
+.floating.panel {
+  width: 400px;
+}
+
+.coords-small {
+  width: 350px;
+}
+
+.coords-large {
+  width: 400px;
+}
+
+.button-div {
+  padding: 0px 50px;
+  width: 300px;
+  line-height: 40px;
+}
+
+#toggle {
+  width: 25px;
+  z-index: 10;
+  cursor: default;
+  font-size: 2em;
+  padding: 1px;
+  color: #999;
+  display: none;
+}
