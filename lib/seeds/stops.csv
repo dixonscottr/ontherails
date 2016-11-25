@@ -1,4 +1,4 @@
-stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,location_type,parent_station
+stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,location_type,parent_station,Route_1,Route_2,Route_3,Route_4,Route_5,Route_6,Route_7,Route_8,Route_9,Route_10,Route_11
 101,,Van Cortlandt Park - 242 St,,40.889248,-73.898583,,,1,
 101N,,Van Cortlandt Park - 242 St,,40.889248,-73.898583,,,0,101
 101S,,Van Cortlandt Park - 242 St,,40.889248,-73.898583,,,0,101

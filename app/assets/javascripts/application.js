@@ -34,8 +34,9 @@ function initStations(args){
     var marker = new google.maps.Marker({
       position: stationPos,
       map: map,
-      title: String(station.stop_id),
-      label: String(station.stop_id)
+      title: String(station.name),
+      label: String(station.stop_id),
+      trainLines: String(station.train_lines)
     });
     bounds.extend(marker.position);
     marker.addListener('click', function() {
@@ -93,17 +94,34 @@ function handleClick(vara){
   updateRoutes(checked);
 
 }
+function intersection(a, b) {
+  var ai=0, bi=0;
+  var result = [];
+
+  while( ai < a.length && bi < b.length )
+  {
+     if      (a[ai] < b[bi] ){ ai++; }
+     else if (a[ai] > b[bi] ){ bi++; }
+     else /* they're equal */
+     {
+       result.push(a[ai]);
+       ai++;
+       bi++;
+     }
+  }
+
+  return result;
+}
 
 function updateStations(options)
 {
   stations.forEach(function(marker){
-
-    if (options.indexOf(marker.title[0])==-1)
+    if (intersection(options, marker.trainLines.split('').sort()).length)
     {
-      marker.setVisible(false);
+      marker.setVisible(true);
     }
     else{
-      marker.setVisible(true);
+      marker.setVisible(false);
     }
   })
 }
@@ -121,7 +139,45 @@ function updateRoutes(options)
   })
 }
 
+function updateTrainPosition(responseJSON){
+  var realData = []
+  trains.forEach(function(train){
+    train.setMap(null);
+  })
+  trains = []
+  var keys = Object.keys(responseJSON).slice(0,-1)
+  keys.forEach(function(key){
+    var train = responseJSON[key]
+    var routeId = train.route_id;
+    var stopTimes = train.stop_time;
+    if (stopTimes[0].arrival && stopTimes[0].departure){
+      //Assume in this case, they are in the station at stopTimes[0]
+      if (stopTimes[0].departure != stopTimes[0].arrival){
+        realData.push(train)
+        var stopId = stopTimes[0].stop_id.substr(0,3);
+        var direction =stopTimes[0].stop_id.substr(3);
 
+        var currentStation = stations.filter(function(station){
+          return (station.label === stopId)
+        })
+        var trainMarker = new google.maps.Marker({
+          position: {lat:currentStation[0].getPosition().lat(), lng:currentStation[0].getPosition().lng()},
+          map: map,
+          label: routeId
+        });
+        trains.push(trainMarker);
+
+      }
+      else{
+        //HERE WE ASSUME TRAIN IS MOVING
+
+      }
+    }
+  })
+
+
+
+}
 
 $('document').ready(function() {
   //SCOTTS BUTTON
@@ -133,25 +189,27 @@ $('document').ready(function() {
       url: url,
       method: 'get'
     }).done(function(responseJSON){
-      var stationPos = {lat:-40, lng:40}
-
-      var marker = new google.maps.Marker({
-        position: stationPos,
-        map: map,
-        title: 'STATION'
-      });
-      for(var i = 0; i < Object.keys(responseJSON).length; i++) {
-        var route_id = responseJSON[i]['route_id'];
-        var trip_id = responseJSON[i]['trip_id'];
-        var numStops = Object.keys(responseJSON[i]['stop_time']).length
-        var lastStop = responseJSON[i]['stop_time'][0].stop_id
-        var time = responseJSON[i]['stop_time'][0].arrival
-        // $('.train-locations').append(responseJSON);
-        $('.train-locations').append(
-
-          '<p>Number ' + i +  ':<p></p> route_id: ' + route_id + '</p><p>trip_id: ' + trip_id + '<p>latest stop: ' + lastStop + '</p><br />'
-        )
-      };
+      updateTrainPosition(responseJSON)
+      // var stationPos = {lat:-40, lng:40}
+      //
+      // var marker = new google.maps.Marker({
+      //   position: stationPos,
+      //   map: map,
+      //   title: 'STATION'
+      // });
+      // debugger;
+      // for(var i = 0; i < Object.keys(responseJSON).length; i++) {
+      //   var route_id = responseJSON[i]['route_id'];
+      //   var trip_id = responseJSON[i]['trip_id'];
+      //   var numStops = Object.keys(responseJSON[i]['stop_time']).length
+      //   var lastStop = responseJSON[i]['stop_time'][0].stop_id
+      //   var time = responseJSON[i]['stop_time'][0].arrival
+      //   // $('.train-locations').append(responseJSON);
+      //   $('.train-locations').append(
+      //
+      //     '<p>Number ' + i +  ':<p></p> route_id: ' + route_id + '</p><p>trip_id: ' + trip_id + '<p>latest stop: ' + lastStop + '</p><br />'
+      //   )
+      // };
     });
   })
 });

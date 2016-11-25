@@ -209,6 +209,15 @@ line4NRH.stations << Station.where(id: [74..81])
 line4NRH.save!
 
 
+Stationline.all.each do |stationline|
+  stationline.station.train_lines += stationline.line.line_identifier
+  stationline.station.save
+end
+Station.all.each do |station|
+  station.train_lines = station.train_lines.chars.uniq.join
+  station.save
+end
+
 
 
 
