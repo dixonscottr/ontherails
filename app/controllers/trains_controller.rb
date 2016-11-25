@@ -49,7 +49,6 @@ class TrainsController < ApplicationController
     # end
     hashed_entities[:time_updated] = feed.header.timestamp
 
-    debugger
 
     render json: hashed_entities
 

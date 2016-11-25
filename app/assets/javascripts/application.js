@@ -139,22 +139,21 @@ function updateRoutes(options)
   })
 }
 
-function updateTrainPosition(responseJSON,currentTime){
+function updateTrainPosition(responseJSON){
   var realData = []
   trains.forEach(function(train){
     train.setMap(null);
   })
   trains = []
-  var keys = Object.keys(responseJSON)
+  var keys = Object.keys(responseJSON).slice(0,-1)
   keys.forEach(function(key){
     var train = responseJSON[key]
     var routeId = train.route_id;
     var stopTimes = train.stop_time;
     if (stopTimes[0].arrival && stopTimes[0].departure){
       //Assume in this case, they are in the station at stopTimes[0]
-      if (Date.parse(stopTimes[0].departure) != Date.parse(stopTimes[0].arrival)){
+      if (stopTimes[0].departure != stopTimes[0].arrival){
         realData.push(train)
-        debugger
         var stopId = stopTimes[0].stop_id.substr(0,3);
         var direction =stopTimes[0].stop_id.substr(3);
 
