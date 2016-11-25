@@ -18,9 +18,17 @@ class Line < ApplicationRecord
       Station.find(station.station_id)
     end
     if direction == 'N'
-        ordered_stations[ordered_stations.index(station) + 1]
+        if (ordered_stations.index(station))
+          ordered_stations[ordered_stations.index(station) + 1]
+        else
+          false
+        end
     else
-      ordered_stations[ordered_stations.index(station) - 1]
+      if (ordered_stations.index(station))
+        ordered_stations[ordered_stations.index(station) - 1]
+      else
+        false
+      end
     end
   end
 end
