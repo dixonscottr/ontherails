@@ -1,7 +1,8 @@
 class TrainsController < ApplicationController
 
   def update_trains
-    data=Net::HTTP.get(URI.parse("http://datamine.mta.info/mta_esi.php?key=5a44f5292fb0076e8f17017858ce3c58"))
+    debugger
+    data=Net::HTTP.get(URI.parse("http://datamine.mta.info/mta_esi.php?key=#{ENV['mta_key']}"))
     feed = Transit_realtime::FeedMessage.decode(data)
 
     trip_ids_with_vehicle = feed.entity.map do |entity|
