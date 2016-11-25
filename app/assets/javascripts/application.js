@@ -145,10 +145,12 @@ function updateTrainPosition(responseJSON){
     train.setMap(null);
   })
   trains = []
-  var keys = Object.keys(responseJSON).slice(0,-1)
+  var keys = Object.keys(responseJSON).slice(0,-1);
+  var timestamp = responseJSON.time_updated;
   keys.forEach(function(key){
     var train = responseJSON[key]
-    var routeId = train.route_id;
+    // take the x from 6x
+    var routeId = train.route_id[0];
     var stopTimes = train.stop_time;
     if (stopTimes[0].arrival && stopTimes[0].departure){
       //Assume in this case, they are in the station at stopTimes[0]
@@ -168,8 +170,24 @@ function updateTrainPosition(responseJSON){
         trains.push(trainMarker);
 
       }
-      else{
+      else {
         //HERE WE ASSUME TRAIN IS MOVING
+        var stopId = stopTimes[0].stop_id.substr(0,3);
+        var direction =stopTimes[0].stop_id.substr(3);
+
+        $.ajax({
+          url: '/previous_station',
+          method: 'post',
+          data: {
+            'station': stopId,
+            'line': routeId,
+            'time': timestamp,
+            'direction': direction
+          }
+        }).done(function(response) {
+          debugger;
+          var stationHeadingFrom = response.station_heading_from;
+        });
 
       }
     }
