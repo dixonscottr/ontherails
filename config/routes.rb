@@ -3,5 +3,6 @@ Rails.application.routes.draw do
   root to: 'stations#index'
   resources :stations
   get '/update_trains' => 'trains#update_trains'
+  post '/previous_station' => 'trains#previous_station'
 
 end
