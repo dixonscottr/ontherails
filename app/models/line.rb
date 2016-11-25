@@ -5,9 +5,9 @@ class Line < ApplicationRecord
 
   def self.getStationsInOrder
     self.all.map do |line|
-      line.stationlines.order('created_at').map do |station|
+      {line_identifier: line.line_identifier, stations: line.stationlines.order('created_at').map do |station|
         Station.find(station.station_id)
-      end
+      end}
     end
   end
 
