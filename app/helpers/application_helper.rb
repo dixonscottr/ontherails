@@ -7,9 +7,9 @@ module ApplicationHelper
 
   def convertRoutes(routes)
     routes.map do |route|
-      route.map do |station|
+      {line_identifier: route[:line_identifier], stations: route[:stations].map do |station|
         {stationPos: {lat: station.latitude.to_f, lng: station.longitude.to_f}, stop_id: station.stop_id, train_lines: station.train_lines}
-      end
+      end}
     end.to_json.html_safe
   end
 end
