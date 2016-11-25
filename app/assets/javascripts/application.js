@@ -19,8 +19,9 @@
 //
 
 function initMap(){
+  center = {lat: 40.774, lng: -73.955}
   var map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 40.774, lng: -73.955},
+    center: center,
     zoom: 11,
     styles:
     [
@@ -259,10 +260,13 @@ function initMap(){
       }
     ]
   });
-  map.addListener('center_changed', function() {
-             map.panTo(marker.getPosition());
-         });
-
+  // map.addListener('center_changed', function() {
+  //            map.panTo(marker.getPosition());
+  //        });
+   google.maps.event.addDomListener(window, "resize", function() {
+       google.maps.event.trigger(map, "resize");
+       map.setCenter(center);
+   });
 return map
 }
 
