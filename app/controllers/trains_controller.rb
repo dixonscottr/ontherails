@@ -56,6 +56,24 @@ class TrainsController < ApplicationController
     # @updated_trips = entities
   end
 
+  def previous_station
+    line = params[:line]
+    direction = params[:direction]
+    stop_id = params[:station]
+    timestamp = params[:time].to_i
+    lines_to_search = Line.where(line_identifier: line)
+    line_found = lines_to_search.select do |line|
+      ((line.time_start).to_i < timestamp) && ((line.time_stop).to_i > timestamp)
+    end[0]
+
+    prev_stn = line_found.find_previous_station(stop_id, direction)
+    hash_to_send = {}
+    if prev_stn
+      hash_to_send[:prev_station] = prev_stn.stop_id
+    end
+    render json: hash_to_send
+  end
+
   private
 
     def find_arrival_departure_times(entities_with_trip_update)

@@ -17,14 +17,12 @@
  @import "bootstrap-sprockets";
  @import "bootstrap";
 
-/*#map {
-  height: 50%;
-}*/
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
 }
+
 
 
 #menu_container {
@@ -42,7 +40,7 @@ html, body {
 #map {
   display: inline-block;
   height: 800px;
-  width: 100%;
+  width: 65%;
   border-radius: 16px 16px;
   border-color: #fff;
   border-style: solid;
