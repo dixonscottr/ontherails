@@ -22,6 +22,7 @@
       <div class="container-fluid">
         <header><h1>On the Rails</h1></header>
     <%= yield %>
+    <p>Last updated at <%= @update_time || Time.now.strftime("%H:%M:%S %z") %></p>
     <footer>
       <form id='train-updater' action='/update_trains' method='get'>
         <input type='submit' value='Update these trains' />

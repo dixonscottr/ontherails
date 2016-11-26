@@ -1,6 +1,7 @@
 class TrainsController < ApplicationController
 
   def update_trains
+    @update_time = Time.now.strftime("%H:%M:%S %z")
     data = Net::HTTP.get(URI.parse("http://datamine.mta.info/mta_esi.php?key=#{ENV['mta_key']}"))
     feed = Transit_realtime::FeedMessage.decode(data)
 
