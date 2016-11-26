@@ -505,38 +505,39 @@ function updateTrainPosition(responseJSON){
             //NOW WE HAVE THE TWO INDICIES ON THE CURVE OF THE PREVIOUS AND NEXT STATION
             // If the two indicies are 1 apart, take the average
             if (Math.abs(prevIndexOnCurve - nxtIndexOnCurve) == 1){
-              var lat = tempCoords[prevIndexOnCurve].lat + tempCoords[nxtIndexOnCurve].lat;
-              var lng = tempCoords[prevIndexOnCurve].lng + tempCoords[nxtIndexOnCurve].lng;
-              var slope = (tempCoords[nxtIndexOnCurve].lng-tempCoords[prevIndexOnCurve].lng)/(tempCoords[nxtIndexOnCurve].lat -tempCoords[prevIndexOnCurve].lat);
-              var orthogonal = (-1/slope)
+              var prevCord = new google.maps.LatLng(tempCoords[prevIndexOnCurve]);
+              var nxtCord = new google.maps.LatLng(tempCoords[nxtIndexOnCurve]);
 
-              var offset = 0.003;
-              var latOffset = Math.sqrt(Math.pow(offset,2)/(1+Math.pow(orthogonal,2)))
-              var lngOffset = orthogonal*(latOffset)
-              if (direction == "N"){
-                if (slope>0){
-                  latOffset *= -1;
-                  lngOffset *= -1;
-                }
-                else{
-                  latOffset *= -1;
-                }
+              //Degrees from the NORTH which we need to travel to find the other point (AKA SLOPE)
+              var heading = google.maps.geometry.spherical.computeHeading(prevCord,nxtCord);
 
-              }
-              else {
-                if (slope<0){
-                  lngOffset *= -1;
+              var orthogonalHeading = heading + 270;
 
-                }
-                else{
-                }
+              var offset = 0.00003;
 
-
-              }
-              console.log(latOffset)
-              var pos = {lat:(lat/2)+latOffset, lng:(lng/2)+lngOffset}
+              var newPos = getFinalPoint(tempCoords[prevIndexOnCurve], tempCoords[nxtIndexOnCurve],offset,orthogonalHeading)
+              // if (direction == "N"){
+              //   if (slope>0){
+              //     latOffset *= -1;
+              //     lngOffset *= -1;
+              //   }
+              //   else{
+              //     latOffset *= -1;
+              //   }
+              //
+              // }
+              // else {
+              //   if (slope<0){
+              //     lngOffset *= -1;
+              //
+              //   }
+              //   else{
+              //   }
+              //
+              //
+              // }
               var trainMarker = new google.maps.Marker({
-                  position:pos,
+                  position:newPos,
                   map: map,
                   label: routeId + " " + direction + " On Go"
                 });
@@ -553,6 +554,33 @@ function updateTrainPosition(responseJSON){
       }
     }
   })
+}
+function getFinalPoint(coord1, coord2, offset, heading){
+    Math.degrees = function(rad) {
+        return rad * (180 / Math.PI);
+    }
+    Math.radians = function(deg) {
+        return deg * (Math.PI / 180);
+    }
+    var lat1 = Math.radians(coord1.lat);
+    var lng1 = Math.radians(coord1.lng);
+    var lat2 = Math.radians(coord2.lat);
+    var lng = Math.radians(coord2.lng);
+    var bx = Math.cos(lat2) * Math.cos(lng - lng1)
+    var by = Math.cos(lat2) * Math.sin(lng - lng1)
+    var lat3 = Math.atan2(Math.sin(lat1) + Math.sin(lat2), Math.sqrt((Math.cos(lat1) + bx) * (Math.cos(lat1) + bx) + Math.pow(by, 2)));
+    var lon3 = lng1 + Math.atan2(by, Math.cos(lat1) + bx);
+
+    var midpoint = {lat:Math.round(Math.degrees(lat3), 5), lng:Math.round(Math.degrees(lon3), 5)};
+
+    var latFinal = Math.asin(Math.sin(lat3) * Math.cos(offset) +
+                       Math.cos(lat3) * Math.sin(offset) * Math.cos(heading));
+    var lonFinal = lon3 + Math.atan2(Math.sin(heading) * Math.sin(offset) *
+                      Math.cos(lat3),
+                      Math.cos(offset) - Math.sin(lat3) *
+                      Math.sin(latFinal));
+    return new google.maps.LatLng(Math.degrees(latFinal), Math.degrees(lonFinal));
+
 }
 
 function getCoordinatesOfStation(station){
