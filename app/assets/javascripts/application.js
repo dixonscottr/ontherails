@@ -359,28 +359,21 @@ function initCurves(args)
 }
 
 function handleClick(line){
-  // updateTrainsForLine(line.value)
   line.classList.toggle('checked');
-  var checked = [];
-  $('.checked').each(function(i){
-    checked[i] = $(this).val();
-  });
-  updateStations(checked);
-  updateRoutes(checked);
-  // debugger;
-  updateTrainsForLine(checked, line.value)
-  //updateTrainPosition
-  // var updatedTrains = updateTrainsForLine(line.value);
-  // debugger;
+  var trainLinesToHide = trainLineChecker();
+  updateStations(trainLinesToHide);
+  updateRoutes(trainLinesToHide);
+  updateTrainsForLine(trainLinesToHide, line.value)
 }
 
-// function updateTrainsForLine(lineID) {
-//   var updatedTrains = trains.filter(function(train) {
-//     return (train.label[0] === lineID)
-//   });
-//   return updatedTrains;
-//   debugger;
-// }
+function trainLineChecker() {
+  var checked = [];
+  var $linesToCheck = $('.checked')
+  $linesToCheck.each(function(i){
+    checked[i] = $linesToCheck[i].value;
+  });
+  return checked;
+}
 
 function intersection(a, b) {
   var ai=0, bi=0;
@@ -435,7 +428,6 @@ function updateTrainsForLine(lineID_array, lineToHide) {
     }
   });
 }
-
 
 function updateTrainPosition(responseJSON){
   var realData = []
