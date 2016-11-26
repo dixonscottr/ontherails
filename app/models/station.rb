@@ -16,7 +16,7 @@ class Station < ApplicationRecord
   validate :trains_at_station
 
   def trains_at_station
-    if ([stop_id[0]] & ["1","2","3","4","5","6","L"]).empty?
+    if ([stop_id[0]] & ["1","2","3","4","5","6"]).empty?
       errors.add(:train_invalid, "no valid trains go to this station")
     end
   end

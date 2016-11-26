@@ -46,10 +46,10 @@ line1 = Line.new(line_identifier:"1", day:"all", time_start: standardStartTime, 
 line1.stations = Station.where(id: 1..38)
 line1.save!
 
-lineL = Line.new(line_identifier:"L", day:"all", time_start: standardStartTime, time_stop: standardEndTime)
-lineL.stations = Station.where(id: 155..178)
-lineL.save!
-
+# lineL = Line.new(line_identifier:"L", day:"all", time_start: standardStartTime, time_stop: standardEndTime)
+# lineL.stations = Station.where(id: 155..178)
+# lineL.save!
+#
 dayStart = "06:00:00 AM"
 dayEnd = "11:59:59 PM"
 
@@ -229,13 +229,11 @@ end
 
 
 
-
-
-# line5
-# has stations it skips part-time
-# train operates in only one direction during rush hour (towards Manhattan AM rush hour, away from Manhattan PM rush hour)
-
-
+csv_text = File.read(Rails.root.join('lib', 'seeds', 'shapes.csv'))
+csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
+csv.each do |row|
+  point = Point.create(shape_id: row['shape_id'], latitude: row['shape_pt_lat'].to_f, longitude: row['shape_pt_lon'].to_f, sequence: row['shape_pt_sequence'])
+end
 
 
 # csv_text = File.read(Rails.root.join('lib', 'seeds', 'trips.csv'))

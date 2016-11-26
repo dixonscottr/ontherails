@@ -317,7 +317,7 @@ function initStations(args){
 function initRoutes(args)
 {
   linePaths = []
-
+  curvePaths = []
   args.forEach(function(route){
     var coordinates = [];
       route.stations.forEach(function(station){
@@ -334,8 +334,27 @@ function initRoutes(args)
     linePaths.push(linePath)
     coordinates = [];
     linePath.setMap(map);
+    linePath.setVisible(false);
+
   })
   return linePaths
+}
+function initCurves(args)
+{
+  args.forEach(function(curve){
+    var linePath = new google.maps.Polyline({
+      path: curve.coordinates,
+      geodesic: true,
+      strokeColor: 'Red',
+      strokeOpacity: 1.0,
+      strokeWeight: 2,
+      title: curve.curveId
+    });
+    coordinates = [];
+    curvePaths.push(linePath)
+    linePath.setMap(map);
+  })
+
 }
 
 function handleClick(vara){
@@ -380,7 +399,7 @@ function updateStations(options)
 }
 function updateRoutes(options)
 {
-  linePaths.forEach(function(line){
+  curvePaths.forEach(function(line){
     if (options.indexOf(line.title[0])==-1)
     {
       line.setVisible(false);

@@ -10,18 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161123163234) do
+ActiveRecord::Schema.define(version: 20161125230528) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "curves", force: :cascade do |t|
+    t.string   "line_id"
+    t.integer  "point_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["point_id"], name: "index_curves_on_point_id", using: :btree
+  end
+
   create_table "lines", force: :cascade do |t|
     t.string   "line_identifier"
     t.string   "day"
-    t.datetime "time_start"
-    t.datetime "time_stop"
+    t.string   "time_start"
+    t.string   "time_stop"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+  end
+
+  create_table "points", force: :cascade do |t|
+    t.string   "shape_id"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.string   "sequence"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "routes", force: :cascade do |t|

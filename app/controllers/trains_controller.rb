@@ -1,7 +1,6 @@
 class TrainsController < ApplicationController
 
   def update_trains
-    debugger
     data=Net::HTTP.get(URI.parse("http://datamine.mta.info/mta_esi.php?key=#{ENV['mta_key']}"))
     feed = Transit_realtime::FeedMessage.decode(data)
 
@@ -64,9 +63,8 @@ class TrainsController < ApplicationController
     timestamp = params[:time].to_i
     lines_to_search = Line.where(line_identifier: line)
     line_found = lines_to_search.select do |line|
-      ((line.time_start).to_i < timestamp) && ((line.time_stop).to_i > timestamp)
+      ((Time.parse(line.time_start)).to_i < timestamp) && ((Time.parse(line.time_stop)).to_i > timestamp)
     end[0]
-
     prev_stn = line_found.find_previous_station(stop_id, direction)
     hash_to_send = {}
     if prev_stn
