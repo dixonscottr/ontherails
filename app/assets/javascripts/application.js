@@ -23,7 +23,7 @@ function initMap(){
   timesArray=[];
   var map = new google.maps.Map(document.getElementById('map'), {
     center: center,
-    zoom: 11,
+    zoom: 14,
     styles:
     [
       {
@@ -281,8 +281,8 @@ function initStations(args){
     var stationPos = station.stationPos
     var symbolOne = {
           path: 'M -2,0 0,-2 2,0 0,2 z',
-          strokeColor: '#F00',
-          fillColor: '#F00',
+          strokeColor: '#FFC',
+          fillColor: '#FFC',
           fillOpacity: 1
         };
     var marker = new google.maps.Marker({
