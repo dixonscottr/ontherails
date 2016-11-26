@@ -436,7 +436,7 @@ function updateTrainPosition(responseJSON){
         })
         var trainMarker = new google.maps.Marker({
           position: {lat:currentStation[0].getPosition().lat(), lng:currentStation[0].getPosition().lng()},
-          icon: stopIcon(),
+          icon: stopIcon(routeId),
           map: map,
           label: routeId + direction
         });
@@ -469,7 +469,7 @@ function updateTrainPosition(responseJSON){
 
             var trainMarker = new google.maps.Marker({
               position:{lat: lat, lng:lng},
-              icon: movementIcon(),
+              icon: movementIcon(routeId, direction),
               map: map,
               label: routeId + direction
             });
@@ -495,7 +495,8 @@ $('document').ready(function() {
       url: url,
       method: 'get'
     }).done(function(responseJSON){
-      updateTrainPosition(responseJSON)
+      updateTrainPosition(responseJSON);
+      $('span#update_time').text(Date);
     });
   })
 });

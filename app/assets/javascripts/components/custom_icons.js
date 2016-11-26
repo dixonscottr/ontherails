@@ -6,7 +6,7 @@ var uptownRed = 'https://jacobwilliamsonline.files.wordpress.com/2016/11/up-tria
 var downtownRed = 'https://jacobwilliamsonline.files.wordpress.com/2016/11/up-triangle-red3-e1480133251527.png'
 var atStationRed = 'https://jacobwilliamsonline.files.wordpress.com/2016/11/stop-red.png'
 
-function stopIcon() {
+function stopIcon(routeId) {
   if (routeId == '1' || routeId == '2' || routeId == '3') {
     return atStationRed;
   } else {
@@ -14,7 +14,7 @@ function stopIcon() {
   }
 }
 
-function movementIcon() {
+function movementIcon(routeId, direction) {
   if (routeId == '1' || routeId == '2' || routeId == '3') {
     if (direction == 'N') {
       return uptownRed;
