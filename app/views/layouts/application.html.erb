@@ -9,34 +9,45 @@
   </head>
 
   <body>
-
-    <div class='navBar toggle' id="navBar">
-    <img src="img/rails.jpg" width="100px"/>
-      <!-- <form id="select-lines" class="form-check-inline"> -->
-    		<button data-toggle="button" aria-pressed="false" data-target="#myModal" class="btn btn-circle raised btn-primary checked" onclick="handleClick(this)" name="line" value="1">1</button>
-        <button data-toggle="button" aria-pressed="false" class="btn btn-circle raised btn-info checked" onclick="handleClick(this)" name="line" value="2">2</button>
-      	<button data-toggle="modal" data-target="#myModal" class="btn btn-circle raised btn-default checked" onclick="handleClick(this)" name="line" value="3">3</button>
-        <button data-toggle="modal" data-target="#myModal" class="btn btn-circle raised btn-success checked" onclick="handleClick(this)" name="line" value="4">4</button>
-      	<button data-toggle="modal" data-target="#myModal" class="btn btn-circle raised btn-warning checked" onclick="handleClick(this)" name="line" value="5">5</button>
-      	<button data-toggle="modal" data-target="#myModal" class="btn btn-circle raised btn-danger checked" onclick="handleClick(this)" name="line" value="6">6</button>
-      <!-- </form> -->
-
-    </div>
-      <div class="container-fluid">
-
-
     <div class="container-fluid">
-
-    <%= yield %>
-    <p>Last updated at <span id="update_time"><%= Time.now %></span></p>
-    <footer>
-      <form id='train-updater' action='/update_trains' method='get'>
-        <input type='submit' value='Update these trains' />
-      </form>
-      <div class='train-locations'>
-        <h2>Things go here</h2>
+      <div class='row navBar toggle' id="navBar">
+        <div class="col-sm-5">
+          <img src="img/rails.jpg" width="40%"/>
+        </div>
+        <!-- <form id="select-lines" class="form-check-inline"> -->
+        <div class="col-sm-1">
+      		<button data-toggle="button" aria-pressed="false" data-target="#myModal" class="btn btn-circle raised btn-primary checked" onclick="handleClick(this)" name="line" value="1">1</button>
+        </div>
+        <div class="col-sm-1">
+          <button data-toggle="button" aria-pressed="false" class="btn btn-circle raised btn-info checked" onclick="handleClick(this)" name="line" value="2">2</button>
+        </div>
+        <div class="col-sm-1">
+        	<button data-toggle="modal" data-target="#myModal" class="btn btn-circle raised btn-default checked" onclick="handleClick(this)" name="line" value="3">3</button>
+        </div>
+        <div class="col-sm-1">
+          <button data-toggle="modal" data-target="#myModal" class="btn btn-circle raised btn-success checked" onclick="handleClick(this)" name="line" value="4">4</button>
+        </div>
+        <div class="col-sm-1">
+        	<button data-toggle="modal" data-target="#myModal" class="btn btn-circle raised btn-warning checked" onclick="handleClick(this)" name="line" value="5">5</button>
+        </div>
+        <div class="col-sm-1">
+        	<button data-toggle="modal" data-target="#myModal" class="btn btn-circle raised btn-danger checked" onclick="handleClick(this)" name="line" value="6">6</button>
+        </div>
+        <div class="col-sm-1"></div>
       </div>
-    </footer>
-  </div>
+        <!-- </form> -->
+      </div>
+
+        <%= yield %>
+        <p>Last updated at <span id="update_time"><%= Time.now %></span></p>
+        <footer>
+          <form id='train-updater' action='/update_trains' method='get'>
+            <input type='submit' value='Update these trains' />
+          </form>
+        <div class='train-locations'>
+          <h2>Things go here</h2>
+        </div>
+      </footer>
+    </div>
   </body>
 </html>

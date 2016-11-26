@@ -1,17 +1,18 @@
-<div class='mapContainer' id="map"></div>
+<div class="container mapContainer" id="map">
+  <div class="row">
+  <script>
+  function initializeMap(){
+    map = initMap();
+    stations = initStations(<%=convertStations(@stations)%>);
+    routes = initRoutes(<%=convertRoutes(@routes)%>);
+    curves = initCurves(<%=convertCurves(@curves)%>);
+    trains = []
+    var contentString = "";
 
-<script>
-function initializeMap(){
-  map = initMap();
-  stations = initStations(<%=convertStations(@stations)%>);
-  routes = initRoutes(<%=convertRoutes(@routes)%>);
-  curves = initCurves(<%=convertCurves(@curves)%>);
-  trains = []
-  var contentString = "";
-
-}
-
-</script>
-<script async defer
-src="https://maps.googleapis.com/maps/api/js?key=<%=ENV["google_key"] %>&callback=initializeMap">
-</script>
+  }
+  </script>
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=<%=Figaro.env.google_key%>&callback=initializeMap">
+  </script>
+  </div>
+</div>
