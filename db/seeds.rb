@@ -252,7 +252,7 @@ end
 
 
 
-csv_text = File.read(Rails.root.join('lib', 'seeds', 'shapes.csv'))
+csv_text = File.read(Rails.root.join('lib', 'seeds', 'newShapes.csv'))
 csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
 csv.each do |row|
   point = Point.create(shape_id: row['shape_id'], latitude: row['shape_pt_lat'].to_f, longitude: row['shape_pt_lon'].to_f, sequence: row['shape_pt_sequence'])

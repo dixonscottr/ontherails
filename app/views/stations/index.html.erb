@@ -3,8 +3,8 @@
 <script>
 function initializeMap(){
   map = initMap();
-  // stations = initStations(<%=convertStations(@stations)%>);
-  // routes = initRoutes(<%=convertRoutes(@routes)%>);
+  stations = initStations(<%=convertStations(@stations)%>);
+  routes = initRoutes(<%=convertRoutes(@routes)%>);
   curves = initCurves(<%=convertCurves(@curves)%>);
   trains = []
   var contentString = "";

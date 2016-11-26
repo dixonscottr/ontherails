@@ -354,15 +354,6 @@ function initCurves(args)
     coordinates = [];
     curvePaths.push(linePath)
     linePath.setMap(map);
-    curve.forEach(function(coordinate)){
-      debugger
-      var marker = new google.maps.Marker({
-        position: coordinate,
-        map: map,
-        title: "coordinate"
-        label: "coordinate"
-      });
-    }
 
   })
 
