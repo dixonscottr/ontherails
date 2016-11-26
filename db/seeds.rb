@@ -74,21 +74,33 @@ line2night.stations << Station.where(id: [63..81])
 
 line2night.save!
 
-late3NightStart = "11:30:00 PM"
-late3NightEnd = "06:00:00 AM"
+dayStart = "06:00:00 AM"
+dayEnd = "11:30:00 PM"
 
-line3day = Line.new(line_identifier:"3", day:"all", time_start: late3NightEnd, time_stop: late3NightStart)
+
+
+line3day = Line.new(line_identifier:"3", day:"all", time_start: dayStart, time_stop: dayEnd)
 line3day.stations << Station.where(id: [92..93])
 line3day.stations << Station.where(id: [59..62])
 line3day.stations << Station.where(id: [18,21,25,26,30,35])
 line3day.stations << Station.where(id: [63..74])
 line3day.stations << Station.where(id: [82..91])
 
-
-
 line3day.save!
 
-# NUMBER 6 IN LINES
+timeStart = "11:30:00 PM"
+timeEnd = "11:59:59 AM"
+
+line3night = Line.new(line_identifier:"3", day:"all", time_start: timeStart, time_stop: timeEnd)
+line3night.stations << Station.where(id: [92..93])
+line3night.stations << Station.where(id: [59..62])
+line3night.stations << Station.where(id: [18,21,25])
+
+line3night.save!
+late3NightStart = "12:00:00 AM"
+late3NightEnd = "06:00:00 AM"
+
+
 line3night = Line.new(line_identifier:"3", day:"all", time_start: late3NightStart, time_stop: late3NightEnd)
 line3night.stations << Station.where(id: [92..93])
 line3night.stations << Station.where(id: [59..62])
@@ -176,6 +188,17 @@ line4NRH.save!
 
 # BROOKLYN BUT NOT MANHATTAN
 start = "11:00:00 PM"
+endTime = "11:59:59 PM"
+
+line4NRH = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
+line4NRH.stations << Station.where(id: [94..107])
+line4NRH.stations << Station.where(id: [135, 140, 143, 145, 149, 154])
+line4NRH.stations << Station.where(id: [108..111])
+line4NRH.stations << Station.where(id: [69..74])
+line4NRH.stations << Station.where(id: [82..91])
+line4NRH.save!
+
+start = "12:00:00 AM"
 endTime = "01:00:00 AM"
 
 line4NRH = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
