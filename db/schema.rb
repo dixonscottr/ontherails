@@ -78,16 +78,11 @@ ActiveRecord::Schema.define(version: 20161125230528) do
 
   create_table "stoptimes", force: :cascade do |t|
     t.string   "trip_id"
-    t.string   "arrival_time"
-    t.string   "departure_time"
+    t.string   "time"
     t.string   "stop_id"
-    t.string   "stop_sequence"
-    t.string   "stop_headsign"
-    t.string   "pickup_type"
-    t.string   "drop_off_type"
-    t.string   "shape_dist_traveled"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.string   "sequence"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "trainpaths", force: :cascade do |t|

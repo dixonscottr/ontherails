@@ -11,5 +11,10 @@ class StationsController < ApplicationController
       Point.where(shape_id: curve).order(:id)
     end
 
+    times = Stoptime.pluck(:trip_id).uniq
+    @timeArrays = times.map do |x|
+      Stoptime.where(trip_id: x).order(:id)
+    end
+
   end
 end

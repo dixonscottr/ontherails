@@ -21,6 +21,15 @@ module ApplicationHelper
     end.to_json.html_safe
   end
 
+  def convertTimes(times)
+    arrayval=["1","2","3","4","5","5x","6"]
+    times.map.with_index do |time, i|
+      {line_id: arrayval[i], data: time.map do |x|
+        {time: x.time, stop_id: x.stop_id}
+      end}
+    end.to_json.html_safe
+  end
+
   def timed_auto_update
     sleep 10 #seconds
     update_trains

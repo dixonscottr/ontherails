@@ -20,6 +20,7 @@
 
 function initMap(){
   center = {lat: 40.774, lng: -73.955}
+  timesArray=[];
   var map = new google.maps.Map(document.getElementById('map'), {
     center: center,
     zoom: 11,
@@ -342,7 +343,8 @@ function initRoutes(args)
 }
 function initCurves(args)
 {
-  curveCoordinatesArray=args
+  var tryingThisThing = args.slice(0);
+  curveCoordinatesArray=args.slice(0);
   args.forEach(function(curve){
     var linePath = new google.maps.Polyline({
       path: curve.coordinates,
@@ -357,9 +359,11 @@ function initCurves(args)
     linePath.setMap(map);
 
   })
-
-
-
+  return tryingThisThing
+}
+function initTimes(args)
+{
+  timesArray = args;
 }
 
 function handleClick(line){
@@ -501,9 +505,9 @@ function updateTrainPosition(responseJSON){
 
           //This means we need to make sure we have a curve for every train possibility. Which I am not sure if we do. Here we have the current curve, and previous station and next station variable so we can find the chunk of track which we are supposed to be on. We need to use the current timestamp and the expected arrival time to estimate where we are on the array of points. If ~250 points is 3 minutes then every point is 1.4 seconds. This means if we are 60 seconds away we are 60/1.4 points away. And we move 1.4 points every second.\
           if (response.prev_station){
-
-            var currentCurve = curveCoordinatesArray.filter(function(curve){
-              return (curve.curveId == fullrouteID);
+            var localCurveCoordinates = JSON.parse(JSON.stringify(curveCoordinatesArray));
+            var currentCurve = localCurveCoordinates.filter(function(curve){
+              return (curve.curveId == response.fullrouteID);
             })
             // var currentCurvePath = curvePaths.filter(function(curve){
             //   return curve.title === fullrouteID;
@@ -511,6 +515,8 @@ function updateTrainPosition(responseJSON){
             prevStationCoords = getCoordinatesOfStation(prevStation);
             nxtStationCoords = getCoordinatesOfStation(nextStation);
             var tempCoords = currentCurve[0].coordinates
+            var tempCoords1 = currentCurve[0].coordinates
+
             var prevIndexOnCurve='';
             var nxtIndexOnCurve='';
             for (var i =0; i < tempCoords.length;i++)
@@ -522,47 +528,69 @@ function updateTrainPosition(responseJSON){
                 nxtIndexOnCurve = i;
               }
             }
-
-            //NOW WE HAVE THE TWO INDICIES ON THE CURVE OF THE PREVIOUS AND NEXT STATION
-            // If the two indicies are 1 apart, take the average
-            if (Math.abs(prevIndexOnCurve - nxtIndexOnCurve) == 1){
-              var prevCord = new google.maps.LatLng(tempCoords[prevIndexOnCurve]);
-              var nxtCord = new google.maps.LatLng(tempCoords[nxtIndexOnCurve]);
-
-              //Degrees from the NORTH which we need to travel to find the other point (AKA SLOPE)
-              var heading = google.maps.geometry.spherical.computeHeading(prevCord,nxtCord);
-              var orthogonalHeading = (heading+90);
-              var offset = 0.00004;
-              var responseData = getFinalPoint(tempCoords[prevIndexOnCurve], tempCoords[nxtIndexOnCurve],offset,orthogonalHeading)
-              var newPos = responseData.offsetPoint;
-              var midpoint = responseData.midpoint;
-
-              var trainMarker = new google.maps.Marker({
-                  position:newPos,
-                  map: map,
-                  label: routeId + direction,
-                  size: new google.maps.Size(5, 5)
-                });
-
-              trains.push(trainMarker);
-            }
-            else{
-              debugger
-              // variables prevIndexOnCurve  nxtIndexOnCurve, tempCoords is an array of the coordinates for the index
-              var newPath = tempCoords.slice(prevIndexOnCurve,nxtIndexOnCurve)
-              var polyLine = new google.maps.Polyline({
+            // variables prevIndexOnCurve  nxtIndexOnCurve, tempCoords is an array of the coordinates for the index
+            var newPath = '';
+            var segmentLine = ''
+            if (response.direction == "N"){
+              newPath = tempCoords1.splice(prevIndexOnCurve,(nxtIndexOnCurve-prevIndexOnCurve)+1)
+              segmentLine = new google.maps.Polyline({
                 path: newPath
               });
-              //AT THIS POINT WE HAVE A TIME WHICH THIS TRAIN IS AWAY FROM A STATION
-              var waitTime = response.arrivalTime - response.time;
-              var currentPos =  polyLine.GetPointAtDistance(polyLine.Distance()*(desired percentage)/100);
+            }
+            else {
+              newPath = tempCoords1.splice(nxtIndexOnCurve,(prevIndexOnCurve-nxtIndexOnCurve)+1)
+              segmentLine = new google.maps.Polyline({
+                path: newPath
+              });
+            }
+            //AT THIS POINT WE HAVE A TIME WHICH THIS TRAIN IS AWAY FROM A STATION
+            //THIS IS THE TIME LEFT TO GET TO THIS STATION
+            var waitTime = response.arrivalTime - response.time;
+            var currentTimeArray = timesArray.filter(function(timeArr){
+              return (timeArr.line_id === response.fullrouteID)
+            })[0]
+            var station1Time = '';
+            var station2Time ='';
+            var tempVal = currentTimeArray.data;
+            for (var i=0; i <tempVal.length;i++){
 
-              // var latlng =
-
-              // var pos = tempCoords[(prevIndexOnCurve + nxtIndexOnCurve)/2]
+              if (tempVal[i].stop_id == response.prev_station){
+                station1Time = tempVal[i].time;
+              }
+              else if(tempVal[i].stop_id == response.station){
+                station2Time = tempVal[i].time;
+              }
+            }
+            //TOTAL TRAVEL TIME BETWEEN THE TWO stations
+            var travelTime = Math.abs(station1Time - station2Time)
+            var percentToUse = Math.abs((waitTime/travelTime))
+            if (response.direction == "N"){
+              percentToUse = Math.abs(1-percentToUse);
+            }
+            //Current place on the curve
+            var currentPos =  segmentLine.GetPointAtDistance(segmentLine.Distance()*(percentToUse));
+            var currentIndex =  segmentLine.GetIndexAtDistance(segmentLine.Distance()*(percentToUse));
+            if (segmentLine.getPath().length ==1) {
+            }
+            var heading = segmentLine.Bearing(currentIndex)
+            var orthogonalHeading = heading;
+            if (response.direction == "N"){
+              orthogonalHeading +=90;
+            }
+            else{
+              orthogonalHeading-=90;
             }
 
+            var offset = 0.00001;
+            var newPos = getFinalPoint(currentPos, offset, orthogonalHeading)
 
+            var trainMarker = new google.maps.Marker({
+                position:newPos,
+                map: map,
+                label: routeId + direction + " " + percentToUse,
+                size: new google.maps.Size(5, 5)
+              });
+            trains.push(trainMarker);
           }
 
             if(trainLinesToHide.indexOf(trainMarker.label[0]) === -1 ) {
@@ -574,38 +602,30 @@ function updateTrainPosition(responseJSON){
           trains.push(trainMarker);
 
         });
-
       }
     }
   })
 }
-function getFinalPoint(coord1, coord2, offset, degHeading){
+function getFinalPoint(point, offset, degHeading){
     Math.degrees = function(rad) {
         return rad * (180 / Math.PI);
     }
     Math.radians = function(deg) {
         return deg * (Math.PI / 180);
     }
+    var lat1 = Math.radians(point.lat());
+    var lng1 = Math.radians(point.lng());
+
     var heading = Math.radians(degHeading);
-    var lat1 = Math.radians(coord1.lat);
-    var lng1 = Math.radians(coord1.lng);
-    var lat2 = Math.radians(coord2.lat);
-    var lng = Math.radians(coord2.lng);
-    var bx = Math.cos(lat2) * Math.cos(lng - lng1)
-    var by = Math.cos(lat2) * Math.sin(lng - lng1)
-    var lat3 = Math.atan2(Math.sin(lat1) + Math.sin(lat2), Math.sqrt((Math.cos(lat1) + bx) * (Math.cos(lat1) + bx) + Math.pow(by, 2)));
-    var lon3 = lng1 + Math.atan2(by, Math.cos(lat1) + bx);
 
-    var midpoint = {lat:Math.degrees(lat3), lng:Math.degrees(lon3)};
+    var latFinal = Math.asin(Math.sin(lat1) * Math.cos(offset) +
+                       Math.cos(lat1) * Math.sin(offset) * Math.cos(heading));
 
-    var latFinal = Math.asin(Math.sin(lat3) * Math.cos(offset) +
-                       Math.cos(lat3) * Math.sin(offset) * Math.cos(heading));
-    var lonFinal = lon3 + Math.atan2(Math.sin(heading) * Math.sin(offset) *
-                      Math.cos(lat3),
-                      Math.cos(offset) - Math.sin(lat3) *
+    var lonFinal = lng1 + Math.atan2(Math.sin(heading) * Math.sin(offset) *
+                      Math.cos(lat1),
+                      Math.cos(offset) - Math.sin(lat1) *
                       Math.sin(latFinal));
-    return {midpoint: midpoint, offsetPoint: new google.maps.LatLng(Math.degrees(latFinal), Math.degrees(lonFinal))};
-
+    return new google.maps.LatLng(Math.degrees(latFinal), Math.degrees(lonFinal));
 }
 
 function getCoordinatesOfStation(station){
@@ -625,25 +645,6 @@ $('document').ready(function() {
       updateTrainPosition(responseJSON);
       $('span#update_time').text(Date);
 
-      // var stationPos = {lat:-40, lng:40}
-      //
-      // var marker = new google.maps.Marker({
-      //   position: stationPos,
-      //   map: map,
-      //   title: 'STATION'
-      // });
-      // debugger;
-      // for(var i = 0; i < Object.keys(responseJSON).length; i++) {
-      //   var route_id = responseJSON[i]['route_id'];
-      //   var trip_id = responseJSON[i]['trip_id'];
-      //   var numStops = Object.keys(responseJSON[i]['stop_time']).length
-      //   var lastStop = responseJSON[i]['stop_time'][0].stop_id
-      //   var time = responseJSON[i]['stop_time'][0].arrival
-      //   // $('.train-locations').append(responseJSON);
-      //   $('.train-locations').append(
-      //
-      //     '<p>Number ' + i +  ':<p></p> route_id: ' + route_id + '</p><p>trip_id: ' + trip_id + '<p>latest stop: ' + lastStop + '</p><br />'
-      //   )
 
     });
     });
@@ -738,6 +739,7 @@ google.maps.Polygon.prototype.Bounds = function() {
 // === Returns null if the path is shorter than the specified distance ===
 google.maps.Polygon.prototype.GetPointAtDistance = function(metres) {
   // some awkward special cases
+
   if (metres == 0) return this.getPath().getAt(0);
   if (metres < 0) return null;
   if (this.getPath().getLength() < 2) return null;
@@ -803,13 +805,21 @@ google.maps.Polygon.prototype.Bearing = function(v1,v2) {
     v1 = 0;
     v2 = this.getPath().getLength()-1;
   } else if (v2 ==  null) {
-    v2 = v1+1;
+    if (this.getPath().getLength()==v1)
+    {
+      v1 = v1-1
+      v2 = v1+1;
+    }
+    else {
+      v2 = v1 +1;
+    }
   }
   if ((v1 < 0) || (v1 >= this.getPath().getLength()) || (v2 < 0) || (v2 >= this.getPath().getLength())) {
     return;
   }
   var from = this.getPath().getAt(v1);
   var to = this.getPath().getAt(v2);
+
   if (from.equals(to)) {
     return 0;
   }

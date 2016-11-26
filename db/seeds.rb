@@ -289,20 +289,13 @@ end
 #   route.save
 # end
 
-# csv_text = File.read(Rails.root.join('lib', 'seeds', 'stop_times.csv'))
-# csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
-# csv.each do |row|
-#   stoptime = Stoptime.new
-#   stoptime.trip_id = row['trip_id'];
-#   stoptime.arrival_time = row['arrival_time'];
-#   stoptime.departure_time = row['departure_time'];
-#   stoptime.stop_id = row['stop_id'];
-#   stoptime.stop_sequence = row['stop_sequence'];
-#   stoptime.stop_headsign = row['stop_headsign'];
-#   stoptime.pickup_type = row['pickup_type'];
-#   stoptime.drop_off_type = row['drop_off_type'];
-#   stoptime.shape_dist_traveled = row['shape_dist_traveled'];
-#
-#
-#   stoptime.save
-# end
+csv_text = File.read(Rails.root.join('lib', 'seeds', 'times.csv'))
+csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
+csv.each do |row|
+  stoptime = Stoptime.new
+  stoptime.trip_id = row['trip_id'];
+  stoptime.time= Time.parse(row['arrival_time']).to_i;
+  stoptime.stop_id = row['stop_id'];
+  stoptime.sequence = row['sequence'];
+  stoptime.save
+end
