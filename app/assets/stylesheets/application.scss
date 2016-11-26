@@ -19,6 +19,7 @@
 
 html, body {
   height: 100%;
+  min-width:  480px;
   margin: 0;
   padding: 0;
 }
@@ -27,10 +28,9 @@ html, body {
   margin: 0 auto;
 }
 
-#menu_container {
+#navBar{
   display: inline-block;;
-  height: 800px;
-  width: 25%;
+  width: 100%;
   border-radius: 16px 16px;
   border-color: #fff;
   border-style: solid;
@@ -39,10 +39,15 @@ html, body {
   border-width: 7px;
 }
 
+#select-lines.checkboxes{
+  float: left;
+width: auto;
+margin-left: 3em;
+}
 #map {
   display: inline-block;
-  height: 800px;
-  width: 65%;
+  height: 600px;
+  width: 100%;
   border-radius: 16px 16px;
   border-color: #fff;
   border-style: solid;
@@ -57,14 +62,16 @@ html, body {
     width: 100%;
   }
 
-  .circle {
-    display: block;
-    height: 50px;
-    width: 50px;
-    background-color: red;
-    border-radius: 50px;
-    position: relative;
+  .btn-circle {
+    width: 45px;
+    height: 45px;
+    text-align: center;
+    padding: 5px 0;
+    font-size: 20px;
+    line-height: 2.00;
+    border-radius: 30px;
   }
+
 
   #start {
     position: absolute;
@@ -125,16 +132,19 @@ html, body {
   background-color: #0f9d58;
   color: #fff;
 }
-
-.button.raised {
-  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  transition-delay: 0.2s;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+.btn:focus,.btn:active {
+   outline: none !important;
 }
 
-.button.raised:active {
-  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
-  transition-delay: 0s;
+.btn.raised {
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 0.2s;
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
+.btn.raised:active, .active {
+    background-color:red;
+    color: white;
 }
 
 .floating {
@@ -167,7 +177,7 @@ html, body {
   line-height: 40px;
 }
 
-#toggle {
+.toggle {
   width: 25px;
   z-index: 10;
   cursor: default;
