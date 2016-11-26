@@ -439,8 +439,9 @@ function updateTrainPosition(responseJSON){
         })
         var trainMarker = new google.maps.Marker({
           position: {lat:currentStation[0].getPosition().lat(), lng:currentStation[0].getPosition().lng()},
+          icon: stopIcon(routeId),
           map: map,
-          label: routeId + " In Station"
+          label: routeId + direction
         });
         trains.push(trainMarker);
       }
@@ -484,6 +485,11 @@ function updateTrainPosition(responseJSON){
 
           //This means we need to make sure we have a curve for every train possibility. Which I am not sure if we do. Here we have the current curve, and previous station and next station variable so we can find the chunk of track which we are supposed to be on. We need to use the current timestamp and the expected arrival time to estimate where we are on the array of points. If ~250 points is 3 minutes then every point is 1.4 seconds. This means if we are 60 seconds away we are 60/1.4 points away. And we move 1.4 points every second.\
           if (response.prev_station){
+
+
+            // var trainMarker = new google.maps.Marker({
+            //   position:{lat: lat, lng:lng},
+            //   icon: movementIcon(routeId, direction),
 
             var currentCurve = curveCoordinatesArray.filter(function(curve){
               return (curve.curveId == fullrouteID)
@@ -547,8 +553,9 @@ function updateTrainPosition(responseJSON){
           }
           var trainMarker = new google.maps.Marker({
               position:newPos,
+              icon: movementIcon(routeId, direction),
               map: map,
-              label: routeId + " " + direction + " On Go"
+              label: routeId + direction
             });
           trains.push(trainMarker);
         });
@@ -599,7 +606,8 @@ $('document').ready(function() {
       url: url,
       method: 'get'
     }).done(function(responseJSON){
-      updateTrainPosition(responseJSON)
+      updateTrainPosition(responseJSON);
+      $('span#update_time').text(Date);
 
       // var stationPos = {lat:-40, lng:40}
       //
