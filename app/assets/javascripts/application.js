@@ -359,6 +359,7 @@ function initCurves(args)
 }
 
 function handleClick(line){
+  // updateTrainsForLine(line.value)
   line.classList.toggle('checked');
   var checked = [];
   $('.checked').each(function(i){
@@ -366,7 +367,20 @@ function handleClick(line){
   });
   updateStations(checked);
   updateRoutes(checked);
+  // debugger;
+  updateTrainsForLine(checked, line.value)
+  //updateTrainPosition
+  // var updatedTrains = updateTrainsForLine(line.value);
+  // debugger;
 }
+
+// function updateTrainsForLine(lineID) {
+//   var updatedTrains = trains.filter(function(train) {
+//     return (train.label[0] === lineID)
+//   });
+//   return updatedTrains;
+//   debugger;
+// }
 
 function intersection(a, b) {
   var ai=0, bi=0;
@@ -387,14 +401,13 @@ function intersection(a, b) {
   return result;
 }
 
-function updateStations(options)
-{
+function updateStations(options) {
   stations.forEach(function(marker){
     if (intersection(options, marker.trainLines.split('').sort()).length)
     {
       marker.setVisible(true);
     }
-    else{
+    else {
       marker.setVisible(false);
     }
   })
@@ -411,6 +424,18 @@ function updateRoutes(options)
     }
   })
 }
+
+function updateTrainsForLine(lineID_array, lineToHide) {
+  trains.forEach(function(marker) {
+    if(lineID_array.indexOf(marker.label[0]) === -1) {
+      marker.setVisible(false);
+    }
+    else {
+      marker.setVisible(true);
+    }
+  });
+}
+
 
 function updateTrainPosition(responseJSON){
   var realData = []
