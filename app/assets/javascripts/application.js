@@ -19,10 +19,11 @@
 //
 
 function initMap(){
-  center = {lat: 40.774, lng: -73.955}
+  // center = {lat: 40.774, lng: -73.955} // ORIGINAL CENTER POINT FOR WHOLE MAP OR DESKTOP VIEW
+  center = {lat: 40.734, lng: -73.975} // CENTER POINT FOR LOWER MANHATTAN WITH ZOOM LEVEL 13
   var map = new google.maps.Map(document.getElementById('map'), {
     center: center,
-    zoom: 11,
+    zoom: 13,
     styles:
     [
       {
@@ -267,6 +268,16 @@ function initMap(){
        google.maps.event.trigger(map, "resize");
        map.setCenter(center);
    });
+   google.maps.event.addListener(map, 'zoom_changed', function(e) {
+    if(map.zoom >= 13) {
+      // return String('station.name');
+      console.log("Zoom level at or greater than 13")
+    }
+    else {
+      // return '';
+      console.log("Zoom level less than 13")
+    }
+   });
 return map
 }
 
@@ -288,6 +299,7 @@ function initStations(args){
       map: map,
       icon: symbolOne,
       title: String(station.name),
+      // label: display_station_labels(station),
       label: String(station.stop_id),
       trainLines: String(station.train_lines)
     });
@@ -310,7 +322,7 @@ function initStations(args){
     })
     stations.push(marker)
   })
-  map.fitBounds(bounds);
+  // map.fitBounds(bounds);
   return stations
 }
 
