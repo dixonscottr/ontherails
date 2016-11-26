@@ -132,8 +132,8 @@ margin-left: 3em;
   width: 60px;
 }
 
-.button.grey {
-  background-color: #eee;
+.btn.purple {
+  background-color: #E40303;
 }
 
 .button.blue {
@@ -142,9 +142,26 @@ margin-left: 3em;
 }
 
 .button.green {
-  background-color: #0f9d58;
+  background-color: #00FF00;
   color: #fff;
 }
+
+.button.yellow {
+  background-color: #FFFF00;
+  color: #fff;
+}
+
+.button.orange {
+  background-color: #FF7F00;
+  color: #fff;
+}
+
+.button.red {
+  background-color: #FF7F00;
+  color: #fff;
+}
+
+
 .btn:focus,.btn:active {
    outline: none !important;
 }
