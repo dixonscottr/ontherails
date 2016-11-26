@@ -436,8 +436,9 @@ function updateTrainPosition(responseJSON){
         })
         var trainMarker = new google.maps.Marker({
           position: {lat:currentStation[0].getPosition().lat(), lng:currentStation[0].getPosition().lng()},
+          icon: stopIcon(),
           map: map,
-          label: routeId + " In Station"
+          label: routeId + direction
         });
         trains.push(trainMarker);
       }
@@ -468,8 +469,9 @@ function updateTrainPosition(responseJSON){
 
             var trainMarker = new google.maps.Marker({
               position:{lat: lat, lng:lng},
+              icon: movementIcon(),
               map: map,
-              label: routeId + " " + direction + " On Go"
+              label: routeId + direction
             });
             trains.push(trainMarker);
           }
