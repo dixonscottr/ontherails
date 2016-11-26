@@ -9,8 +9,18 @@
   </head>
 
   <body>
-    <div class="container-fluid">
-    <header><h1>On the Rails</h1></header>
+    <div class="navbar">
+      <form class="navbar-form pull-left" id="select-lines">
+        <input class="form-control" type="checkbox" onclick="handleClick(this)" name="line" value="1" checked="checked"> 1
+        <input class="form-control" type="checkbox" onclick="handleClick(this)" name="line" value="2" checked="checked"> 2
+        <input class="form-control" type="checkbox" onclick="handleClick(this)" name="line" value="3" checked="checked"> 3
+        <input class="form-control" type="checkbox" onclick="handleClick(this)" name="line" value="4" checked="checked"> 4
+        <input class="form-control" type="checkbox" onclick="handleClick(this)" name="line" value="5" checked="checked"> 5
+        <input class="form-control" type="checkbox" onclick="handleClick(this)" name="line" value="6" checked="checked"> 6
+      </form>
+    </div>
+      <div class="container-fluid">
+        <header><h1>On the Rails</h1></header>
     <%= yield %>
     <footer>
       <form id='train-updater' action='/update_trains' method='get'>

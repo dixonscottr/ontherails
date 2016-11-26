@@ -12,4 +12,13 @@ module ApplicationHelper
       end}
     end.to_json.html_safe
   end
+  def convertCurves(curves)
+    arrayval=["1","2","3","4","5","5x","6"]
+    curves.map.with_index do |points, i|
+      {curveId: arrayval[i], coordinates: points.map do |point|
+        {lat: point.latitude, lng: point.longitude}
+      end}
+    end.to_json.html_safe
+  end
+
 end
