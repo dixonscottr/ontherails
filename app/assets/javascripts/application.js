@@ -430,10 +430,10 @@ function updateTrainsForLine(lineID_array, lineToHide) {
 }
 
 function updateTrainPosition(responseJSON){
-  var realData = []
+  var trainLinesToHide = trainLineChecker();
   trains.forEach(function(train){
     train.setMap(null);
-  })
+  });
   trains = []
   var keys = Object.keys(responseJSON).slice(0,-1);
   var timestamp = responseJSON.time_updated;
@@ -447,7 +447,7 @@ function updateTrainPosition(responseJSON){
       //Assume in this case, they are in the station at stopTimes[0]
       if (stopTimes[0].departure != stopTimes[0].arrival){
 
-        realData.push(train)
+        // realData.push(train)
         var stopId = stopTimes[0].stop_id.substr(0,3);
         var direction =stopTimes[0].stop_id.substr(3);
 
@@ -460,6 +460,12 @@ function updateTrainPosition(responseJSON){
           map: map,
           label: routeId + direction
         });
+        if(trainLinesToHide.indexOf(trainMarker.label[0]) === -1 ) {
+          trainMarker.setVisible(false);
+        }
+        else {
+          trainMarker.setVisible(true);
+        }
         trains.push(trainMarker);
       }
       else {
@@ -574,6 +580,12 @@ function updateTrainPosition(responseJSON){
               map: map,
               label: routeId + direction
             });
+            if(trainLinesToHide.indexOf(trainMarker.label[0]) === -1 ) {
+              trainMarker.setVisible(false);
+            }
+            else {
+              trainMarker.setVisible(true);
+            }
           trains.push(trainMarker);
         });
 
