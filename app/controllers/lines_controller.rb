@@ -11,11 +11,18 @@ class LinesController < ApplicationController
         debugger
       end
       prev_stn = line_found.find_previous_station(stop_id, direction)
-      previous_station_info = {}
+      info = {}
       if prev_stn
-        previous_station_info[:prev_station] = prev_stn.stop_id
+        info[:prev_station] = prev_stn.stop_id
+        info[:station]= params[:station]
+        info[:line]= params[:line]
+        info[:time]= params[:time]
+        info[:direction]= params[:direction]
+        info[:fullrouteID]= params[:fullrouteID]
+        info[:arrivalTime]= params[:arrivalTime]
+
       end
-      render json: previous_station_info
+      render json: info
     end
 
     private
