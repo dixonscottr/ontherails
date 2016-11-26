@@ -636,28 +636,30 @@ $('document').ready(function() {
       method: 'get'
     }).done(function(responseJSON){
       updateTrainPosition(responseJSON);
-      $('span#update_time').text(Date);
-
-      // var stationPos = {lat:-40, lng:40}
-      //
-      // var marker = new google.maps.Marker({
-      //   position: stationPos,
-      //   map: map,
-      //   title: 'STATION'
-      // });
-      // debugger;
-      // for(var i = 0; i < Object.keys(responseJSON).length; i++) {
-      //   var route_id = responseJSON[i]['route_id'];
-      //   var trip_id = responseJSON[i]['trip_id'];
-      //   var numStops = Object.keys(responseJSON[i]['stop_time']).length
-      //   var lastStop = responseJSON[i]['stop_time'][0].stop_id
-      //   var time = responseJSON[i]['stop_time'][0].arrival
-      //   // $('.train-locations').append(responseJSON);
-      //   $('.train-locations').append(
-      //
-      //     '<p>Number ' + i +  ':<p></p> route_id: ' + route_id + '</p><p>trip_id: ' + trip_id + '<p>latest stop: ' + lastStop + '</p><br />'
-      //   )
-
+      var mtaTimestamp = responseJSON.time_updated;
+      updateTimestamp(mtaTimestamp);
     });
-    });
+  });
 });
+
+function updateTimestamp(unixTimestamp) {
+  var readableTimestamp = timeConverter(unixTimestamp)
+  var currentTime = Math.floor((new Date()).getTime() / 1000)
+  if((currentTime - unixTimestamp) > 60) {
+    $('p#mta-timestamp').text('Advisory: Train locations may not be accurate. MTA data was last updated at: ' + readableTimestamp);
+  }
+  else {
+    $('span#update_time').text(readableTimestamp);
+  }
+}
+
+function timeConverter(UNIX_timestamp){
+  var a = new Date(UNIX_timestamp * 1000);
+  var year = a.getFullYear();
+  var month = a.getMonth() + 1;
+  var date = a.getDate();
+  var hour = a.getHours();
+  var min = a.getMinutes();
+  var time = month + '/' + date + '/' + year + ' ' + hour + ':' + min;
+  return time;
+}
