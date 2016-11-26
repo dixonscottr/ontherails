@@ -566,7 +566,12 @@ function updateTrainPosition(responseJSON){
               //
               //
               // }
-
+              var trainMarker = new google.maps.Marker({
+                  position:newPos,
+                  map: map,
+                  label: routeId + " " + direction + " On Go"
+                });
+              trains.push(trainMarker);
             }
             else{
               var pos = tempCoords[(prevIndexOnCurve + nxtIndexOnCurve)/2]
@@ -574,12 +579,7 @@ function updateTrainPosition(responseJSON){
 
 
           }
-          var trainMarker = new google.maps.Marker({
-              position:newPos,
-              icon: movementIcon(routeId, direction),
-              map: map,
-              label: routeId + direction
-            });
+
             if(trainLinesToHide.indexOf(trainMarker.label[0]) === -1 ) {
               trainMarker.setVisible(false);
             }
@@ -587,6 +587,7 @@ function updateTrainPosition(responseJSON){
               trainMarker.setVisible(true);
             }
           trains.push(trainMarker);
+
         });
 
       }
