@@ -646,7 +646,6 @@ $('document').ready(function() {
       updateTrainPosition(responseJSON);
       var mtaTimestamp = responseJSON.time_updated;
       updateTimestamp(mtaTimestamp);
-      $('span#update_time').text(Date);
     });
   });
 });
