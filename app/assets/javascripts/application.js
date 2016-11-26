@@ -644,14 +644,35 @@ $('document').ready(function() {
       method: 'get'
     }).done(function(responseJSON){
       updateTrainPosition(responseJSON);
-      $('span#update_time').text(Date);
-
-
+      var mtaTimestamp = responseJSON.time_updated;
+      updateTimestamp(mtaTimestamp);
     });
-    });
+  });
 });
-function doStuff()
-{
+
+function updateTimestamp(unixTimestamp) {
+  var readableTimestamp = timeConverter(unixTimestamp)
+  var currentTime = Math.floor((new Date()).getTime() / 1000)
+  if((currentTime - unixTimestamp) > 60) {
+    $('p#mta-timestamp').text('Advisory: Train locations may not be accurate. MTA data was last updated at: ' + readableTimestamp);
+  }
+  else {
+    $('span#update_time').text(readableTimestamp);
+  }
+}
+
+function timeConverter(UNIX_timestamp){
+  var a = new Date(UNIX_timestamp * 1000);
+  var year = a.getFullYear();
+  var month = a.getMonth() + 1;
+  var date = a.getDate();
+  var hour = a.getHours();
+  var min = a.getMinutes();
+  var time = month + '/' + date + '/' + year + ' ' + hour + ':' + min;
+  return time;
+}
+
+function doStuff() {
   google.maps.LatLng.prototype.distanceFrom = function(newLatLng) {
   var EarthRadiusMeters = 6378137.0; // meters
   var lat1 = this.lat();
