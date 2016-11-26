@@ -360,7 +360,6 @@ function initCurves(args)
 
 function handleClick(line){
   line.classList.toggle('checked');
-  debugger;
   var checked = [];
   $('.checked').each(function(i){
     checked[i] = $(this).val();
@@ -538,12 +537,7 @@ function updateTrainPosition(responseJSON){
               //
               //
               // }
-              var trainMarker = new google.maps.Marker({
-                  position:newPos,
-                  map: map,
-                  label: routeId + " " + direction + " On Go"
-                });
-              trains.push(trainMarker);
+
             }
             else{
               var pos = tempCoords[(prevIndexOnCurve + nxtIndexOnCurve)/2]
@@ -551,6 +545,12 @@ function updateTrainPosition(responseJSON){
 
 
           }
+          var trainMarker = new google.maps.Marker({
+              position:newPos,
+              map: map,
+              label: routeId + " " + direction + " On Go"
+            });
+          trains.push(trainMarker);
         });
 
       }
