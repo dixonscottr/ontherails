@@ -6,6 +6,7 @@
 
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
+
   </head>
 
   <body>
@@ -28,15 +29,15 @@
     <div class="container-fluid">
 
     <%= yield %>
-    <p>Last updated at <span id="update_time"><%= Time.now %></span></p>
-    <footer>
+    <div class='container-fluid'>
+      <p id='mta-timestamp'>Train location data last updated by MTA at <span id="update_time"><%= Time.now.strftime("%m/%d/%Y %H:%M") %></span></p>
       <form id='train-updater' action='/update_trains' method='get'>
         <input type='submit' value='Update these trains' />
       </form>
-      <div class='train-locations'>
-        <h2>Things go here</h2>
-      </div>
+    </div>
+    <footer>
     </footer>
   </div>
   </body>
+
 </html>
