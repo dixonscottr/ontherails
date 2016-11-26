@@ -6,10 +6,12 @@
 
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
+
   </head>
 
   <body>
     <div class="container-fluid">
+
       <div class='row navBar toggle' id="navBar">
         <div class="col-sm-5">
           <img src="img/rails.jpg" width="40%"/>
@@ -35,19 +37,18 @@
         </div>
         <div class="col-sm-1"></div>
       </div>
-        <!-- </form> -->
-      </div>
 
-        <%= yield %>
-        <p>Last updated at <span id="update_time"><%= Time.now %></span></p>
-        <footer>
-          <form id='train-updater' action='/update_trains' method='get'>
-            <input type='submit' value='Update these trains' />
-          </form>
-        <div class='train-locations'>
-          <h2>Things go here</h2>
-        </div>
-      </footer>
+      </div>
+    <%= yield %>
+    <div class='container-fluid'>
+      <p id='mta-timestamp'>Train location data last updated by MTA at <span id="update_time"><%= Time.now.strftime("%m/%d/%Y %H:%M") %></span></p>
+      <form id='train-updater' action='/update_trains' method='get'>
+        <input type='submit' value='Update these trains' />
+      </form>
     </div>
+    <footer>
+    </footer>
+  </div>
   </body>
+
 </html>
