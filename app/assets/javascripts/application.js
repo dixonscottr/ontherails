@@ -360,12 +360,19 @@ function initCurves(args)
 
 function handleClick(line){
   line.classList.toggle('checked');
+  var trainLinesToHide = trainLineChecker();
+  updateStations(trainLinesToHide);
+  updateRoutes(trainLinesToHide);
+  updateTrainsForLine(trainLinesToHide, line.value)
+}
+
+function trainLineChecker() {
   var checked = [];
-  $('.checked').each(function(i){
-    checked[i] = $(this).val();
+  var $linesToCheck = $('.checked')
+  $linesToCheck.each(function(i){
+    checked[i] = $linesToCheck[i].value;
   });
-  updateStations(checked);
-  updateRoutes(checked);
+  return checked;
 }
 
 function intersection(a, b) {
@@ -387,14 +394,13 @@ function intersection(a, b) {
   return result;
 }
 
-function updateStations(options)
-{
+function updateStations(options) {
   stations.forEach(function(marker){
     if (intersection(options, marker.trainLines.split('').sort()).length)
     {
       marker.setVisible(true);
     }
-    else{
+    else {
       marker.setVisible(false);
     }
   })
@@ -412,11 +418,22 @@ function updateRoutes(options)
   })
 }
 
+function updateTrainsForLine(lineID_array, lineToHide) {
+  trains.forEach(function(marker) {
+    if(lineID_array.indexOf(marker.label[0]) === -1) {
+      marker.setVisible(false);
+    }
+    else {
+      marker.setVisible(true);
+    }
+  });
+}
+
 function updateTrainPosition(responseJSON){
-  var realData = []
+  var trainLinesToHide = trainLineChecker();
   trains.forEach(function(train){
     train.setMap(null);
-  })
+  });
   trains = []
   var keys = Object.keys(responseJSON).slice(0,-1);
   var timestamp = responseJSON.time_updated;
@@ -430,7 +447,7 @@ function updateTrainPosition(responseJSON){
       //Assume in this case, they are in the station at stopTimes[0]
       if (stopTimes[0].departure != stopTimes[0].arrival){
 
-        realData.push(train)
+        // realData.push(train)
         var stopId = stopTimes[0].stop_id.substr(0,3);
         var direction =stopTimes[0].stop_id.substr(3);
 
@@ -443,6 +460,12 @@ function updateTrainPosition(responseJSON){
           map: map,
           label: routeId + direction
         });
+        if(trainLinesToHide.indexOf(trainMarker.label[0]) === -1 ) {
+          trainMarker.setVisible(false);
+        }
+        else {
+          trainMarker.setVisible(true);
+        }
         trains.push(trainMarker);
       }
       else {
@@ -557,6 +580,12 @@ function updateTrainPosition(responseJSON){
               map: map,
               label: routeId + direction
             });
+            if(trainLinesToHide.indexOf(trainMarker.label[0]) === -1 ) {
+              trainMarker.setVisible(false);
+            }
+            else {
+              trainMarker.setVisible(true);
+            }
           trains.push(trainMarker);
         });
 
