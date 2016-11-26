@@ -21,4 +21,10 @@ module ApplicationHelper
     end.to_json.html_safe
   end
 
+  def timed_auto_update
+    sleep 10 #seconds
+    update_trains
+    # Wow I thought this would be, like, a huge contribution. Stupid Ruby and it's concise code.
+  end
+
 end
