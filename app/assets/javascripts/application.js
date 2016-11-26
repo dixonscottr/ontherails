@@ -443,6 +443,7 @@ function updateTrainPosition(responseJSON){
     train.setMap(null);
   });
   trains = []
+
   var keys1 = Object.keys(responseJSON).slice(0,-1);
   var timestamp = responseJSON.time_updated;
   keys1.forEach(function(key){
