@@ -543,37 +543,18 @@ function updateTrainPosition(responseJSON){
 
               //Degrees from the NORTH which we need to travel to find the other point (AKA SLOPE)
               var heading = google.maps.geometry.spherical.computeHeading(prevCord,nxtCord);
+              var orthogonalHeading = (heading+90);
+              var offset = 0.00001;
+              var responseData = getFinalPoint(tempCoords[prevIndexOnCurve], tempCoords[nxtIndexOnCurve],offset,orthogonalHeading)
+              var newPos = responseData.offsetPoint;
+              var midpoint = responseData.midpoint;
 
-              var orthogonalHeading = heading + 270;
-
-              var offset = 0.00003;
-
-              var newPos = getFinalPoint(tempCoords[prevIndexOnCurve], tempCoords[nxtIndexOnCurve],offset,orthogonalHeading)
-              // if (direction == "N"){
-              //   if (slope>0){
-              //     latOffset *= -1;
-              //     lngOffset *= -1;
-              //   }
-              //   else{
-              //     latOffset *= -1;
-              //   }
-              //
-              // }
-              // else {
-              //   if (slope<0){
-              //     lngOffset *= -1;
-              //
-              //   }
-              //   else{
-              //   }
-              //
-              //
-              // }
               var trainMarker = new google.maps.Marker({
                   position:newPos,
                   map: map,
-                  label: routeId + " " + direction + " On Go"
+                  label: routeId + " On Move " + direction
                 });
+
               trains.push(trainMarker);
             }
             else{
@@ -597,13 +578,14 @@ function updateTrainPosition(responseJSON){
     }
   })
 }
-function getFinalPoint(coord1, coord2, offset, heading){
+function getFinalPoint(coord1, coord2, offset, degHeading){
     Math.degrees = function(rad) {
         return rad * (180 / Math.PI);
     }
     Math.radians = function(deg) {
         return deg * (Math.PI / 180);
     }
+    var heading = Math.radians(degHeading);
     var lat1 = Math.radians(coord1.lat);
     var lng1 = Math.radians(coord1.lng);
     var lat2 = Math.radians(coord2.lat);
@@ -613,7 +595,7 @@ function getFinalPoint(coord1, coord2, offset, heading){
     var lat3 = Math.atan2(Math.sin(lat1) + Math.sin(lat2), Math.sqrt((Math.cos(lat1) + bx) * (Math.cos(lat1) + bx) + Math.pow(by, 2)));
     var lon3 = lng1 + Math.atan2(by, Math.cos(lat1) + bx);
 
-    var midpoint = {lat:Math.round(Math.degrees(lat3), 5), lng:Math.round(Math.degrees(lon3), 5)};
+    var midpoint = {lat:Math.degrees(lat3), lng:Math.degrees(lon3)};
 
     var latFinal = Math.asin(Math.sin(lat3) * Math.cos(offset) +
                        Math.cos(lat3) * Math.sin(offset) * Math.cos(heading));
@@ -621,7 +603,7 @@ function getFinalPoint(coord1, coord2, offset, heading){
                       Math.cos(lat3),
                       Math.cos(offset) - Math.sin(lat3) *
                       Math.sin(latFinal));
-    return new google.maps.LatLng(Math.degrees(latFinal), Math.degrees(lonFinal));
+    return {midpoint: midpoint, offsetPoint: new google.maps.LatLng(Math.degrees(latFinal), Math.degrees(lonFinal))};
 
 }
 
