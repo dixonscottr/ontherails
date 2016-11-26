@@ -20,6 +20,7 @@
 
 function initMap(){
   center = {lat: 40.774, lng: -73.955}
+  timesArray=[];
   var map = new google.maps.Map(document.getElementById('map'), {
     center: center,
     zoom: 11,
@@ -267,6 +268,7 @@ function initMap(){
        google.maps.event.trigger(map, "resize");
        map.setCenter(center);
    });
+   doStuff();
 return map
 }
 
@@ -341,7 +343,8 @@ function initRoutes(args)
 }
 function initCurves(args)
 {
-  curveCoordinatesArray=args
+  var tryingThisThing = args.slice(0);
+  curveCoordinatesArray=args.slice(0);
   args.forEach(function(curve){
     var linePath = new google.maps.Polyline({
       path: curve.coordinates,
@@ -354,8 +357,13 @@ function initCurves(args)
     coordinates = [];
     curvePaths.push(linePath)
     linePath.setMap(map);
-  })
 
+  })
+  return tryingThisThing
+}
+function initTimes(args)
+{
+  timesArray = args;
 }
 
 function handleClick(line){
@@ -435,9 +443,10 @@ function updateTrainPosition(responseJSON){
     train.setMap(null);
   });
   trains = []
-  var keys = Object.keys(responseJSON).slice(0,-1);
+
+  var keys1 = Object.keys(responseJSON).slice(0,-1);
   var timestamp = responseJSON.time_updated;
-  keys.forEach(function(key){
+  keys1.forEach(function(key){
     var train = responseJSON[key]
     // take the x from 6x
     var fullrouteID = train.route_id
@@ -475,6 +484,7 @@ function updateTrainPosition(responseJSON){
         var nextStation = stations.filter(function(station){
           return (station.label === stopId)
         })
+
         $.ajax({
           url: '/find_previous_station',
           method: 'post',
@@ -482,44 +492,32 @@ function updateTrainPosition(responseJSON){
             'station': stopId,
             'line': routeId,
             'time': timestamp,
-            'direction': direction
+            'direction': direction,
+            'fullrouteID': fullrouteID,
+            'arrivalTime': stopTimes[0].arrival
           }
         }).done(function(response) {
-
           var prevStation = stations.filter(function(station){
             return (station.label === response.prev_station)
           })
-          //HALFWAY BETWEEN TWO STATIONS (OLD LINE VERSION)
-          // if (response.prev_station){
-          //   var lat = (prevStation[0].getPosition().lat() + nextStation[0].getPosition().lat())/2
-          //   var lng = (prevStation[0].getPosition().lng() + nextStation[0].getPosition().lng())/2
-          //
-          //   var trainMarker = new google.maps.Marker({
-          //     position:{lat: lat, lng:lng},
-          //     map: map,
-          //     label: routeId + " " + direction + " On Go"
-          //   });
-          //   trains.push(trainMarker);
-          // }
-
           //NEW CURVE FOLLOWING CODE
 
           //Select the curve which matches the current path which the train is on. For example if our train is the 5X train we are looking for the curve that corresponds with this train.
 
           //This means we need to make sure we have a curve for every train possibility. Which I am not sure if we do. Here we have the current curve, and previous station and next station variable so we can find the chunk of track which we are supposed to be on. We need to use the current timestamp and the expected arrival time to estimate where we are on the array of points. If ~250 points is 3 minutes then every point is 1.4 seconds. This means if we are 60 seconds away we are 60/1.4 points away. And we move 1.4 points every second.\
           if (response.prev_station){
-
-
-            // var trainMarker = new google.maps.Marker({
-            //   position:{lat: lat, lng:lng},
-            //   icon: movementIcon(routeId, direction),
-
-            var currentCurve = curveCoordinatesArray.filter(function(curve){
-              return (curve.curveId == fullrouteID)
+            var localCurveCoordinates = JSON.parse(JSON.stringify(curveCoordinatesArray));
+            var currentCurve = localCurveCoordinates.filter(function(curve){
+              return (curve.curveId == response.fullrouteID);
             })
+            // var currentCurvePath = curvePaths.filter(function(curve){
+            //   return curve.title === fullrouteID;
+            // })
             prevStationCoords = getCoordinatesOfStation(prevStation);
             nxtStationCoords = getCoordinatesOfStation(nextStation);
             var tempCoords = currentCurve[0].coordinates
+            var tempCoords1 = currentCurve[0].coordinates
+
             var prevIndexOnCurve='';
             var nxtIndexOnCurve='';
             for (var i =0; i < tempCoords.length;i++)
@@ -531,55 +529,71 @@ function updateTrainPosition(responseJSON){
                 nxtIndexOnCurve = i;
               }
             }
+            // variables prevIndexOnCurve  nxtIndexOnCurve, tempCoords is an array of the coordinates for the index
+            var newPath = '';
+            var segmentLine = ''
+            if (response.direction == "N"){
+              newPath = tempCoords1.splice(prevIndexOnCurve,(nxtIndexOnCurve-prevIndexOnCurve)+1)
+              segmentLine = new google.maps.Polyline({
+                path: newPath
+              });
+            }
+            else {
+              newPath = tempCoords1.splice(nxtIndexOnCurve,(prevIndexOnCurve-nxtIndexOnCurve)+1)
+              segmentLine = new google.maps.Polyline({
+                path: newPath
+              });
+            }
+            //AT THIS POINT WE HAVE A TIME WHICH THIS TRAIN IS AWAY FROM A STATION
+            //THIS IS THE TIME LEFT TO GET TO THIS STATION
+            var waitTime = response.arrivalTime - response.time;
+            var currentTimeArray = timesArray.filter(function(timeArr){
+              return (timeArr.line_id === response.fullrouteID)
+            })[0]
+            var station1Time = '';
+            var station2Time ='';
+            var tempVal = currentTimeArray.data;
+            for (var i=0; i <tempVal.length;i++){
 
-            //NOW WE HAVE THE TWO INDICIES ON THE CURVE OF THE PREVIOUS AND NEXT STATION
-            // If the two indicies are 1 apart, take the average
-            if (Math.abs(prevIndexOnCurve - nxtIndexOnCurve) == 1){
-              var prevCord = new google.maps.LatLng(tempCoords[prevIndexOnCurve]);
-              var nxtCord = new google.maps.LatLng(tempCoords[nxtIndexOnCurve]);
-
-              //Degrees from the NORTH which we need to travel to find the other point (AKA SLOPE)
-              var heading = google.maps.geometry.spherical.computeHeading(prevCord,nxtCord);
-
-              var orthogonalHeading = heading + 270;
-
-              var offset = 0.00003;
-
-              var newPos = getFinalPoint(tempCoords[prevIndexOnCurve], tempCoords[nxtIndexOnCurve],offset,orthogonalHeading)
-              // if (direction == "N"){
-              //   if (slope>0){
-              //     latOffset *= -1;
-              //     lngOffset *= -1;
-              //   }
-              //   else{
-              //     latOffset *= -1;
-              //   }
-              //
-              // }
-              // else {
-              //   if (slope<0){
-              //     lngOffset *= -1;
-              //
-              //   }
-              //   else{
-              //   }
-              //
-              //
-              // }
-
+              if (tempVal[i].stop_id == response.prev_station){
+                station1Time = tempVal[i].time;
+              }
+              else if(tempVal[i].stop_id == response.station){
+                station2Time = tempVal[i].time;
+              }
+            }
+            //TOTAL TRAVEL TIME BETWEEN THE TWO stations
+            var travelTime = Math.abs(station1Time - station2Time)
+            var percentToUse = Math.abs((waitTime/travelTime))
+            if (response.direction == "N"){
+              percentToUse = Math.abs(1-percentToUse);
+            }
+            //Current place on the curve
+            var currentPos =  segmentLine.GetPointAtDistance(segmentLine.Distance()*(percentToUse));
+            var currentIndex =  segmentLine.GetIndexAtDistance(segmentLine.Distance()*(percentToUse));
+            if (segmentLine.getPath().length ==1) {
+            }
+            var heading = segmentLine.Bearing(currentIndex)
+            var orthogonalHeading = heading;
+            if (response.direction == "N"){
+              orthogonalHeading +=90;
             }
             else{
-              var pos = tempCoords[(prevIndexOnCurve + nxtIndexOnCurve)/2]
+              orthogonalHeading-=90;
             }
 
+            var offset = 0.00001;
+            var newPos = getFinalPoint(currentPos, offset, orthogonalHeading)
 
+            var trainMarker = new google.maps.Marker({
+                position:newPos,
+                map: map,
+                label: routeId + direction + " " + percentToUse,
+                size: new google.maps.Size(5, 5)
+              });
+            trains.push(trainMarker);
           }
-          var trainMarker = new google.maps.Marker({
-              position:newPos,
-              icon: movementIcon(routeId, direction),
-              map: map,
-              label: routeId + direction
-            });
+
             if(trainLinesToHide.indexOf(trainMarker.label[0]) === -1 ) {
               trainMarker.setVisible(false);
             }
@@ -587,38 +601,32 @@ function updateTrainPosition(responseJSON){
               trainMarker.setVisible(true);
             }
           trains.push(trainMarker);
-        });
 
+        });
       }
     }
   })
 }
-function getFinalPoint(coord1, coord2, offset, heading){
+function getFinalPoint(point, offset, degHeading){
     Math.degrees = function(rad) {
         return rad * (180 / Math.PI);
     }
     Math.radians = function(deg) {
         return deg * (Math.PI / 180);
     }
-    var lat1 = Math.radians(coord1.lat);
-    var lng1 = Math.radians(coord1.lng);
-    var lat2 = Math.radians(coord2.lat);
-    var lng = Math.radians(coord2.lng);
-    var bx = Math.cos(lat2) * Math.cos(lng - lng1)
-    var by = Math.cos(lat2) * Math.sin(lng - lng1)
-    var lat3 = Math.atan2(Math.sin(lat1) + Math.sin(lat2), Math.sqrt((Math.cos(lat1) + bx) * (Math.cos(lat1) + bx) + Math.pow(by, 2)));
-    var lon3 = lng1 + Math.atan2(by, Math.cos(lat1) + bx);
+    var lat1 = Math.radians(point.lat());
+    var lng1 = Math.radians(point.lng());
 
-    var midpoint = {lat:Math.round(Math.degrees(lat3), 5), lng:Math.round(Math.degrees(lon3), 5)};
+    var heading = Math.radians(degHeading);
 
-    var latFinal = Math.asin(Math.sin(lat3) * Math.cos(offset) +
-                       Math.cos(lat3) * Math.sin(offset) * Math.cos(heading));
-    var lonFinal = lon3 + Math.atan2(Math.sin(heading) * Math.sin(offset) *
-                      Math.cos(lat3),
-                      Math.cos(offset) - Math.sin(lat3) *
+    var latFinal = Math.asin(Math.sin(lat1) * Math.cos(offset) +
+                       Math.cos(lat1) * Math.sin(offset) * Math.cos(heading));
+
+    var lonFinal = lng1 + Math.atan2(Math.sin(heading) * Math.sin(offset) *
+                      Math.cos(lat1),
+                      Math.cos(offset) - Math.sin(lat1) *
                       Math.sin(latFinal));
     return new google.maps.LatLng(Math.degrees(latFinal), Math.degrees(lonFinal));
-
 }
 
 function getCoordinatesOfStation(station){
@@ -638,6 +646,7 @@ $('document').ready(function() {
       updateTrainPosition(responseJSON);
       var mtaTimestamp = responseJSON.time_updated;
       updateTimestamp(mtaTimestamp);
+      $('span#update_time').text(Date);
     });
   });
 });
@@ -662,4 +671,201 @@ function timeConverter(UNIX_timestamp){
   var min = a.getMinutes();
   var time = month + '/' + date + '/' + year + ' ' + hour + ':' + min;
   return time;
+}
+
+function doStuff() {
+  google.maps.LatLng.prototype.distanceFrom = function(newLatLng) {
+  var EarthRadiusMeters = 6378137.0; // meters
+  var lat1 = this.lat();
+  var lon1 = this.lng();
+  var lat2 = newLatLng.lat();
+  var lon2 = newLatLng.lng();
+  var dLat = (lat2-lat1) * Math.PI / 180;
+  var dLon = (lon2-lon1) * Math.PI / 180;
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI / 180 ) * Math.cos(lat2 * Math.PI / 180 ) *
+    Math.sin(dLon/2) * Math.sin(dLon/2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  var d = EarthRadiusMeters * c;
+  return d;
+}
+
+google.maps.LatLng.prototype.latRadians = function() {
+  return this.lat() * Math.PI/180;
+}
+
+google.maps.LatLng.prototype.lngRadians = function() {
+  return this.lng() * Math.PI/180;
+}
+
+// === A method for testing if a point is inside a polygon
+// === Returns true if poly contains point
+// === Algorithm shamelessly stolen from http://alienryderflex.com/polygon/
+google.maps.Polygon.prototype.Contains = function(point) {
+  var j=0;
+  var oddNodes = false;
+  var x = point.lng();
+  var y = point.lat();
+  for (var i=0; i < this.getPath().getLength(); i++) {
+    j++;
+    if (j == this.getPath().getLength()) {j = 0;}
+    if (((this.getPath().getAt(i).lat() < y) && (this.getPath().getAt(j).lat() >= y))
+    || ((this.getPath().getAt(j).lat() < y) && (this.getPath().getAt(i).lat() >= y))) {
+      if ( this.getPath().getAt(i).lng() + (y - this.getPath().getAt(i).lat()) /  (this.getPath().getAt(j).lat()-this.getPath().getAt(i).lat()) * (this.getPath().getAt(j).lng() - this.getPath().getAt(i).lng())<x ) {
+oddNodes = !oddNodes
+      }
+    }
+  }
+  return oddNodes;
+}
+
+// === A method which returns the approximate area of a non-intersecting polygon in square metres ===
+// === It doesn't fully account for spherical geometry, so will be inaccurate for large polygons ===
+// === The polygon must not intersect itself ===
+google.maps.Polygon.prototype.Area = function() {
+  var a = 0;
+  var j = 0;
+  var b = this.Bounds();
+  var x0 = b.getSouthWest().lng();
+  var y0 = b.getSouthWest().lat();
+  for (var i=0; i < this.getPath().getLength(); i++) {
+    j++;
+    if (j == this.getPath().getLength()) {j = 0;}
+    var x1 = this.getPath().getAt(i).distanceFrom(new google.maps.LatLng(this.getPath().getAt(i).lat(),x0));
+    var x2 = this.getPath().getAt(j).distanceFrom(new google.maps.LatLng(this.getPath().getAt(j).lat(),x0));
+    var y1 = this.getPath().getAt(i).distanceFrom(new google.maps.LatLng(y0,this.getPath().getAt(i).lng()));
+    var y2 = this.getPath().getAt(j).distanceFrom(new google.maps.LatLng(y0,this.getPath().getAt(j).lng()));
+    a += x1*y2 - x2*y1;
+  }
+  return Math.abs(a * 0.5);
+}
+
+// === A method which returns the length of a path in metres ===
+google.maps.Polygon.prototype.Distance = function() {
+  var dist = 0;
+  for (var i=1; i < this.getPath().getLength(); i++) {
+    dist += this.getPath().getAt(i).distanceFrom(this.getPath().getAt(i-1));
+  }
+  return dist;
+}
+
+// === A method which returns the bounds as a GLatLngBounds ===
+google.maps.Polygon.prototype.Bounds = function() {
+  var bounds = new google.maps.LatLngBounds();
+  for (var i=0; i < this.getPath().getLength(); i++) {
+    bounds.extend(this.getPath().getAt(i));
+  }
+  return bounds;
+}
+
+// === A method which returns a GLatLng of a point a given distance along the path ===
+// === Returns null if the path is shorter than the specified distance ===
+google.maps.Polygon.prototype.GetPointAtDistance = function(metres) {
+  // some awkward special cases
+
+  if (metres == 0) return this.getPath().getAt(0);
+  if (metres < 0) return null;
+  if (this.getPath().getLength() < 2) return null;
+  var dist=0;
+  var olddist=0;
+  for (var i=1; (i < this.getPath().getLength() && dist < metres); i++) {
+    olddist = dist;
+    dist += this.getPath().getAt(i).distanceFrom(this.getPath().getAt(i-1));
+  }
+  if (dist < metres) {
+    return null;
+  }
+  var p1= this.getPath().getAt(i-2);
+  var p2= this.getPath().getAt(i-1);
+  var m = (metres-olddist)/(dist-olddist);
+  return new google.maps.LatLng( p1.lat() + (p2.lat()-p1.lat())*m, p1.lng() + (p2.lng()-p1.lng())*m);
+}
+
+// === A method which returns an array of GLatLngs of points a given interval along the path ===
+google.maps.Polygon.prototype.GetPointsAtDistance = function(metres) {
+  var next = metres;
+  var points = [];
+  // some awkward special cases
+  if (metres <= 0) return points;
+  var dist=0;
+  var olddist=0;
+  for (var i=1; (i < this.getPath().getLength()); i++) {
+    olddist = dist;
+    dist += this.getPath().getAt(i).distanceFrom(this.getPath().getAt(i-1));
+    while (dist > next) {
+      var p1= this.getPath().getAt(i-1);
+      var p2= this.getPath().getAt(i);
+      var m = (next-olddist)/(dist-olddist);
+      points.push(new google.maps.LatLng( p1.lat() + (p2.lat()-p1.lat())*m, p1.lng() + (p2.lng()-p1.lng())*m));
+      next += metres;
+    }
+  }
+  return points;
+}
+
+// === A method which returns the Vertex number at a given distance along the path ===
+// === Returns null if the path is shorter than the specified distance ===
+google.maps.Polygon.prototype.GetIndexAtDistance = function(metres) {
+  // some awkward special cases
+  if (metres == 0) return this.getPath().getAt(0);
+  if (metres < 0) return null;
+  var dist=0;
+  var olddist=0;
+  for (var i=1; (i < this.getPath().getLength() && dist < metres); i++) {
+    olddist = dist;
+    dist += this.getPath().getAt(i).distanceFrom(this.getPath().getAt(i-1));
+  }
+  if (dist < metres) {return null;}
+  return i;
+}
+
+// === A function which returns the bearing between two vertices in decgrees from 0 to 360===
+// === If v1 is null, it returns the bearing between the first and last vertex ===
+// === If v1 is present but v2 is null, returns the bearing from v1 to the next vertex ===
+// === If either vertex is out of range, returns void ===
+google.maps.Polygon.prototype.Bearing = function(v1,v2) {
+  if (v1 == null) {
+    v1 = 0;
+    v2 = this.getPath().getLength()-1;
+  } else if (v2 ==  null) {
+    if (this.getPath().getLength()==v1)
+    {
+      v1 = v1-1
+      v2 = v1+1;
+    }
+    else {
+      v2 = v1 +1;
+    }
+  }
+  if ((v1 < 0) || (v1 >= this.getPath().getLength()) || (v2 < 0) || (v2 >= this.getPath().getLength())) {
+    return;
+  }
+  var from = this.getPath().getAt(v1);
+  var to = this.getPath().getAt(v2);
+
+  if (from.equals(to)) {
+    return 0;
+  }
+  var lat1 = from.latRadians();
+  var lon1 = from.lngRadians();
+  var lat2 = to.latRadians();
+  var lon2 = to.lngRadians();
+  var angle = - Math.atan2( Math.sin( lon1 - lon2 ) * Math.cos( lat2 ), Math.cos( lat1 ) * Math.sin( lat2 ) - Math.sin( lat1 ) * Math.cos( lat2 ) * Math.cos( lon1 - lon2 ) );
+  if ( angle < 0.0 ) angle  += Math.PI * 2.0;
+  angle = angle * 180.0 / Math.PI;
+  return parseFloat(angle.toFixed(1));
+}
+
+
+
+
+// === Copy all the above functions to GPolyline ===
+google.maps.Polyline.prototype.Contains             = google.maps.Polygon.prototype.Contains;
+google.maps.Polyline.prototype.Area                 = google.maps.Polygon.prototype.Area;
+google.maps.Polyline.prototype.Distance             = google.maps.Polygon.prototype.Distance;
+google.maps.Polyline.prototype.Bounds               = google.maps.Polygon.prototype.Bounds;
+google.maps.Polyline.prototype.GetPointAtDistance   = google.maps.Polygon.prototype.GetPointAtDistance;
+google.maps.Polyline.prototype.GetPointsAtDistance  = google.maps.Polygon.prototype.GetPointsAtDistance;
+google.maps.Polyline.prototype.GetIndexAtDistance   = google.maps.Polygon.prototype.GetIndexAtDistance;
+google.maps.Polyline.prototype.Bearing              = google.maps.Polygon.prototype.Bearing;
 }
