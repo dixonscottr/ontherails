@@ -6,6 +6,8 @@ function initializeMap(){
   stations = initStations(<%=convertStations(@stations)%>);
   routes = initRoutes(<%=convertRoutes(@routes)%>);
   curves = initCurves(<%=convertCurves(@curves)%>);
+
+  times = initTimes(<%=convertTimes(@timeArrays)%>);
   trains = []
   var contentString = "";
 
