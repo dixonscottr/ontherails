@@ -11,15 +11,22 @@ $('document').ready(function() {
     .done(function(responseJSON){
       if(responseJSON.error){
         showErrorMessage();
+        toastr.error('MTA data was not updated. Try again later.');
       }
       else {
         updateTrainPosition(responseJSON);
         var mtaTimestamp = responseJSON.time_updated;
         updateTimestamp(mtaTimestamp);
+        toastr.options = {
+          "positionClass": "toast-bottom-right",
+          "preventDuplicates": false
+        }
+        toastr.success('MTA data was successfully updated');
       }
     })
     .fail(function(responseJSON){
       showErrorMessage();
+      toastr.error('MTA data was not updated. Try again later.');
     });
   });
   $('form#train-updater').submit();
