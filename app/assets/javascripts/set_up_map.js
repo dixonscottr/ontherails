@@ -19,15 +19,7 @@ function initStations(args){
     });
     bounds.extend(marker.position);
     marker.addListener('click', function() {
-      $.ajax({
-        url: "http://apps.mta.info/trainTime/getTimesByStation.aspx?stationID="+station.stop_id+"&time="+ (new Date).getTime(),
-        method: 'get'
-      }).done(function(responseJSON){
-          var data = responseJSON.replace('loadNewData()', '')
-          var direction1 = [];
-          var direction2 = [];
-          eval(data);
-      });
+      showStationInfo(marker, station);
     })
     stations.push(marker)
   })
