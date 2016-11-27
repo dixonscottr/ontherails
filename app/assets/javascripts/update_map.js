@@ -151,7 +151,7 @@ function updateTrainPosition(responseJSON){
 
         showOrHideMarkers(trainLinesToHide, trainMarker);
 
-      else {
+      } else {
         //HERE WE ASSUME TRAIN IS MOVING
         var stopId = stopTimes[0].stop_id.substr(0,3);
         var direction =stopTimes[0].stop_id.substr(3);
@@ -262,7 +262,8 @@ function updateTrainPosition(responseJSON){
             var trainMarker = new google.maps.Marker({
                 position:newPos,
                 map: map,
-                label: routeId + direction + " " + percentToUse,
+                icon: movementIcon(routeId, response.direction),
+                label: routeId + direction, // + " " + percentToUse,
                 size: new google.maps.Size(5, 5)
               });
             trains.push(trainMarker);

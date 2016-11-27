@@ -10,6 +10,17 @@ function initMap(){
        google.maps.event.trigger(map, "resize");
        map.setCenter(center);
    });
+   // THE BEGINNINGS OF A BEAUTIFUL THING THAT DISPLAYS STATION LABELS AT A CERTAIN DISTANCE
+    //  google.maps.event.addListener(map, 'zoom_changed', function(e) {
+    // if(map.zoom >= 13) {
+    //   console.log("Zoom level at or greater than 13");
+    //   stations.forEach(function(station) { station.visible = true });
+    // }
+    // else {
+    //   console.log("Zoom level less than 13");
+    //   stations.forEach(function(station) { station.visible = false });
+    // }
+    // });
    // rename this later
    doStuff();
 return map
