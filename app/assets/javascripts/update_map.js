@@ -7,13 +7,28 @@ $('document').ready(function() {
     $.ajax({
       url: url,
       method: 'get'
-    }).done(function(responseJSON){
-      updateTrainPosition(responseJSON);
-      var mtaTimestamp = responseJSON.time_updated;
-      updateTimestamp(mtaTimestamp);
+    })
+    .done(function(responseJSON){
+      if(responseJSON.error){
+        showErrorMessage();
+      }
+      else {
+        updateTrainPosition(responseJSON);
+        var mtaTimestamp = responseJSON.time_updated;
+        updateTimestamp(mtaTimestamp);
+      }
+    })
+    .fail(function(responseJSON){
+      showErrorMessage();
     });
   });
+  $('form#train-updater').submit();
 });
+
+function showErrorMessage() {
+  // debugger
+  $('p#mta-timestamp').text('Caution: MTA data could not be accessed');
+}
 
 function handleClick(line) {
   line.classList.toggle('checked');

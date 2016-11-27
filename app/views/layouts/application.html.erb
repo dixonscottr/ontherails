@@ -46,6 +46,9 @@
       </form>
     </div>
     <footer>
+      <% if @error%>
+      <p><%= @error %></p>
+      <% end %>
     </footer>
   </div>
   </body>
