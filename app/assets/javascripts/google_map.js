@@ -10,13 +10,16 @@ function initMap(){
        google.maps.event.trigger(map, "resize");
        map.setCenter(center);
    });
+
    google.maps.event.addListener(map, 'zoom_changed', function(e) {
    if(map.zoom >= 14) {
-     stations.forEach(function(station) { station.setVisible(true) });
+     stations.forEach(function(station) { station.setVisible(true)} );
+    //  stations.forEach(function(station) { station.setLabel(station.label)} );
      // console.log("Zoom level at or greater than 13");
-   }
-   else {
-     stations.forEach(function(station) { station.setVisible(false)});
+   } else {
+     stations.forEach(function(station) { station.setVisible(false)} );
+    //  stations.forEach(function(station) { station.setLabel('')} );
+
      // console.log("Zoom level less than 13");
    }
    });
