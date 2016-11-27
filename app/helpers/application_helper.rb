@@ -5,7 +5,8 @@ module ApplicationHelper
       {
         stationPos: {lat: station.latitude.to_f, lng: station.longitude.to_f},
         stop_id: station.stop_id,
-        train_lines: station.train_lines
+        train_lines: station.train_lines,
+        name: station.name
       }
     end
     stations_hash.to_json.html_safe
@@ -45,12 +46,6 @@ module ApplicationHelper
       }
     end
     time_hash.to_json.html_safe
-  end
-
-  def timed_auto_update
-    sleep 10 #seconds
-    update_trains
-    # Wow I thought this would be, like, a huge contribution. Stupid Ruby and it's concise code.
   end
 
 end

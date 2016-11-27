@@ -14,8 +14,10 @@ function initStations(args){
       position: stationPos,
       map: map,
       icon: symbolOne,
-      title: String(station.name),
-      label: String(station.stop_id),
+      // title: String(station.name),
+      title: String(station.stop_id),
+      // label: String(station.stop_id),
+      label: String(station.name),
       trainLines: String(station.train_lines)
     });
     bounds.extend(marker.position);
@@ -24,7 +26,7 @@ function initStations(args){
     })
     stations.push(marker)
   })
-  map.fitBounds(bounds);
+  // map.fitBounds(bounds);
   return stations
 }
 
