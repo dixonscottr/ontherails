@@ -66,7 +66,7 @@ function updateRoutes(options)
 }
 
 function updateTrainsForLine(lineID_array, lineToHide) {
-  trains.forEach(function(marker) {
+  newTrains.forEach(function(marker) {
     if(lineID_array.indexOf(marker.label[0]) === -1) {
       marker.setVisible(false);
     }
@@ -110,8 +110,8 @@ function showMarker(marker) {
   marker.setVisible(true);
 }
 
-function showOrHideMarkers(markersToHide, marker) {
-  if(markersToHide.indexOf(marker.label[0]) === -1 ) {
+function showOrHideMarkers(markersToShow, marker) {
+  if(markersToShow.indexOf(marker.label[0]) === -1 ) {
     hideMarker(marker)
   }
   else {
@@ -120,8 +120,12 @@ function showOrHideMarkers(markersToHide, marker) {
 }
 
 function updateTrainPosition(responseJSON){
-  clearTrainLocations(trains);
-  trains = [];
+  if (newTrains.length != 0)
+  {
+    clearTrainLocations(trains);
+    trains = newTrains.slice();
+  }
+  newTrains = []
   var trainLinesToHide = trainLineChecker();
 
   var keys1 = Object.keys(responseJSON).slice(0,-1);
@@ -147,10 +151,14 @@ function updateTrainPosition(responseJSON){
           position: {lat:currentStation[0].getPosition().lat(), lng:currentStation[0].getPosition().lng()},
           icon: stopIcon(routeId),
           map: map,
-          label: routeId + direction
+          label: routeId + direction,
+          identifier: train.trip_id
         });
-
-        showOrHideMarkers(trainLinesToHide, trainMarker);
+        if (trainMarker)
+        {
+          newTrains.push(trainMarker);
+          showOrHideMarkers(trainLinesToHide, trainMarker);
+        }
 
       } else {
         //HERE WE ASSUME TRAIN IS MOVING
@@ -159,6 +167,7 @@ function updateTrainPosition(responseJSON){
         var nextStation = stations.filter(function(station){
           return (station.title === stopId)
         })
+        var trip_id = train.trip_id
 
         $.ajax({
           url: '/find_previous_station',
@@ -169,7 +178,8 @@ function updateTrainPosition(responseJSON){
             'time': timestamp,
             'direction': direction,
             'fullrouteID': fullrouteID,
-            'arrivalTime': stopTimes[0].arrival
+            'arrivalTime': stopTimes[0].arrival,
+            trip_id: trip_id
           }
         }).done(function(response) {
           var prevStation = stations.filter(function(station){
@@ -189,7 +199,12 @@ function updateTrainPosition(responseJSON){
             //   return curve.title === fullrouteID;
             // })
             prevStationCoords = getCoordinatesOfStation(prevStation);
+            prevStationCoords.lat = prevStationCoords.lat.toFixed(6);
+            prevStationCoords.lng = prevStationCoords.lng.toFixed(6);
             nxtStationCoords = getCoordinatesOfStation(nextStation);
+            nxtStationCoords.lat = nxtStationCoords.lat.toFixed(6);
+            nxtStationCoords.lng = nxtStationCoords.lng.toFixed(6);
+
             var tempCoords = currentCurve[0].coordinates
             var tempCoords1 = currentCurve[0].coordinates
 
@@ -197,10 +212,11 @@ function updateTrainPosition(responseJSON){
             var nxtIndexOnCurve='';
             for (var i =0; i < tempCoords.length;i++)
             {
-              if ((prevStationCoords.lat.toFixed(5) == tempCoords[i].lat.toFixed(5)) && (prevStationCoords.lng.toFixed(5) == tempCoords[i].lng.toFixed(5))){
+
+              if ((prevStationCoords.lat == tempCoords[i].lat.toFixed(6)) && (prevStationCoords.lng == tempCoords[i].lng.toFixed(6))){
                 prevIndexOnCurve = i;
               }
-              if ((nxtStationCoords.lat.toFixed(5) == tempCoords[i].lat.toFixed(5)) && (nxtStationCoords.lng.toFixed(5) == tempCoords[i].lng.toFixed(5))){
+              if ((nxtStationCoords.lat == tempCoords[i].lat.toFixed(6)) && (nxtStationCoords.lng == tempCoords[i].lng.toFixed(6))){
                 nxtIndexOnCurve = i;
               }
             }
@@ -243,12 +259,21 @@ function updateTrainPosition(responseJSON){
             if (response.direction == "N"){
               percentToUse = Math.abs(1-percentToUse);
             }
+            if (percentToUse > 1)
+            {
+              percentToUse =1.00
+            }
             //Current place on the curve
             var currentPos =  segmentLine.GetPointAtDistance(segmentLine.Distance()*(percentToUse));
             var currentIndex =  segmentLine.GetIndexAtDistance(segmentLine.Distance()*(percentToUse));
             if (segmentLine.getPath().length ==1) {
             }
             var heading = segmentLine.Bearing(currentIndex)
+            //DEBUGGER TO CATCH ERRORS. DO NOT REMOVE. IT WILL ONLY HIT IF WE HAVE ISSUE
+
+            if (heading == null){
+              debugger
+            }
             var orthogonalHeading = heading;
             if (response.direction == "N"){
               orthogonalHeading +=90;
@@ -258,26 +283,38 @@ function updateTrainPosition(responseJSON){
             }
 
             var offset = 0.00001;
+            //DEBUGGER TO CATCH ERRORS. DO NOT REMOVE. IT WILL ONLY HIT IF WE HAVE ISSUE
+            if (currentPos == null){
+              debugger
+            }
             var newPos = getFinalPoint(currentPos, offset, orthogonalHeading)
 
             var trainMarker = new google.maps.Marker({
                 position:newPos,
                 map: map,
-                icon: movementIcon(routeId, response.direction),
+                // icon: movementIcon(routeId, response.direction),
                 label: routeId + direction, // + " " + percentToUse,
-                size: new google.maps.Size(5, 5)
+                identifier: response.trip_id
               });
-            trains.push(trainMarker);
+            newTrains.push(trainMarker);
+            isOnTrack(trainMarker);
+            x = showOrHideMarkers(trainLinesToHide, trainMarker);
           }
-
-          showOrHideMarkers(trainLinesToHide, trainMarker);
-
-          trains.push(trainMarker);
 
         });
       }
     }
   })
+
+}
+function isOnTrack(currentTrain)
+{
+  for (var i=0; i <trains.length;i++){
+    if(trains[i].identifier === currentTrain.identifier)
+    {
+      trains[i].setMap(null);
+    }
+  }
 }
 
 function getFinalPoint(point, offset, degHeading){
@@ -305,3 +342,47 @@ function getFinalPoint(point, offset, degHeading){
 function getCoordinatesOfStation(station){
   return {lat:station[0].getPosition().lat(), lng:station[0].getPosition().lng()}
 }
+
+function showStationInfo(marker, station) {
+    var proxy = 'https://cors-anywhere.herokuapp.com/';
+    var url = "http://apps.mta.info/trainTime/getTimesByStation.aspx?stationID="+station.stop_id+"&time="+ (new Date).getTime();
+    $.ajax({
+      url: proxy + url,
+      method: 'get',
+    })
+    .done(function(responseJSON){
+        var data = responseJSON.replace('loadNewData()', '')
+        // var data = responseJSON.replace('tryAgain()', '')
+        var direction1 = [];
+        var direction2 = [];
+        var direction1Label;
+        var direction2Label;
+        var serverTimeStamp;
+        var fileTimeStamp;
+        var fileTimeFormat;
+        var suspended;
+        var ageOfDataAtRead;
+        eval(data);
+        var nextDirection1TrainTime = direction1[0].split(',')[1];
+        var nextDirection1TrainName = direction1[0][0];
+        if(minutesFromNow(nextDirection1TrainTime) < 0) {
+          nextDirection1TrainTime = direction1[1].split(',')[1];
+          nextDirection1TrainName = direction1[1][0];
+        }
+        var nextDirection2TrainTime = direction2[0].split(',')[1];
+        var nextDirection2TrainName = direction2[0][0];
+        if(minutesFromNow(nextDirection2TrainTime) < 0) {
+          nextDirection2TrainTime = direction2[1].split(',')[1];
+          nextDirection2TrainName = direction2[1][0];
+        }
+        var messagePart1 = 'Next ' + direction1Label + ' train in ' + minutesFromNow(nextDirection1TrainTime) + ' minutes'
+        var messagePart2 = 'Next ' + direction2Label + ' train in ' + minutesFromNow(nextDirection2TrainTime) + ' minutes'
+        var infoWindow = new google.maps.InfoWindow({
+          content: messagePart1 + "\n" + messagePart2
+        });
+        infoWindow.open(map, marker)
+    })
+    .fail(function(failure){
+      debugger;
+    });
+  }

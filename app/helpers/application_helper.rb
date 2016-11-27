@@ -21,10 +21,16 @@ module ApplicationHelper
   end
 
   def convertCurves(curves)
-    train_routes=["1","2","3","4","5","5x","6"]
+    train_routes={"1..N03R" => "1",
+                  "2..N01R" => "2",
+                  "3..N01R" => "3",
+                  "4..N01R" => "4",
+                  "5..N02R" => "5x",
+                  "5..N06R" => "5",
+                  "6..N02R" => "6"}
     curve_points = curves.map.with_index do |points, i|
       {
-        curveId: train_routes[i],
+        curveId: train_routes[points[0].shape_id],
         coordinates: points.map { |point| {lat: point.latitude, lng: point.longitude} }
       }
     end
@@ -32,7 +38,7 @@ module ApplicationHelper
   end
 
   def convertTimes(times)
-    train_routes=["1","2","3","4","5","5x","6"]
+    train_routes=["1","2","3","4","5x","5","6"]
     time_hash = times.map.with_index do |time, i|
       {
         line_id: train_routes[i],
@@ -40,12 +46,6 @@ module ApplicationHelper
       }
     end
     time_hash.to_json.html_safe
-  end
-
-  def timed_auto_update
-    sleep 10 #seconds
-    update_trains
-    # Wow I thought this would be, like, a huge contribution. Stupid Ruby and it's concise code.
   end
 
 end

@@ -11,7 +11,7 @@ function initMap(){
        map.setCenter(center);
    });
    google.maps.event.addListener(map, 'zoom_changed', function(e) {
-   if(map.zoom >= 13) {
+   if(map.zoom >= 14) {
      stations.forEach(function(station) { station.visible = true });
      // console.log("Zoom level at or greater than 13");
    }
@@ -415,7 +415,12 @@ google.maps.Polygon.prototype.Bearing = function(v1,v2) {
   } else if (v2 ==  null) {
     if (this.getPath().getLength()==v1)
     {
-      v1 = v1-1
+      v1 = v1-2;
+      v2 = v1+1;
+    }
+    else if(this.getPath().getLength()-1==v1)
+    {
+      v1 = v1-1;
       v2 = v1+1;
     }
     else {
@@ -423,12 +428,14 @@ google.maps.Polygon.prototype.Bearing = function(v1,v2) {
     }
   }
   if ((v1 < 0) || (v1 >= this.getPath().getLength()) || (v2 < 0) || (v2 >= this.getPath().getLength())) {
+    debugger
     return;
   }
   var from = this.getPath().getAt(v1);
   var to = this.getPath().getAt(v2);
 
   if (from.equals(to)) {
+    debugger
     return 0;
   }
   var lat1 = from.latRadians();
