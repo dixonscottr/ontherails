@@ -55,7 +55,7 @@ function initMap(){
         "elementType": "labels.text.fill",
         "stylers": [
           {
-            "color": "#757575"
+            "color": "#ffffff"
           }
         ]
       },
@@ -63,7 +63,7 @@ function initMap(){
         "elementType": "labels.text.stroke",
         "stylers": [
           {
-            "color": "#212121"
+            "color": "#ffffff"
           }
         ]
       },
@@ -272,14 +272,14 @@ function initMap(){
    // EVENT LISTENER FOR ZOOMING IN AND DISPLAYING LABELS
    google.maps.event.addListener(map, 'zoom_changed', function(e) {
     if(map.zoom >= 13) {
-      // return String('station.name');
-      console.log("Zoom level at or greater than 13")
+      console.log("Zoom level at or greater than 13");
+      stations.forEach(function(station) { console.log(station.visible = true) });
     }
     else {
-      // return '';
-      console.log("Zoom level less than 13")
+      console.log("Zoom level less than 13");
+      stations.forEach(function(station) { console.log(station.visible = false) });
     }
-   });
+  });
    doStuff();
 return map
 }
@@ -302,8 +302,8 @@ function initStations(args){
       map: map,
       icon: symbolOne,
       title: String(station.name),
-      // label: display_station_labels(station),
-      label: String(station.stop_id),
+      label: String(station.stop_id) + "FART",
+      animation: google.maps.Animation.DROP,
       trainLines: String(station.train_lines)
     });
     bounds.extend(marker.position);
@@ -354,7 +354,7 @@ function initRoutes(args)
   })
   return linePaths
 }
-function initCurves(args)
+function initCurves(args) //USE THE CUUUURVES
 {
   var tryingThisThing = args.slice(0);
   curveCoordinatesArray=args.slice(0);
@@ -597,12 +597,11 @@ function updateTrainPosition(responseJSON){
 
             var offset = 0.00001;
             var newPos = getFinalPoint(currentPos, offset, orthogonalHeading)
-
             var trainMarker = new google.maps.Marker({
-                position:newPos,
+                position: newPos,
                 map: map,
-                icon: movementIcon(response.routeId, response.direction),
-                label: routeId + direction + " " + percentToUse,
+                icon: movementIcon(routeId, response.direction),
+                label: routeId + direction, // + " " + percentToUse,
                 size: new google.maps.Size(5, 5)
               });
             trains.push(trainMarker);
