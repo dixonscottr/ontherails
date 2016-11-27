@@ -678,7 +678,10 @@ google.maps.Polygon.prototype.GetPointsAtDistance = function(metres) {
 // === Returns null if the path is shorter than the specified distance ===
 google.maps.Polygon.prototype.GetIndexAtDistance = function(metres) {
   // some awkward special cases
-  if (metres == 0) return this.getPath().getAt(0);
+  if (metres == 0) {
+
+    return this.getPath().getAt(0);
+  }
   if (metres < 0) return null;
   var dist=0;
   var olddist=0;
@@ -718,7 +721,9 @@ google.maps.Polygon.prototype.Bearing = function(v1,v2) {
   }
   var from = this.getPath().getAt(v1);
   var to = this.getPath().getAt(v2);
-
+  if (!from){
+    debugger
+  }
   if (from.equals(to)) {
     debugger
     return 0;
