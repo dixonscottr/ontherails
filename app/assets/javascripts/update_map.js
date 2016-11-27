@@ -298,7 +298,7 @@ function updateTrainPosition(responseJSON){
           if (currentPos == null){
             debugger
           }
-          var newPos = getFinalPoint(currentPos, offset, orthogonalHeading)
+          // var newPos = getFinalPoint(currentPos, offset, orthogonalHeading)
 
           var trainMarker = new google.maps.Marker({
               position:newPos,
