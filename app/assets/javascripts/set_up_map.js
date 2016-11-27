@@ -87,8 +87,8 @@ function setLineColor(lineID) {
         '6': '#FF0000'
       };
       Object.keys(lineColors).forEach(function (key) {
-        console.log(key);
-        console.log(key==lineID);
+//         console.log(key);
+//         console.log(key==lineID);
         if (lineID === key) {
           lineColor = lineColors[key]
         }
