@@ -140,7 +140,8 @@ function updateTrainPosition(responseJSON){
         var direction =stopTimes[0].stop_id.substr(3);
 
         var currentStation = stations.filter(function(station){
-          return (station.label === stopId)
+          // debugger
+          return (station.title === stopId)
         })
         var trainMarker = new google.maps.Marker({
           position: {lat:currentStation[0].getPosition().lat(), lng:currentStation[0].getPosition().lng()},
@@ -156,7 +157,7 @@ function updateTrainPosition(responseJSON){
         var stopId = stopTimes[0].stop_id.substr(0,3);
         var direction =stopTimes[0].stop_id.substr(3);
         var nextStation = stations.filter(function(station){
-          return (station.label === stopId)
+          return (station.title === stopId)
         })
 
         $.ajax({
@@ -172,7 +173,7 @@ function updateTrainPosition(responseJSON){
           }
         }).done(function(response) {
           var prevStation = stations.filter(function(station){
-            return (station.label === response.prev_station)
+            return (station.title === response.prev_station)
           })
           //NEW CURVE FOLLOWING CODE
 

@@ -5,7 +5,8 @@ module ApplicationHelper
       {
         stationPos: {lat: station.latitude.to_f, lng: station.longitude.to_f},
         stop_id: station.stop_id,
-        train_lines: station.train_lines
+        train_lines: station.train_lines,
+        name: station.name
       }
     end
     stations_hash.to_json.html_safe
