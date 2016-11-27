@@ -136,7 +136,6 @@ function updateTrainPosition(responseJSON){
       //Assume in this case, they are in the station at stopTimes[0]
       if (stopTimes[0].departure != stopTimes[0].arrival){
 
-        // realData.push(train)
         var stopId = stopTimes[0].stop_id.substr(0,3);
         var direction =stopTimes[0].stop_id.substr(3);
 
@@ -151,7 +150,7 @@ function updateTrainPosition(responseJSON){
         });
 
         showOrHideMarkers(trainLinesToHide, trainMarker);
-        
+
       else {
         //HERE WE ASSUME TRAIN IS MOVING
         var stopId = stopTimes[0].stop_id.substr(0,3);
@@ -269,7 +268,7 @@ function updateTrainPosition(responseJSON){
             trains.push(trainMarker);
           }
 
-            showOrHideMarkers(trainLinesToHide, trainMarker);
+          showOrHideMarkers(trainLinesToHide, trainMarker);
 
           trains.push(trainMarker);
 
