@@ -1,6 +1,7 @@
 function initStations(args){
   var bounds = new google.maps.LatLngBounds();
   stations = []
+  
   args.forEach(function(station){
     var stationPos = station.stationPos
     var symbolOne = {

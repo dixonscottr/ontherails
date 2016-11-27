@@ -31,8 +31,18 @@ csv.each do |row|
   station.stop_id = row['stop_id'];
   station.code = row['stop_code'];
   station.name = row['stop_name'];
-  station.latitude = row['stop_lat'];
-  station.longitude = row['stop_lon'];
+  if (row['stop_lat'].length == 9)
+    station.latitude = row['stop_lat'];
+
+  else
+    station.latitude = row['stop_lat'].concat("0");
+  end
+  if (row['stop_lon'].length == 9)
+    station.longitude = row['stop_lon'];
+
+  else
+    station.longitude = row['stop_lon'].concat("0");
+  end
   station.stop_desc = row['stop_desc'];
   station.parent_station = row['parent_station'];
   station.save
