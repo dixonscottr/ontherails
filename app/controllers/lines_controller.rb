@@ -1,5 +1,13 @@
 class LinesController < ApplicationController
 
+    def update_line_service
+
+      mta_service_site = 'http://web.mta.info/status/serviceStatus.txt'
+      debugger
+      service_txt = Nokogiri::HTML(open(mta_service_site))
+
+    end
+
     def find_previous_station
       line = params[:line]
       direction = params[:direction]
