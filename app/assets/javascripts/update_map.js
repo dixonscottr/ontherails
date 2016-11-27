@@ -294,18 +294,31 @@ function updateTrainPosition(responseJSON){
             orthogonalHeading-=90;
           }
 
-          var offset = 0.00001;
+          var offset = 0.000025;
           //DEBUGGER TO CATCH ERRORS. DO NOT REMOVE. IT WILL ONLY HIT IF WE HAVE ISSUE
           if (currentPos == null){
             debugger
           }
           var newPos = getFinalPoint(currentPos, offset, orthogonalHeading)
+          var rotation = 0;
+          if (response.direction == "N"){
+            rotation = heading;
+          }
+          else{
+            rotation = heading + 180;
+          }
+          var customImage = {
+            path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+            scale: 4,
+            rotation: rotation
+          };
 
           var trainMarker = new google.maps.Marker({
               position:newPos,
               map: map,
-              icon: movementIcon(routeId, response.direction),
-              label: routeId + direction, // + " " + percentToUse,
+              icon: customImage,
+              label: routeId + direction,
+              // label: response.trip_id + ' PERCENT ' + percentToUse,
               identifier: response.trip_id
             });
           newTrains.push(trainMarker);
