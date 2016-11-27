@@ -302,7 +302,7 @@ function initStations(args){
       map: map,
       icon: symbolOne,
       title: String(station.name),
-      label: String(station.stop_id) + "FART",
+      label: String(station.stop_id),
       animation: google.maps.Animation.DROP,
       trainLines: String(station.train_lines)
     });
