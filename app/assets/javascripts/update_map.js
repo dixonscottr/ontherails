@@ -323,10 +323,18 @@ function showStationInfo(marker, station) {
         var suspended;
         var ageOfDataAtRead;
         eval(data);
-        var nextDirection1TrainTime = direction1[0].split(',')[1]
-        var nextDirection1TrainName = direction1[0][0]
-        var nextDirection2TrainTime = direction2[0].split(',')[1]
-        var nextDirection2TrainName = direction2[0][0]
+        var nextDirection1TrainTime = direction1[0].split(',')[1];
+        var nextDirection1TrainName = direction1[0][0];
+        if(minutesFromNow(nextDirection1TrainTime) < 0) {
+          nextDirection1TrainTime = direction1[1].split(',')[1];
+          nextDirection1TrainName = direction1[1][0];
+        }
+        var nextDirection2TrainTime = direction2[0].split(',')[1];
+        var nextDirection2TrainName = direction2[0][0];
+        if(minutesFromNow(nextDirection2TrainTime) < 0) {
+          nextDirection2TrainTime = direction2[1].split(',')[1];
+          nextDirection2TrainName = direction2[1][0];
+        }
         var messagePart1 = 'Next ' + direction1Label + ' train in ' + minutesFromNow(nextDirection1TrainTime) + ' minutes'
         var messagePart2 = 'Next ' + direction2Label + ' train in ' + minutesFromNow(nextDirection2TrainTime) + ' minutes'
         var infoWindow = new google.maps.InfoWindow({
