@@ -61,15 +61,27 @@ function initRoutes(args)
   return linePaths
 }
 
+function setLineToRedOrGreen(lineID) {
+  if(lineID === "1" || lineID === "2" || lineID === "3"){
+    lineColor = 'Red';
+  }
+  else {
+    lineColor = 'Green';
+  }
+  return lineColor;
+}
+
 function initCurves(args)
 {
   var tryingThisThing = args.slice(0);
   curveCoordinatesArray=args.slice(0);
   args.forEach(function(curve){
+    var lineColor = setLineToRedOrGreen(curve.curveId);
     var linePath = new google.maps.Polyline({
       path: curve.coordinates,
       geodesic: true,
-      strokeColor: 'Red',
+      strokeColor: lineColor,
+      // strokeColor: 'Red',
       strokeOpacity: 1.0,
       strokeWeight: 2,
       title: curve.curveId
