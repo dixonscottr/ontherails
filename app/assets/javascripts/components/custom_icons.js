@@ -1,10 +1,10 @@
-var uptownGreen = 'https://jacobwilliamsonline.files.wordpress.com/2016/11/up-triangle-green2.png'
-var downtownGreen = 'https://jacobwilliamsonline.files.wordpress.com/2016/11/up-triangle-green3-e1480133228331.png'
-var atStationGreen = 'https://jacobwilliamsonline.files.wordpress.com/2016/11/stop-green.png'
+var uptownGreen = 'img/up-triangle-green.png'
+var downtownGreen = 'img/down-triangle-green.png'
+var atStationGreen = 'img/stop-green.png'
 
-var uptownRed = 'https://jacobwilliamsonline.files.wordpress.com/2016/11/up-triangle-red2-e1480133178965.png'
-var downtownRed = 'https://jacobwilliamsonline.files.wordpress.com/2016/11/up-triangle-red3-e1480133251527.png'
-var atStationRed = 'https://jacobwilliamsonline.files.wordpress.com/2016/11/stop-red.png'
+var uptownRed = 'img/up-triangle-red.png'
+var downtownRed = 'img/down-triangle-red.png'
+var atStationRed = 'img/stop-red.png'
 
 function stopIcon(routeId) {
   if (routeId == '1' || routeId == '2' || routeId == '3') {
