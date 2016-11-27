@@ -1,10 +1,10 @@
-var uptownGreen = 'img/up-triangle-green.png'
-var downtownGreen = 'img/down-triangle-green.png'
-var atStationGreen = 'img/stop-green.png'
+var uptownGreen = '/img/up-triangle-green.png'
+var downtownGreen = '/img/down-triangle-green.png'
+var atStationGreen = '/img/stop-green.png'
 
-var uptownRed = 'img/up-triangle-red.png'
-var downtownRed = 'img/down-triangle-red.png'
-var atStationRed = 'img/stop-red.png'
+var uptownRed = '/img/up-triangle-red.png'
+var downtownRed = '/img/down-triangle-red.png'
+var atStationRed = '/img/stop-red.png'
 
 function stopIcon(routeId) {
   if (routeId == '1' || routeId == '2' || routeId == '3') {
