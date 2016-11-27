@@ -120,9 +120,9 @@ function showOrHideMarkers(markersToHide, marker) {
 }
 
 function updateTrainPosition(responseJSON){
+  clearTrainLocations(trains);
   trains = [];
   var trainLinesToHide = trainLineChecker();
-  clearTrainLocations(trains);
 
   var keys1 = Object.keys(responseJSON).slice(0,-1);
   var timestamp = responseJSON.time_updated;
