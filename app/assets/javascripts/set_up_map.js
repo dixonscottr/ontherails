@@ -1,7 +1,7 @@
 function initStations(args){
   var bounds = new google.maps.LatLngBounds();
   stations = []
-  
+
   args.forEach(function(station){
     var stationPos = station.stationPos
     var symbolOne = {
@@ -54,7 +54,7 @@ function initRoutes(args)
   return linePaths
 }
 
-function setLineToRedOrGreen(lineID) {
+function setLineColor(lineID) {
   if(lineID === "1" || lineID === "2" || lineID === "3"){
     lineColor = 'Red';
   }
@@ -64,19 +64,31 @@ function setLineToRedOrGreen(lineID) {
   return lineColor;
 }
 
+function setLineWeight(lineID) {
+  if(lineID === "1" || lineID === "2" || lineID === "3"){
+    lineWeight = 5;
+  }
+  else {
+    lineWeight = 2;
+  }
+  return lineWeight;
+}
+
 function initCurves(args)
 {
   var tryingThisThing = args.slice(0);
   curveCoordinatesArray=args.slice(0);
   args.forEach(function(curve){
-    var lineColor = setLineToRedOrGreen(curve.curveId);
+    var lineColor = setLineColor(curve.curveId);
+    var lineWeight = setLineWeight(curve.curveId);
     var linePath = new google.maps.Polyline({
       path: curve.coordinates,
       geodesic: true,
       strokeColor: lineColor,
       // strokeColor: 'Red',
       strokeOpacity: 1.0,
-      strokeWeight: 2,
+      strokeWeight: lineWeight,
+      // strokeWeight: 2,
       title: curve.curveId
     });
     coordinates = [];
