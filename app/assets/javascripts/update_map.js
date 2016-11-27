@@ -260,11 +260,19 @@ function updateTrainPosition(responseJSON){
             }
             if (percentToUse > 1)
             {
-              percentToUse =1.00
+              percentToUse =.90;
+            }
+            if (percentToUse == 0)
+            {
+              percentToUse = 1;
             }
             //Current place on the curve
             var currentPos =  segmentLine.GetPointAtDistance(segmentLine.Distance()*(percentToUse));
+            if (segmentLine.Distance()*(percentToUse) == 0){
+              debugger
+            }
             var currentIndex =  segmentLine.GetIndexAtDistance(segmentLine.Distance()*(percentToUse));
+
             if (segmentLine.getPath().length ==1) {
             }
             var heading = segmentLine.Bearing(currentIndex)
