@@ -1,6 +1,8 @@
 function initStations(args){
   var bounds = new google.maps.LatLngBounds();
   stations = []
+  stations2 = []
+
 
   args.forEach(function(station){
     var stationPos = station.stationPos
@@ -18,11 +20,22 @@ function initStations(args){
       label: String(station.name),
       trainLines: String(station.train_lines)
     });
+    var marker2 = new google.maps.Marker({
+      position: stationPos,
+      map: map,
+      icon: symbolOne,
+      // title: String(station.name),
+      title: String(station.stop_id),
+      // label: String(station.stop_id),
+      trainLines: String(station.train_lines)
+    });
     bounds.extend(marker.position);
     marker.addListener('click', function() {
       showStationInfo(marker, station);
     })
-    stations.push(marker)
+    stations.push(marker2)
+    stations2.push(marker)
+
   })
   // map.fitBounds(bounds);
   return stations
