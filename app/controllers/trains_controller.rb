@@ -20,9 +20,7 @@ class TrainsController < ApplicationController
     stop_id = params[:station]
     timestamp = params[:time].to_i
     lines_to_search = Line.where(line_identifier: line)
-    line_found = lines_to_search.select do |line|
-      ((Time.parse(line.time_start)).to_i < timestamp) && ((Time.parse(line.time_stop)).to_i > timestamp)
-    end[0]
+    line_found = find_line_running_now(lines_to_search, timestamp)
     prev_stn = line_found.find_previous_station(stop_id, direction)
     hash_to_send = {}
     if prev_stn
@@ -32,6 +30,13 @@ class TrainsController < ApplicationController
   end
 
   private
+
+    def find_line_running_now(lines_array, current_unix_time)
+      found_lines = lines_array.select do |line|
+        ((Time.parse(line.time_start)).to_i < current_unix_time) && ((Time.parse(line.time_stop)).to_i > current_unix_time)
+      end
+      found_lines.first
+    end
 
     def find_entities_with_vehicles(feed)
       feed.entity.select do |entity|
