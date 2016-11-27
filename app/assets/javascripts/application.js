@@ -28,3 +28,9 @@ function timeConverter(UNIX_timestamp){
   var time = month + '/' + date + '/' + year + ' ' + hour + ':' + min;
   return time;
 }
+
+function minutesFromNow(unixTimestamp){
+  var currentTime = Math.floor(new Date() / 1000);
+  var minutes = (unixTimestamp - currentTime) / 60;
+  return minutes.toFixed(2);
+}
