@@ -311,8 +311,10 @@ function showStationInfo(marker, station) {
     $.ajax({
       url: proxy + url,
       method: 'get',
-    }).done(function(responseJSON){
+    })
+    .done(function(responseJSON){
         var data = responseJSON.replace('loadNewData()', '')
+        // var data = responseJSON.replace('tryAgain()', '')
         var direction1 = [];
         var direction2 = [];
         var direction1Label;
@@ -341,5 +343,8 @@ function showStationInfo(marker, station) {
           content: messagePart1 + "\n" + messagePart2
         });
         infoWindow.open(map, marker)
+    })
+    .fail(function(failure){
+      debugger;
     });
   }
