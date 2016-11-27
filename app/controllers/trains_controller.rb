@@ -1,16 +1,25 @@
 class TrainsController < ApplicationController
 
   def update_trains
-    data = Net::HTTP.get(URI.parse("http://datamine.mta.info/mta_esi.php?key=#{ENV['mta_key']}"))
-    feed = Transit_realtime::FeedMessage.decode(data)
+    uri = URI.parse("http://datamine.mta.info/mta_esi.php?key=#{ENV['mta_key']}")
+    response = Net::HTTP.get_response(URI(uri))
+    data = Net::HTTP.get(uri)
 
-    trip_ids_with_vehicle = get_trip_id_array(feed)
-    entities_with_vehicles = find_entities_with_vehicles(feed)
-    entities_with_trip_update = find_entities_with_trip_update(feed)
-    entities_on_tracks = find_entities_on_tracks(entities_with_trip_update, trip_ids_with_vehicle)
-    hashed_train_data = find_arrival_departure_times(entities_on_tracks)
-    add_timestamp(hashed_train_data, feed)
-    render json: hashed_train_data
+    if (response.kind_of?(Net::HTTPSuccess))
+      feed = Transit_realtime::FeedMessage.decode(data)
+      trip_ids_with_vehicle = get_trip_id_array(feed)
+      entities_with_vehicles = find_entities_with_vehicles(feed)
+      entities_with_trip_update = find_entities_with_trip_update(feed)
+      entities_on_tracks = find_entities_on_tracks(entities_with_trip_update, trip_ids_with_vehicle)
+      hashed_train_data = find_arrival_departure_times(entities_on_tracks)
+      add_timestamp(hashed_train_data, feed)
+      render json: hashed_train_data
+    else
+
+      error_json = {error: 'inform time stamp'}
+      render json: error_json
+
+    end
 
   end
 
@@ -20,9 +29,7 @@ class TrainsController < ApplicationController
     stop_id = params[:station]
     timestamp = params[:time].to_i
     lines_to_search = Line.where(line_identifier: line)
-    line_found = lines_to_search.select do |line|
-      ((Time.parse(line.time_start)).to_i < timestamp) && ((Time.parse(line.time_stop)).to_i > timestamp)
-    end[0]
+    line_found = find_line_running_now(lines_to_search, timestamp)
     prev_stn = line_found.find_previous_station(stop_id, direction)
     hash_to_send = {}
     if prev_stn
@@ -32,6 +39,13 @@ class TrainsController < ApplicationController
   end
 
   private
+
+    def find_line_running_now(lines_array, current_unix_time)
+      found_lines = lines_array.select do |line|
+        ((Time.parse(line.time_start)).to_i < current_unix_time) && ((Time.parse(line.time_stop)).to_i > current_unix_time)
+      end
+      found_lines.first
+    end
 
     def find_entities_with_vehicles(feed)
       feed.entity.select do |entity|

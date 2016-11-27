@@ -4,9 +4,10 @@
     <title>On the Rails</title>
     <%= csrf_meta_tags %>
 
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet"/>
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
-
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
   </head>
 
   <body>
@@ -49,6 +50,9 @@
       </form>
     </div>
     <footer>
+      <% if @error%>
+      <p><%= @error %></p>
+      <% end %>
     </footer>
   </div>
   </body>
