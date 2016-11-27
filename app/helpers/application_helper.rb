@@ -20,10 +20,16 @@ module ApplicationHelper
   end
 
   def convertCurves(curves)
-    train_routes=["1","2","3","4","5","5x","6"]
+    train_routes={"1..N03R" => "1",
+                  "2..N01R" => "2",
+                  "3..N01R" => "3",
+                  "4..N01R" => "4",
+                  "5..N02R" => "5x",
+                  "5..N06R" => "5",
+                  "6..N02R" => "6"}
     curve_points = curves.map.with_index do |points, i|
       {
-        curveId: train_routes[i],
+        curveId: train_routes[points[0].shape_id],
         coordinates: points.map { |point| {lat: point.latitude, lng: point.longitude} }
       }
     end
@@ -31,7 +37,7 @@ module ApplicationHelper
   end
 
   def convertTimes(times)
-    train_routes=["1","2","3","4","5","5x","6"]
+    train_routes=["1","2","3","4","5x","5","6"]
     time_hash = times.map.with_index do |time, i|
       {
         line_id: train_routes[i],

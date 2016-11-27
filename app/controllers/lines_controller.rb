@@ -20,6 +20,7 @@ class LinesController < ApplicationController
         info[:direction]= params[:direction]
         info[:fullrouteID]= params[:fullrouteID]
         info[:arrivalTime]= params[:arrivalTime]
+        info[:trip_id]= params[:trip_id]
 
       end
       render json: info
