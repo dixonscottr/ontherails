@@ -31,7 +31,7 @@ function initStations(args){
     })
     stations.push(marker)
   })
-  map.fitBounds(bounds);
+  // map.fitBounds(bounds);
   return stations
 }
 
