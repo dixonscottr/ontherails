@@ -43,6 +43,7 @@ function handleClick(line) {
   updateStations(trainLinesToHide);
   updateRoutes(trainLinesToHide);
   updateTrainsForLine(trainLinesToHide, line.value)
+  line.classList.toggle('opaque');
 }
 
 function updateStations(options) {

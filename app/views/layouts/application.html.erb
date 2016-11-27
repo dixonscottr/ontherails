@@ -11,34 +11,42 @@
   </head>
 
   <body>
+  <nav class="navbar">
     <div class="container-fluid">
-      <div class='row navBar toggle' id="navBar">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <div class='collapse navbar-collapse row toggle' id="navBar">
         <div class="col-sm-5">
           <img src="img/rails.jpg" width="40%"/>
         </div>
         <!-- <form id="select-lines" class="form-check-inline"> -->
         <div class="col-sm-1">
-      		<button data-toggle="button" aria-pressed="false" data-target="#myModal" class="btn btn-circle raised btn-primary checked" onclick="handleClick(this)" name="line" value="1">1</button>
+      		<button data-toggle="button" aria-pressed="false" class="btn btn-circle raised purple checked" onclick="handleClick(this)" name="line" value="1">1</button>
         </div>
         <div class="col-sm-1">
-          <button data-toggle="button" aria-pressed="false" class="btn btn-circle raised btn-info checked" onclick="handleClick(this)" name="line" value="2">2</button>
+          <button data-toggle="button" aria-pressed="false" class="btn btn-circle raised blue checked" onclick="handleClick(this)" name="line" value="2">2</button>
         </div>
         <div class="col-sm-1">
-        	<button data-toggle="modal" data-target="#myModal" class="btn btn-circle raised btn-default checked" onclick="handleClick(this)" name="line" value="3">3</button>
+        	<button data-toggle="modal" data-target="#myModal" class="btn btn-circle raised green checked" onclick="handleClick(this)" name="line" value="3">3</button>
         </div>
         <div class="col-sm-1">
-          <button data-toggle="modal" data-target="#myModal" class="btn btn-circle raised btn-success checked" onclick="handleClick(this)" name="line" value="4">4</button>
+          <button data-toggle="modal" data-target="#myModal" class="btn btn-circle raised yellow checked" onclick="handleClick(this)" name="line" value="4">4</button>
         </div>
         <div class="col-sm-1">
-        	<button data-toggle="modal" data-target="#myModal" class="btn btn-circle raised btn-warning checked" onclick="handleClick(this)" name="line" value="5">5</button>
+        	<button data-toggle="modal" data-target="#myModal" class="btn btn-circle raised orange checked" onclick="handleClick(this)" name="line" value="5">5</button>
         </div>
         <div class="col-sm-1">
-        	<button data-toggle="modal" data-target="#myModal" class="btn btn-circle raised btn-danger checked" onclick="handleClick(this)" name="line" value="6">6</button>
+        	<button data-toggle="modal" data-target="#myModal" class="btn btn-circle raised red checked" onclick="handleClick(this)" name="line" value="6">6</button>
         </div>
         <div class="col-sm-1"></div>
       </div>
-
     </div>
+  </nav>
     <%= yield %>
     <div class='container-fluid'>
       <p id='mta-timestamp'>Train location data last updated by MTA at <span id="update_time"><%= Time.now.strftime("%m/%d/%Y %H:%M") %></span></p>
