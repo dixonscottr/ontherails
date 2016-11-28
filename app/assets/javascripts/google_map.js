@@ -6,6 +6,7 @@ function initMap(){
     zoom: 14,
     styles: custom_styles
   });
+  map.setOptions({ minZoom: 12, maxZoom: 16 });
    google.maps.event.addDomListener(window, "resize", function() {
        google.maps.event.trigger(map, "resize");
        map.setCenter(center);
@@ -15,11 +16,13 @@ function initMap(){
      zoomLevel = map.getZoom();
      if(zoomLevel >= 13) {
        stations2.forEach(function(station) { station.setVisible(true) });
+      //  debugger
+      //  newTrains.forEach(function(train){ train.setProperty(name:'scale', newValue: 4) });
        // console.log("Zoom level at or greater than 13");
      }
      else {
        stations2.forEach(function(station) { station.setVisible(false) });
-
+      //  newTrains.forEach(function(train){ train.setProperty(name:'scale', newValue: 2) });
      }
    });
    // rename this later
