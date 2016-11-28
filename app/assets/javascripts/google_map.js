@@ -13,7 +13,7 @@ function initMap(){
 
    google.maps.event.addListener(map, 'zoom_changed', function(e) {
      zoomLevel = map.getZoom();
-     if(zoomLevel >= 14) {
+     if(zoomLevel >= 13) {
        stations2.forEach(function(station) { station.setVisible(true) });
        // console.log("Zoom level at or greater than 13");
      }
