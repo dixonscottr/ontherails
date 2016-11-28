@@ -138,7 +138,7 @@ line4day1.stations << Station.where(id: [74,84])
 
 line4day1.save!
 
-line4day2Start = "04:45:00 AM"
+line4day2Start = "04:45:00 PM"
 line4day2End = "06:20:00 PM"
 
 line4day2 = Line.new(line_identifier:"4", day:"all", time_start: line4day2Start, time_stop: line4day2End)
@@ -154,110 +154,112 @@ line4day2.save!
 start = "06:00:00 AM"
 endTime = "7:00:00 AM"
 
-line4NRH = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
-line4NRH.stations << Station.where(id: [94..107])
-line4NRH.stations << Station.where(id: [135,140,143,145,149,154])
-line4NRH.stations << Station.where(id: [108..111])
-line4NRH.stations << Station.where(id: [69..70])
-line4NRH.stations << Station.where(id: [74,84])
-line4NRH.save!
+a123 = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
+a123.stations << Station.where(id: [94..107])
+a123.stations << Station.where(id: [135,140,143,145,149,154])
+a123.stations << Station.where(id: [108..111])
+a123.stations << Station.where(id: [69..70])
+a123.stations << Station.where(id: [74,84])
+a123.save!
 
 start = "06:20:00 PM"
 endTime = "11:00:00 PM"
 
-line4NRH = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
-line4NRH.stations << Station.where(id: [94..107])
-line4NRH.stations << Station.where(id: [135,140,143,145,149,154])
-line4NRH.stations << Station.where(id: [108..111])
-line4NRH.stations << Station.where(id: [69..70])
-line4NRH.stations << Station.where(id: [74,84])
-line4NRH.save!
+a1234 = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
+a1234.stations << Station.where(id: [94..107])
+a1234.stations << Station.where(id: [135,140,143,145,149,154])
+a1234.stations << Station.where(id: [108..111])
+a1234.stations << Station.where(id: [69..70])
+a1234.stations << Station.where(id: [74,84])
+a1234.save!
 
 start = "09:00:00 AM"
 endTime = "04:45:00 PM"
 
-line4NRH = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
-line4NRH.stations << Station.where(id: [94..107])
-line4NRH.stations << Station.where(id: [135,140,143,145,149,154])
-line4NRH.stations << Station.where(id: [108..111])
-line4NRH.stations << Station.where(id: [69..70])
-line4NRH.stations << Station.where(id: [74,84])
-line4NRH.save!
+a12345 = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
+a12345.stations << Station.where(id: [94..107])
+a12345.stations << Station.where(id: [135,140,143,145,149,154])
+a12345.stations << Station.where(id: [108..111])
+a12345.stations << Station.where(id: [69..70])
+a12345.stations << Station.where(id: [74,84])
+a12345.save!
 
 # MANHATTAN AND BROOKLYN LATENIGHT
 start = "01:00:00 AM"
 endTime = "05:00:00 AM"
 
-line4NRH = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
-line4NRH.stations << Station.where(id: [94..107])
-line4NRH.stations << Station.where(id: [135..154])
-line4NRH.stations << Station.where(id: [108..111])
-line4NRH.stations << Station.where(id: [69..74])
-line4NRH.stations << Station.where(id: [82..91])
-line4NRH.save!
+a1231213 = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
+a1231213.stations << Station.where(id: [94..107])
+a1231213.stations << Station.where(id: [135..154])
+a1231213.stations << Station.where(id: [108..111])
+a1231213.stations << Station.where(id: [69..74])
+a1231213.stations << Station.where(id: [82..91])
+a1231213.save!
 
 # BROOKLYN BUT NOT MANHATTAN
 start = "11:00:00 PM"
 endTime = "11:59:59 PM"
 
-line4NRH = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
-line4NRH.stations << Station.where(id: [94..107])
-line4NRH.stations << Station.where(id: [135, 140, 143, 145, 149, 154])
-line4NRH.stations << Station.where(id: [108..111])
-line4NRH.stations << Station.where(id: [69..74])
-line4NRH.stations << Station.where(id: [82..91])
-line4NRH.save!
+b123 = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
+b123.stations << Station.where(id: [94..107])
+b123.stations << Station.where(id: [135, 140, 143, 145, 149, 154])
+b123.stations << Station.where(id: [108..111])
+b123.stations << Station.where(id: [69..74])
+b123.stations << Station.where(id: [82..91])
+b123.save!
 
 start = "12:00:00 AM"
 endTime = "01:00:00 AM"
 
-line4NRH = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
-line4NRH.stations << Station.where(id: [94..107])
-line4NRH.stations << Station.where(id: [135, 140, 143, 145, 149, 154])
-line4NRH.stations << Station.where(id: [108..111])
-line4NRH.stations << Station.where(id: [69..74])
-line4NRH.stations << Station.where(id: [82..91])
-line4NRH.save!
+b12 = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
+b12.stations << Station.where(id: [94..107])
+b12.stations << Station.where(id: [135, 140, 143, 145, 149, 154])
+b12.stations << Station.where(id: [108..111])
+b12.stations << Station.where(id: [69..74])
+b12.stations << Station.where(id: [82..91])
+b12.save!
 
 start = "05:00:00 AM"
 endTime = "06:00:00 AM"
 
-line4NRH = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
-line4NRH.stations << Station.where(id: [94..107])
-line4NRH.stations << Station.where(id: [135, 140, 143, 145, 149, 154])
-line4NRH.stations << Station.where(id: [108..111])
-line4NRH.stations << Station.where(id: [69..74])
-line4NRH.stations << Station.where(id: [82..91])
-line4NRH.save!
+b11 = Line.new(line_identifier:"4", day:"all", time_start: start, time_stop: endTime)
+b11.stations << Station.where(id: [94..107])
+b11.stations << Station.where(id: [135, 140, 143, 145, 149, 154])
+b11.stations << Station.where(id: [108..111])
+b11.stations << Station.where(id: [69..74])
+b11.stations << Station.where(id: [82..91])
+b11.save!
 
 # DOESNT WORK YET
 # NEED MORE LOGIC HERE
-line4NRH = Line.new(line_identifier:"5", day:"all", time_start: standardStartTime, time_stop: standardEndTime)
-line4NRH.stations << Station.where(id: [112..116])
-line4NRH.stations << Station.where(id: [49..58])
-line4NRH.stations << Station.where(id: [135,140,143,145,149,154])
-line4NRH.stations << Station.where(id: [108..111])
-line4NRH.stations << Station.where(id: [69..70])
-line4NRH.stations << Station.where(id: [74..81])
-line4NRH.save!
+a111 = Line.new(line_identifier:"5", day:"all", time_start: standardStartTime, time_stop: standardEndTime)
+a111.stations << Station.where(id: [112..116])
+a111.stations << Station.where(id: [49..58])
+a111.stations << Station.where(id: [107])
+a111.stations << Station.where(id: [135,140,143,145,149,154])
+a111.stations << Station.where(id: [108..111])
+a111.stations << Station.where(id: [69..70])
+a111.stations << Station.where(id: [74..81])
+a111.save!
 
-line4NRH = Line.new(line_identifier:"5X", day:"all", time_start: standardStartTime, time_stop: standardEndTime)
-line4NRH.stations << Station.where(id: [40..58])
-line4NRH.stations << Station.where(id: [135,140,143,145,149,154])
-line4NRH.stations << Station.where(id: [108..111])
-line4NRH.stations << Station.where(id: [69..70])
-line4NRH.stations << Station.where(id: [74..81])
-line4NRH.save!
+b123123 = Line.new(line_identifier:"5X", day:"all", time_start: standardStartTime, time_stop: standardEndTime)
+b123123.stations << Station.where(id: [40..58])
+b123123.stations << Station.where(id: [107])
+b123123.stations << Station.where(id: [135,140,143,145,149,154])
+b123123.stations << Station.where(id: [108..111])
+b123123.stations << Station.where(id: [69..70])
+b123123.stations << Station.where(id: [74..81])
+b123123.save!
 
 
 Stationline.all.each do |stationline|
   stationline.station.train_lines += stationline.line.line_identifier
   stationline.station.save
 end
-Station.all.each do |station|
-  station.train_lines = station.train_lines.chars.uniq.join
-  station.save
-end
+# Station.all.each do |station|
+#   station.train_lines = station.train_lines.chars.uniq.join
+#   station.save
+# end
 
 
 
@@ -265,7 +267,21 @@ end
 csv_text = File.read(Rails.root.join('lib', 'seeds', 'newShapes.csv'))
 csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
 csv.each do |row|
-  point = Point.create(shape_id: row['shape_id'], latitude: row['shape_pt_lat'].to_f, longitude: row['shape_pt_lon'].to_f, sequence: row['shape_pt_sequence'])
+  shape_id = row['shape_id']
+  latitude = row['shape_pt_lat'].to_f
+  longitude = row['shape_pt_lon'].to_f
+  sequence = row['shape_pt_sequence']
+
+  # if shape_id[0]=="1" || shape_id[0]=="4"
+  #   longitude = longitude - 0.0004
+  #
+  # elsif shape_id[0]=="2" || shape_id[0]=="6"
+  #   longitude = longitude + 0.0004
+  # else
+  #   longitude
+  # end
+
+  point = Point.create(shape_id: shape_id, latitude: latitude, longitude: longitude.round(6), sequence: sequence)
 end
 
 
