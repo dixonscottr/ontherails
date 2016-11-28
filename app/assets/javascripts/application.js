@@ -34,3 +34,10 @@ function minutesFromNow(unixTimestamp){
   var minutes = (unixTimestamp - currentTime) / 60;
   return minutes.toFixed(2);
 }
+
+function findStationName(stop_id) {
+  var stationFound = stations2.find(function(station){
+    return station.title === stop_id
+  })
+  return stationFound.label
+}

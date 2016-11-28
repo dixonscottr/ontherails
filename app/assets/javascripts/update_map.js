@@ -185,6 +185,7 @@ function showOrHideMarkers(markersToShow, marker) {
 }
 
 function updateTrainPosition(responseJSON){
+  var currentTrainsTracked =["1","2","3","4","5","5X","6"];
   if (newTrains.length != 0)
   {
     clearTrainLocations(trains);
@@ -196,7 +197,11 @@ function updateTrainPosition(responseJSON){
   var keys1 = Object.keys(responseJSON).slice(0,-1);
   var timestamp = responseJSON.time_updated;
   keys1.forEach(function(key){
+    if (key)
     var train = responseJSON[key]
+
+    if ((intersection([train.route_id],currentTrainsTracked).length>0) && train.route_id!=''){
+
     // take the x from 6x
     var fullrouteID = train.route_id
     var routeId = train.route_id[0];
@@ -210,13 +215,12 @@ function updateTrainPosition(responseJSON){
         return (station.title === stopId)
       })
       var trip_id = train.trip_id
-
       $.ajax({
         url: '/find_previous_station',
         method: 'post',
         data: {
           'station': stopId,
-          'line': routeId,
+          'line': fullrouteID,
           'time': timestamp,
           'direction': direction,
           'fullrouteID': fullrouteID,
@@ -283,10 +287,10 @@ function updateTrainPosition(responseJSON){
           var waitTime = response.arrivalTime - response.time;
           var currentTimeArray = timesArray.filter(function(timeArr){
             return (timeArr.line_id === response.fullrouteID)
-          })[0]
+          })
           var station1Time = '';
           var station2Time ='';
-          var tempVal = currentTimeArray.data;
+          var tempVal = currentTimeArray[0].data;
           for (var i=0; i <tempVal.length;i++){
 
             if (tempVal[i].stop_id == response.prev_station){
@@ -301,15 +305,31 @@ function updateTrainPosition(responseJSON){
           var percentToUse = Math.abs((waitTime/travelTime))
           if (response.direction == "N"){
             percentToUse = Math.abs(1-percentToUse);
+            if (percentToUse > 1)
+            {
+              percentToUse =.98;
+            }
+            if (percentToUse == 0)
+            {
+              percentToUse = 1;
+            }
+            if (percentToUse <0)
+            {
+              percentToUse = .5;
+            }
           }
-          if (percentToUse > 1)
-          {
-            percentToUse =.90;
+
+          if (response.direction == "S"){
+            if (percentToUse > 1)
+            {
+              percentToUse =1;
+            }
+            if (percentToUse == 0)
+            {
+              percentToUse = 0.02;
+            }
           }
-          if (percentToUse == 0)
-          {
-            percentToUse = 1;
-          }
+
           if (response.arrivalTime != response.departureTime){
             percentToUse = .001
           }
@@ -337,6 +357,10 @@ function updateTrainPosition(responseJSON){
           }
 
           var offset = 0.000025;
+          if (response.line[0] == "1" || response.line[0] == '4'){offset = 0.000015;}
+          if (response.line[0] == "2" || response.line[0] == '5'){offset = 0.000025;}
+          if (response.line[0] == "3" || response.line[0] == '6'){offset = 0.000035;}
+
           //DEBUGGER TO CATCH ERRORS. DO NOT REMOVE. IT WILL ONLY HIT IF WE HAVE ISSUE
           if (currentPos == null){
             debugger
@@ -353,16 +377,22 @@ function updateTrainPosition(responseJSON){
           var customImage = {
             path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
             scale: 4,
+            strokeWeight: 2,
+            strokeColor:"#B40404",
             rotation: rotation
           };
           var trainMarker = new google.maps.Marker({
               position:newPos,
               map: map,
               icon: customImage,
-              label: routeId + direction,
+              label: routeId,
+              // label: routeId + direction + " " + response.trip_id.substr(0,6) +" " +String(percentToUse).substr(1,4) + " FROM " +prevStation[0].title + " TO "+ nextStation[0].title + "IN"+ String(waitTime).substr(0,3),
               // label: response.trip_id + ' PERCENT ' + percentToUse,
               identifier: response.trip_id
             });
+          trainMarker.addListener('click', function() {
+            showTrainInfo(trainMarker, nextStation);
+          })
           newTrains.push(trainMarker);
           isOnTrack(trainMarker);
           x = showOrHideMarkers(trainLinesToHide, trainMarker);
@@ -370,8 +400,21 @@ function updateTrainPosition(responseJSON){
 
       });
     }
+  }//END IF THE IF INTERSECTION STATEMENT
   })
 }
+
+function showTrainInfo(marker, nextStation) {
+  var nextStationName = findStationName(nextStation[0].title)
+  var trainName = marker.label + ' train'
+  // var nextStationID = nextStation[0].title;
+  var infoWindow = new google.maps.InfoWindow({
+    content: trainName + ' heading to: ' + nextStationName
+  });
+  infoWindow.open(map, marker)
+}
+
+
 function isOnTrack(currentTrain)
 {
   for (var i=0; i <trains.length;i++){
@@ -427,6 +470,12 @@ function showStationInfo(marker, station) {
         var fileTimeFormat;
         var suspended;
         var ageOfDataAtRead;
+        function tryAgain() {
+          var infoWindow = new google.maps.InfoWindow({
+            content: 'Data not avaiable. Please try again.'
+          });
+          infoWindow.open(map, marker)
+        }
         eval(data);
         var nextDirection1TrainTime = direction1[0].split(',')[1];
         var nextDirection1TrainName = direction1[0][0];
@@ -443,7 +492,7 @@ function showStationInfo(marker, station) {
         var messagePart1 = 'Next ' + direction1Label + ' train in ' + minutesFromNow(nextDirection1TrainTime) + ' minutes'
         var messagePart2 = 'Next ' + direction2Label + ' train in ' + minutesFromNow(nextDirection2TrainTime) + ' minutes'
         var infoWindow = new google.maps.InfoWindow({
-          content: messagePart1 + "\n" + messagePart2
+          content: messagePart1 + "<br />" + messagePart2
         });
         infoWindow.open(map, marker)
     })
