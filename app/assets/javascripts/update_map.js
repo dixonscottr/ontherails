@@ -453,6 +453,12 @@ function showStationInfo(marker, station) {
         var fileTimeFormat;
         var suspended;
         var ageOfDataAtRead;
+        function tryAgain() {
+          var infoWindow = new google.maps.InfoWindow({
+            content: 'Data not avaiable. Please try again.'
+          });
+          infoWindow.open(map, marker)
+        }
         eval(data);
         var nextDirection1TrainTime = direction1[0].split(',')[1];
         var nextDirection1TrainName = direction1[0][0];
