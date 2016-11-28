@@ -362,9 +362,11 @@ function updateTrainPosition(responseJSON){
           else{
             rotation = heading + 180;
           }
+
+          scaleSizeByZoomLevel = setTrainIconSize(map.getZoom())
           var customImage = {
             path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-            scale: 4,
+            scale: scaleSizeByZoomLevel,
             strokeWeight: 2,
             strokeColor:"#B40404",
             rotation: rotation
@@ -375,7 +377,9 @@ function updateTrainPosition(responseJSON){
             icon: customImage,
             label: routeId,
             station: response.prev_station,
-            identifier: response.trip_id
+            identifier: response.trip_id,
+            zoom_in_label: routeId,
+            zoom_out_label: ''
           };
           if (isOnTrack(trainObj,customImage, nextStation))
           {

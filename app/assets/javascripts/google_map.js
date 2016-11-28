@@ -1,25 +1,29 @@
 function initMap(){
-  center = {lat: 40.774, lng: -73.955}
+  // center = {lat: 40.774, lng: -73.955}
+  center = {lat: 40.733, lng: -73.988}
   timesArray=[];
   var map = new google.maps.Map(document.getElementById('map'), {
     center: center,
     zoom: 14,
     styles: custom_styles
   });
+  map.setOptions({ minZoom: 12, maxZoom: 16 });
    google.maps.event.addDomListener(window, "resize", function() {
        google.maps.event.trigger(map, "resize");
        map.setCenter(center);
    });
 
    google.maps.event.addListener(map, 'zoom_changed', function(e) {
+     $('form#train-updater').submit(); //ensures updates to train/station icon sizes
      zoomLevel = map.getZoom();
-     if(zoomLevel >= 13) {
+     if(zoomLevel >= 14) {
+       newTrains.forEach(function(train) { train.setLabel(train.zoom_in_label)});
        stations2.forEach(function(station) { station.setVisible(true) });
        // console.log("Zoom level at or greater than 13");
      }
      else {
+       newTrains.forEach(function(train) { train.setLabel(train.zoom_out_label)});
        stations2.forEach(function(station) { station.setVisible(false) });
-
      }
    });
    // rename this later
