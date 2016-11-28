@@ -1,4 +1,4 @@
-class LinesController < ApplicationController
+class StupidController < ApplicationController
 
     def update_line_service
 
@@ -26,19 +26,58 @@ class LinesController < ApplicationController
       if (line_found==nil)
         debugger
       end
-      prev_stn = line_found.find_previous_station(stop_id, direction)
+      # prev_stn = line_found.poopsicle(stop_id, direction)
+
+      curS = Station.find_by(stop_id: stop_id).id
+      new_line_id = ''
+      current_station_line = Stationline.find_by(line_id: line_found.id.to_s, station_id: curS)
+      if (current_station_line==nil)
+        # debugger
+        if line_found.id == 17
+          current_station_line = Stationline.find_by(line_id: "18", station_id: curS)
+          new_line_id= '5X'
+        elsif line_found.id ==18
+          current_station_line = Stationline.find_by(line_id: "17", station_id: curS)
+          new_line_id= '5'
+        elsif line_found.id ==2
+          current_station_line = Stationline.find_by(line_id: "18", station_id: curS)
+          new_line_id= '5X'
+        else
+        end
+      end
+      if current_station_line == nil
+        debugger
+      end
+      curSLid = current_station_line.id
+
+      if direction == 'N'
+        prev_stn=Stationline.find(curSLid + 1).station
+      else
+        prev_stn=Stationline.find(current_station_line.id - 1).station
+      end
+
+
+
       info = {}
       if prev_stn
+        if (new_line_id != '')
+          info[:line]=new_line_id
+          info[:fullrouteID]=new_line_id
+          info[:oldRouteID]= params[:fullrouteID]
+          info[:lineFoundId]= line_found.id
+        else
+          info[:fullrouteID]= params[:fullrouteID]
+          info[:line]= params[:line]
+        end
+
         info[:prev_station] = prev_stn.stop_id
         info[:station]= params[:station]
-        info[:line]= params[:line]
         info[:time]= params[:time]
         info[:direction]= params[:direction]
-        info[:fullrouteID]= params[:fullrouteID]
         info[:arrivalTime]= params[:arrivalTime]
         info[:departureTime]= params[:departureTime]
-
         info[:trip_id]= params[:trip_id]
+
 
       end
       render json: info

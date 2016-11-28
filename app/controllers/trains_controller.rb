@@ -30,8 +30,23 @@ class TrainsController < ApplicationController
     timestamp = params[:time].to_i
     lines_to_search = Line.where(line_identifier: line)
     line_found = find_line_running_now(lines_to_search, timestamp)
-    prev_stn = line_found.find_previous_station(stop_id, direction)
-    hash_to_send = {}
+
+    curS = Station.find_by(stop_id: stop_id)
+    current_station_line = Stationline.find_by(line: line_found, station: curS)
+    if !current_station_line
+      debugger
+    end
+
+    curSLid = current_station_line.id
+
+    if direction == 'N'
+      value = curSLid + 1
+      prev_stn=Stationline.find().station
+    else
+      value = curSLid - 1
+
+      prev_stn=Stationline.find(value).station
+    end
     if prev_stn
       hash_to_send[:prev_station] = prev_stn.stop_id
     end
@@ -42,7 +57,7 @@ class TrainsController < ApplicationController
 
     def find_line_running_now(lines_array, current_unix_time)
       found_lines = lines_array.select do |line|
-        ((Time.parse(line.time_start)).to_i < current_unix_time) && ((Time.parse(line.time_stop)).to_i > current_unix_time)
+        ((Time.parse(line.time_start) < Time.now) && (Time.parse(line.time_stop) > Time.now))
       end
       found_lines.first
     end

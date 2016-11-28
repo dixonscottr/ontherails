@@ -305,15 +305,31 @@ function updateTrainPosition(responseJSON){
           var percentToUse = Math.abs((waitTime/travelTime))
           if (response.direction == "N"){
             percentToUse = Math.abs(1-percentToUse);
+            if (percentToUse > 1)
+            {
+              percentToUse =.98;
+            }
+            if (percentToUse == 0)
+            {
+              percentToUse = 1;
+            }
+            if (percentToUse <0)
+            {
+              percentToUse = .5;
+            }
           }
-          if (percentToUse > 1)
-          {
-            percentToUse =.90;
+
+          if (response.direction == "S"){
+            if (percentToUse > 1)
+            {
+              percentToUse =1;
+            }
+            if (percentToUse == 0)
+            {
+              percentToUse = 0.02;
+            }
           }
-          if (percentToUse == 0)
-          {
-            percentToUse = 1;
-          }
+
           if (response.arrivalTime != response.departureTime){
             percentToUse = .001
           }
@@ -370,6 +386,7 @@ function updateTrainPosition(responseJSON){
               map: map,
               icon: customImage,
               label: routeId,
+              // label: routeId + direction + " " + response.trip_id.substr(0,6) +" " +String(percentToUse).substr(1,4) + " FROM " +prevStation[0].title + " TO "+ nextStation[0].title + "IN"+ String(waitTime).substr(0,3),
               // label: response.trip_id + ' PERCENT ' + percentToUse,
               identifier: response.trip_id
             });
