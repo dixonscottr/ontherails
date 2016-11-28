@@ -17,7 +17,7 @@ class LinesController < ApplicationController
     end
 
     def find_previous_station
-      line = params[:line]
+      line = params[:line];
       direction = params[:direction]
       stop_id = params[:station]
       timestamp = params[:time].to_i
