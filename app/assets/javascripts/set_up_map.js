@@ -30,7 +30,7 @@ function initStations(args){
       trainLines: String(station.train_lines)
     });
     bounds.extend(marker.position);
-    marker.addListener('click', function() {
+    marker2.addListener('click', function() {
       showStationInfo(marker, station);
     })
     stations.push(marker2)
