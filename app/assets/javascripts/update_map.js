@@ -397,23 +397,23 @@ function updateTrainPosition(responseJSON){
             newTrains.push(trainMarker);
             showOrHideMarkers(trainLinesToHide, trainMarker);
           };
-          var trainMarker = new google.maps.Marker({
-              position:newPos,
-              map: map,
-              icon: customImage,
-              label: routeId,
-              // label: routeId + direction + " " + response.trip_id.substr(0,6) +" " +String(percentToUse).substr(1,4) + " FROM " +prevStation[0].title + " TO "+ nextStation[0].title + "IN"+ String(waitTime).substr(0,3),
-              // label: response.trip_id + ' PERCENT ' + percentToUse,
-              identifier: response.trip_id,
-              percentage: percentToUse,
-              direction: direction
-            });
-          trainMarker.addListener('click', function() {
-            showTrainInfo(trainMarker, nextStation, trainMarker.percentage, direction);
-          })
-          newTrains.push(trainMarker);
-          isOnTrack(trainMarker);
-          x = showOrHideMarkers(trainLinesToHide, trainMarker);
+          // var trainMarker = new google.maps.Marker({
+          //     position:newPos,
+          //     map: map,
+          //     icon: customImage,
+          //     label: routeId,
+          //     // label: routeId + direction + " " + response.trip_id.substr(0,6) +" " +String(percentToUse).substr(1,4) + " FROM " +prevStation[0].title + " TO "+ nextStation[0].title + "IN"+ String(waitTime).substr(0,3),
+          //     // label: response.trip_id + ' PERCENT ' + percentToUse,
+          //     identifier: response.trip_id,
+          //     percentage: percentToUse,
+          //     direction: direction
+          //   });
+          // trainMarker.addListener('click', function() {
+          //   showTrainInfo(trainMarker, nextStation, trainMarker.percentage, direction);
+          // })
+          // newTrains.push(trainMarker);
+          // isOnTrack(trainMarker);
+          // x = showOrHideMarkers(trainLinesToHide, trainMarker);
         }
     });
     }
