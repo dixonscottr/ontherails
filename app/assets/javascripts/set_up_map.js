@@ -102,7 +102,6 @@ function setLineWeight(lineID) {
   })
 return lineWeight;
 }
-
 function initCurves(args)
 {
   var tryingThisThing = args.slice(0);
