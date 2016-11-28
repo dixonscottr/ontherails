@@ -1,6 +1,7 @@
 <div class="container mapContainer" id="map">
   <div class="row">
     <script>
+    map;
     function initializeMap(){
       map = initMap();
       stations = initStations(<%=convertStations(@stations)%>);

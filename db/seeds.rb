@@ -241,7 +241,7 @@ line4NRH.stations << Station.where(id: [69..70])
 line4NRH.stations << Station.where(id: [74..81])
 line4NRH.save!
 
-line4NRH = Line.new(line_identifier:"5x", day:"all", time_start: standardStartTime, time_stop: standardEndTime)
+line4NRH = Line.new(line_identifier:"5X", day:"all", time_start: standardStartTime, time_stop: standardEndTime)
 line4NRH.stations << Station.where(id: [40..58])
 line4NRH.stations << Station.where(id: [135,140,143,145,149,154])
 line4NRH.stations << Station.where(id: [108..111])
