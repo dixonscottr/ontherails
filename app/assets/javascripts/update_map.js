@@ -11,30 +11,63 @@ $('document').ready(function() {
     .done(function(responseJSON){
       if(responseJSON.error){
         showErrorMessage();
-        toastr.error('MTA data was not updated. Try again later.');
       }
       else {
         updateTrainPosition(responseJSON);
         var mtaTimestamp = responseJSON.time_updated;
         updateTimestamp(mtaTimestamp);
-        toastr.options = {
-          "positionClass": "toast-bottom-right",
-          "preventDuplicates": false
-        }
-        toastr.success('MTA data was successfully updated');
+        showSuccessMessage();
       }
     })
     .fail(function(responseJSON){
       showErrorMessage();
-      toastr.error('MTA data was not updated. Try again later.');
     });
   });
+
   $('form#train-updater').submit();
+
+  $('form#service-updater').submit(function(event){
+    event.preventDefault();
+    var $form = $(this);
+    var url = $form.attr('action');
+    $.ajax({
+      url: url,
+      method: 'get'
+    })
+    .done(function(responseJSON){
+      Object.keys(responseJSON).forEach(function(line){
+        var $status = $('#' + line + '-service');
+        $status.removeClass('label-success');
+        $status.removeClass('label-warning')
+        // debugger
+        if(responseJSON[line] === 'Good Service'){
+          $status.addClass('label-success');
+        }
+        else {
+          $status.addClass('label-warning')
+          $status.html(responseJSON[line]);
+        }
+        showSuccessMessage();
+      })
+    })
+    .fail(function(){
+      showErrorMessage();
+    })
+  });
+
 });
 
+function showSuccessMessage() {
+  toastr.options = {
+    "positionClass": "toast-bottom-right",
+    "preventDuplicates": true
+  }
+  toastr.success('MTA data was successfully updated');
+}
+
 function showErrorMessage() {
-  // debugger
   $('p#mta-timestamp').text('Caution: MTA data could not be accessed');
+  toastr.error('MTA data was not updated. Try again later.');
 }
 
 function handleClick(line) {

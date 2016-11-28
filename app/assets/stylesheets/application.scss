@@ -26,7 +26,7 @@ html, body {
 
 .mapContainer{
   margin: 0 auto;
-  height: 75%;
+  height: 60%;
 }
 
 #navBar{
@@ -220,4 +220,12 @@ margin-left: 3em;
 .station-label {
   color: "blue";
   font-size: 72px;
+}
+
+.label {
+  font-size: .35em;
+}
+
+.centered-content {
+  margin: 0 auto;
 }
