@@ -38,8 +38,8 @@ $('document').ready(function() {
       Object.keys(responseJSON).forEach(function(line){
         var $status = $('#' + line + '-service');
         $status.removeClass('label-success');
-        $status.removeClass('label-warning')
-        // debugger
+        $status.removeClass('label-warning');
+        // debugger;
         if(responseJSON[line] === 'Good Service'){
           $status.addClass('label-success');
         }

@@ -12,6 +12,7 @@ class LinesController < ApplicationController
       west_side_status = lines[0].css('status').text
       east_side_status = lines[1].css('status').text
       update_train_status(west_side_status, east_side_status, train_status)
+      # debugger
       render json: train_status
     end
 
@@ -54,24 +55,38 @@ class LinesController < ApplicationController
     end
 
     def update_train_status(status_for_123, status_for_456, status_hash)
-      if status_for_123 == 'GOOD SERVICE'
-        status_hash[:'1'] = 'Good Service'
-        status_hash[:'2'] = 'Good Service'
-        status_hash[:'3'] = 'Good Service'
-      else
-        status_hash[:'1'] = "<a href='http://www.mta.info/status/subway/123' target='_blank'>#{status_for_123.capitalize}</a>"
-        status_hash[:'2'] = "<a href='http://www.mta.info/status/subway/123' target='_blank'>#{status_for_123.capitalize}</a>"
-        status_hash[:'3'] = "<a href='http://www.mta.info/status/subway/123' target='_blank'>#{status_for_123.capitalize}</a>"
-      end
-      if status_for_456 == 'GOOD SERVICE'
-        status_hash[:'4'] = 'Good Service'
-        status_hash[:'5'] = 'Good Service'
-        status_hash[:'6'] = 'Good Service'
-      else
-        status_hash[:'4'] = "<a href='http://www.mta.info/status/subway/456' target='_blank'>#{status_for_456.capitalize}</a>"
-        status_hash[:'5'] = "<a href='http://www.mta.info/status/subway/456' target='_blank'>#{status_for_456.capitalize}</a>"
-        status_hash[:'6'] = "<a href='http://www.mta.info/status/subway/456' target='_blank'>#{status_for_456.capitalize}</a>"
+      line_ids = ['1', '2', '3', '4', '5', '6']
+      line_ids.each do |line_id|
+        status_hash[line_id] = 'Good Service'
+        if line_id == 1 || line_id == 2 || line_id == 3
+          unless status_for_123 == "GOOD SERVICE"
+            status_hash[line_id] = "<a href='http://www.mta.info/status/subway/123' target='_blank'>#{status_for_123.capitalize}</a>"
+          end
+        else
+          unless status_for_456 == "GOOD SERVICE"
+            status_hash[line_id] = "<a href='http://www.mta.info/status/subway/456' target='_blank'>#{status_for_456.capitalize}</a>"
+          end
+        end
       end
     end
+      #
+      # if status_for_123 == 'GOOD SERVICE'
+      #   status_hash[:'1'] = 'Good Service'
+      #   status_hash[:'2'] = 'Good Service'
+      #   status_hash[:'3'] = 'Good Service'
+      # else
+      #   status_hash[:'1'] = "<a href='http://www.mta.info/status/subway/123' target='_blank'>#{status_for_123.capitalize}</a>"
+      #   status_hash[:'2'] = "<a href='http://www.mta.info/status/subway/123' target='_blank'>#{status_for_123.capitalize}</a>"
+      #   status_hash[:'3'] = "<a href='http://www.mta.info/status/subway/123' target='_blank'>#{status_for_123.capitalize}</a>"
+      # end
+      # if status_for_456 == 'GOOD SERVICE'
+      #   status_hash[:'4'] = 'Good Service'
+      #   status_hash[:'5'] = 'Good Service'
+      #   status_hash[:'6'] = 'Good Service'
+      # else
+      #   status_hash[:'4'] = "<a href='http://www.mta.info/status/subway/456' target='_blank'>#{status_for_456.capitalize}</a>"
+      #   status_hash[:'5'] = "<a href='http://www.mta.info/status/subway/456' target='_blank'>#{status_for_456.capitalize}</a>"
+      #   status_hash[:'6'] = "<a href='http://www.mta.info/status/subway/456' target='_blank'>#{status_for_456.capitalize}</a>"
+      # end
 
 end
