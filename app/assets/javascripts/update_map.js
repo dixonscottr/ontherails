@@ -39,7 +39,7 @@ $('document').ready(function() {
         var $status = $('#' + line + '-service');
         $status.removeClass('label-success');
         $status.removeClass('label-warning');
-        // debugger;
+
         if(responseJSON[line] === 'Good Service'){
           $status.addClass('label-success');
         }
@@ -460,6 +460,7 @@ function showStationInfo(marker, station) {
         eval(data);
         var nextDirection1TrainTime = direction1[0].split(',')[1];
         var nextDirection1TrainName = direction1[0][0];
+        debugger
         if(minutesFromNow(nextDirection1TrainTime) < 0) {
           nextDirection1TrainTime = direction1[1].split(',')[1];
           nextDirection1TrainName = direction1[1][0];
