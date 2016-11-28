@@ -17,7 +17,8 @@ function initStations(args){
       map: map,
       icon: symbolOne,
       title: String(station.stop_id),
-      label: String(station.name),
+      // label: String(station.name),
+      label: String(station.stop_id),
       trainLines: String(station.train_lines)
     });
     var marker2 = new google.maps.Marker({
