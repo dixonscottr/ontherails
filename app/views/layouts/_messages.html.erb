@@ -1,0 +1,19 @@
+<div class='container-fluid'>
+  <div class="row">
+    <div class="col-sm-3">
+        <form id='train-updater' action='/update_trains' method='get'>
+          <input type='submit' value='Update these trains' />
+        </form>
+      <form id='service-updater' action='/update_line_service' method='get'>
+        <input type='submit' value='Check latest service statuses' />
+      </form>
+    </div>
+    <div class="col-sm-6" id='mta-timestamp'>
+        <p>Train locations last updated by MTA at </p><h5><span id="update_time"><%= Time.now.strftime("%m/%d/%Y %H:%M") %></span></h5>
+    </div>
+</div>
+<div class="col-sm-3 errors">
+  <% if @error%>
+    <p><%= @error %></p>
+  <% end %>
+</div>

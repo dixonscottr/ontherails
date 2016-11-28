@@ -69,13 +69,13 @@ function initRoutes(args)
 
 function setLineColor(lineID) {
       var lineColors = {
-        '1': '#9400D3',
-        '2': '#0000FF',
-        '3': '#00FF00',
-        '4': '#FFFF00',
-        '5': '#FF7F00',
-        '5X': '#FF7F00',
-        '6': '#FF0000'
+        '1': '#f47671',
+        '2': '#EE352E',
+        '3': '#d41811',
+        '4': '#00cc52',
+        '5': '#00933C',
+        '5X': '#00933C',
+        '6': '#004d1f'
       };
       Object.keys(lineColors).forEach(function (key) {
         if (lineID === key) {
