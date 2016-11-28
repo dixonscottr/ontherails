@@ -272,14 +272,14 @@ csv.each do |row|
   longitude = row['shape_pt_lon'].to_f
   sequence = row['shape_pt_sequence']
 
-  if shape_id[0]=="1" || shape_id[0]=="4"
-    longitude = longitude - 0.0004
-
-  elsif shape_id[0]=="2" || shape_id[0]=="6"
-    longitude = longitude + 0.0004
-  else
-    longitude
-  end
+  # if shape_id[0]=="1" || shape_id[0]=="4"
+  #   longitude = longitude - 0.0004
+  #
+  # elsif shape_id[0]=="2" || shape_id[0]=="6"
+  #   longitude = longitude + 0.0004
+  # else
+  #   longitude
+  # end
 
   point = Point.create(shape_id: shape_id, latitude: latitude, longitude: longitude.round(6), sequence: sequence)
 end
