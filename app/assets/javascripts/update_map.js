@@ -39,7 +39,6 @@ $('document').ready(function() {
         var $status = $('#' + line + '-service');
         $status.removeClass('label-success');
         $status.removeClass('label-warning');
-
         if(responseJSON[line] === 'Good Service'){
           $status.addClass('label-success');
         }
@@ -369,10 +368,12 @@ function updateTrainPosition(responseJSON){
               icon: customImage,
               label: routeId,
               // label: response.trip_id + ' PERCENT ' + percentToUse,
-              identifier: response.trip_id
+              identifier: response.trip_id,
+              percentage: percentToUse,
+              direction: direction
             });
           trainMarker.addListener('click', function() {
-            showTrainInfo(trainMarker, nextStation);
+            showTrainInfo(trainMarker, nextStation, trainMarker.percentage);
           })
           newTrains.push(trainMarker);
           isOnTrack(trainMarker);
@@ -385,8 +386,13 @@ function updateTrainPosition(responseJSON){
   })
 }
 
-function showTrainInfo(marker, nextStation) {
+function showTrainInfo(args) {
+  var marker = args.marker
+  var nextStation = args.nextStation
+  var percentage = args.percentage
+  var direction = args.direction
   var nextStationName = findStationName(nextStation[0].title)
+  debugger
   var trainName = marker.label + ' train'
   // var nextStationID = nextStation[0].title;
   var infoWindow = new google.maps.InfoWindow({
@@ -481,4 +487,16 @@ function showStationInfo(marker, station) {
     .fail(function(failure){
       debugger;
     });
+  }
+
+  function findNextArrivingTrain(currentTime, trainArrivals) {
+    var currentTime = new Date();
+    var nextTrain = trainArrivals.find(function(train){
+      timeArray = train.split(',');
+      // arrivingTrain = timeArray[0];
+      arrival = new Date(timeArray[1]);
+      return minutesFromNow(arrival) > 0
+    });
+    
+    return nextTrain;
   }

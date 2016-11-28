@@ -59,18 +59,18 @@ class LinesController < ApplicationController
     def update_train_status(status_for_123, status_for_456, status_hash)
 
       if status_for_123 == 'GOOD SERVICE'
-        status_hash[:'1'] = 'Good Service'
-        status_hash[:'2'] = 'Good Service'
-        status_hash[:'3'] = 'Good Service'
+        status_hash[:'1'] = 'On Time'
+        status_hash[:'2'] = 'On Time'
+        status_hash[:'3'] = 'On Time'
       else
         status_hash[:'1'] = "<a href='http://www.mta.info/status/subway/123' target='_blank'>#{status_for_123.capitalize}</a>"
         status_hash[:'2'] = "<a href='http://www.mta.info/status/subway/123' target='_blank'>#{status_for_123.capitalize}</a>"
         status_hash[:'3'] = "<a href='http://www.mta.info/status/subway/123' target='_blank'>#{status_for_123.capitalize}</a>"
       end
       if status_for_456 == 'GOOD SERVICE'
-        status_hash[:'4'] = 'Good Service'
-        status_hash[:'5'] = 'Good Service'
-        status_hash[:'6'] = 'Good Service'
+        status_hash[:'4'] = 'On Time'
+        status_hash[:'5'] = 'On Time'
+        status_hash[:'6'] = 'On Time'
       else
         status_hash[:'4'] = "<a href='http://www.mta.info/status/subway/456' target='_blank'>#{status_for_456.capitalize}</a>"
         status_hash[:'5'] = "<a href='http://www.mta.info/status/subway/456' target='_blank'>#{status_for_456.capitalize}</a>"
