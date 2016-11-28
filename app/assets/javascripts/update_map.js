@@ -374,11 +374,21 @@ function updateTrainPosition(responseJSON){
             rotation = heading + 180;
           }
 
-
+          function setTrainIconSize(zoomLevel) {
+            var sizesToMatchZooms = {
+              12: 1,
+              13: 2,
+              14: 4,
+              15: 6,
+              16: 8
+            };
+           return sizesToMatchZooms[zoomLevel];
+          };
+          scaleSizeByZoomLevel = setTrainIconSize(map.getZoom())
 
           var customImage = {
             path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-            scale: 4,
+            scale: scaleSizeByZoomLevel,
             strokeWeight: 2,
             strokeColor:"#B40404",
             rotation: rotation

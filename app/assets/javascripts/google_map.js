@@ -14,6 +14,7 @@ function initMap(){
    });
 
    google.maps.event.addListener(map, 'zoom_changed', function(e) {
+     $('form#train-updater').submit();
      zoomLevel = map.getZoom();
      if(zoomLevel >= 13) {
        stations2.forEach(function(station) { station.setVisible(true) });
