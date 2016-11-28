@@ -454,7 +454,7 @@ function showStationInfo(marker, station) {
         var messagePart1 = 'Next ' + direction1Label + ' train in ' + minutesFromNow(nextDirection1TrainTime) + ' minutes'
         var messagePart2 = 'Next ' + direction2Label + ' train in ' + minutesFromNow(nextDirection2TrainTime) + ' minutes'
         var infoWindow = new google.maps.InfoWindow({
-          content: messagePart1 + "\n" + messagePart2
+          content: messagePart1 + "<br />" + messagePart2
         });
         infoWindow.open(map, marker)
     })
