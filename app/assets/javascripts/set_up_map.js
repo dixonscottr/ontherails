@@ -2,6 +2,7 @@ function initStations(args){
   var bounds = new google.maps.LatLngBounds();
   stations = []
   stations2 = []
+  totalTrains =[]
 
 
   args.forEach(function(station){

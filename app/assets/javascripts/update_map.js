@@ -188,8 +188,13 @@ function updateTrainPosition(responseJSON){
   var currentTrainsTracked =["1","2","3","4","5","5X","6"];
   if (newTrains.length != 0)
   {
-    clearTrainLocations(trains);
+    var diff = $(trains).not(newTrains).get();
+    if (diff.length > 4)
+      {        // THIS ISNT AN ERROR THIS IS JUST CHECKING IF THIS EVER HAPPENS
+        clearTrainLocations(diff);
+      }
     trains = newTrains.slice();
+    totalTrains.push(trains)
   }
   newTrains = []
   var trainLinesToHide = trainLineChecker();
@@ -305,31 +310,15 @@ function updateTrainPosition(responseJSON){
           var percentToUse = Math.abs((waitTime/travelTime))
           if (response.direction == "N"){
             percentToUse = Math.abs(1-percentToUse);
-            if (percentToUse > 1)
-            {
-              percentToUse =.98;
-            }
-            if (percentToUse == 0)
-            {
-              percentToUse = 1;
-            }
-            if (percentToUse <0)
-            {
-              percentToUse = .5;
-            }
           }
-
-          if (response.direction == "S"){
-            if (percentToUse > 1)
-            {
-              percentToUse =1;
-            }
-            if (percentToUse == 0)
-            {
-              percentToUse = 0.02;
-            }
+          if (percentToUse > 1)
+          {
+            percentToUse =.90;
           }
-
+          if (percentToUse == 0)
+          {
+            percentToUse = 1;
+          }
           if (response.arrivalTime != response.departureTime){
             percentToUse = .001
           }
@@ -380,25 +369,40 @@ function updateTrainPosition(responseJSON){
             strokeColor:"#B40404",
             rotation: rotation
           };
+          var trainObj={
+            position: newPos,
+            map: map,
+            icon: customImage,
+            label: routeId,
+            station: response.prev_station,
+            identifier: response.trip_id
+          };
+          if (isOnTrack(trainObj,customImage, nextStation))
+          {
 
-          var trainMarker = new google.maps.Marker({
-              position:newPos,
-              map: map,
-              icon: customImage,
-              label: routeId,
-              // label: routeId + direction + " " + response.trip_id.substr(0,6) +" " +String(percentToUse).substr(1,4) + " FROM " +prevStation[0].title + " TO "+ nextStation[0].title + "IN"+ String(waitTime).substr(0,3),
-              // label: response.trip_id + ' PERCENT ' + percentToUse,
-              identifier: response.trip_id
-            });
-          trainMarker.addListener('click', function() {
-            showTrainInfo(trainMarker, nextStation);
-          })
-          newTrains.push(trainMarker);
-          isOnTrack(trainMarker);
-          x = showOrHideMarkers(trainLinesToHide, trainMarker);
+          }
+          else{
+            var trainMarker = new google.maps.Marker({
+                position:newPos,
+                map: map,
+                icon: customImage,
+                label: routeId,
+                station: response.prev_station,
+                // label: response.trip_id + ' PERCENT ' + percentToUse,
+                identifier: response.trip_id
+              });
+            trainMarker.addListener('click', function() {
+              showTrainInfo(trainMarker, nextStation);
+            })
+            newTrains.push(trainMarker);
+            showOrHideMarkers(trainLinesToHide, trainMarker);
+          };
+
+
         }
 
-      });
+
+    });
     }
   }//END IF THE IF INTERSECTION STATEMENT
   })
@@ -409,21 +413,33 @@ function showTrainInfo(marker, nextStation) {
   var trainName = marker.label + ' train'
   // var nextStationID = nextStation[0].title;
   var infoWindow = new google.maps.InfoWindow({
-    content: trainName + ' heading to: ' + nextStationName
+  content: trainName + ' heading to: ' + nextStationName
   });
   infoWindow.open(map, marker)
 }
 
 
-function isOnTrack(currentTrain)
+function isOnTrack(trainObj, customImg, nextStation)
 {
   for (var i=0; i <trains.length;i++){
-    if(trains[i].identifier === currentTrain.identifier)
+    if(trains[i].identifier === trainObj.identifier)
     {
-      trains[i].setMap(null);
+      trains[i].setPosition(trainObj.position);
+      trains[i].setIcon(customImg);
+      trains[i].station = trainObj.station;
+
+      newTrains.push(trains[i]);
+      google.maps.event.clearListeners(trains[i], 'click');
+      trains[i].addListener('click', function() {
+        showTrainInfo(trainMarker, nextStation);
+      })
+      trains.splice(i,1);
+      return true;
+      break;
     }
   }
 }
+
 
 function getFinalPoint(point, offset, degHeading){
     Math.degrees = function(rad) {
