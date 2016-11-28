@@ -106,7 +106,7 @@ return lineWeight;
 function initCurves(args)
 {
   var tryingThisThing = args.slice(0);
-  curveCoordinatesArray=args.slice(0);
+  curveCoordinatesArray = args.slice(0);
   args.forEach(function(curve){
     var lineColor = setLineColor(curve.curveId);
     var lineWeight = setLineWeight(curve.curveId);
