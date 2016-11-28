@@ -11,15 +11,20 @@
   </head>
 
   <body>
-    <form id='service-updater' action='/update_line_service' method='get'>
-      <input type='submit' value='Check latest service statuses' />
-    </form>
+
+  <nav class="navbar">
     <div class="container-fluid">
-      <div class='row navBar toggle' id="navBar">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <div class='collapse navbar-collapse row toggle' id="navBar">
         <div class="col-sm-5">
           <img src="img/rails.jpg" width="40%"/>
         </div>
-        <!-- <form id="select-lines" class="form-check-inline"> -->
         <div class="col-sm-1">
       		<button data-toggle="button" aria-pressed="false" data-target="#myModal" class="btn btn-circle raised btn-primary checked center-block" onclick="handleClick(this)" name="line" value="1">1</button>
           <div><span id='1-service' class="label center-block label-success">Good Service</span></div>
@@ -46,15 +51,17 @@
           <div><span id='6-service' class="label center-block label-success">Good Service</span></div>
         </div>
       </div>
-
     </div>
+  </nav>
     <%= yield %>
     <div class='container-fluid'>
       <p id='mta-timestamp'>Train location data last updated by MTA at <span id="update_time"><%= Time.now.strftime("%m/%d/%Y %H:%M") %></span></p>
       <form id='train-updater' action='/update_trains' method='get'>
         <input type='submit' value='Update these trains' />
       </form>
-
+      <form id='service-updater' action='/update_line_service' method='get'>
+        <input type='submit' value='Check latest service statuses' />
+      </form>
     </div>
     <footer>
       <% if @error%>

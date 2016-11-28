@@ -12,16 +12,15 @@ function initMap(){
    });
 
    google.maps.event.addListener(map, 'zoom_changed', function(e) {
-   if(map.zoom >= 14) {
-     stations.forEach(function(station) { station.setVisible(true)} );
-    //  stations.forEach(function(station) { station.setLabel(station.label)} );
-     // console.log("Zoom level at or greater than 13");
-   } else {
-     stations.forEach(function(station) { station.setVisible(false)} );
-    //  stations.forEach(function(station) { station.setLabel('')} );
+     zoomLevel = map.getZoom();
+     if(zoomLevel >= 13) {
+       stations2.forEach(function(station) { station.setVisible(true) });
+       // console.log("Zoom level at or greater than 13");
+     }
+     else {
+       stations2.forEach(function(station) { station.setVisible(false) });
 
-     // console.log("Zoom level less than 13");
-   }
+     }
    });
    // rename this later
    doStuff();
