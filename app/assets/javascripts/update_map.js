@@ -191,7 +191,7 @@ function updateTrainPosition(responseJSON){
     if (diff.length > 4)
       {        // THIS ISNT AN ERROR THIS IS JUST CHECKING IF THIS EVER HAPPENS
         clearTrainLocations(diff);
-        debugger
+        // debugger
       }
     trains = newTrains.slice();
     totalTrains.push(trains)
@@ -310,14 +310,30 @@ function updateTrainPosition(responseJSON){
           var percentToUse = Math.abs((waitTime/travelTime))
           if (response.direction == "N"){
             percentToUse = Math.abs(1-percentToUse);
+            if (percentToUse > 1)
+            {
+              percentToUse =.99;
+            }
+            else if (percentToUse == 0)
+            {
+              percentToUse = 1;
+            }
+            else if (percentToUse <0)
+            {
+              console.log("TRAIN DELAY");
+              percentToUse = .99;
+            }
           }
-          if (percentToUse > 1)
-          {
-            percentToUse =.90;
-          }
-          if (percentToUse == 0)
-          {
-            percentToUse = 1;
+
+          else if (response.direction == "S"){
+            if (percentToUse > 1)
+            {
+              percentToUse =1;
+            }
+            if (percentToUse == 0)
+            {
+              percentToUse = 0.02;
+            }
           }
           if (response.arrivalTime != response.departureTime){
             percentToUse = .001
@@ -381,11 +397,26 @@ function updateTrainPosition(responseJSON){
             zoom_in_label: routeId,
             zoom_out_label: ''
           };
-          if (isOnTrack(trainObj,customImage, nextStation))
-          {
+          var testFalse = false;
+          for (var i=0; i <trains.length;i++){
+            if(trains[i].identifier === trainObj.identifier)
+            {
+              trains[i].setPosition(trainObj.position);
+              trains[i].setIcon(customImage);
+              trains[i].station = trainObj.station;
 
+              trainMarker = trains.splice(i,1)[0];
+              newTrains.push(trainMarker);
+              google.maps.event.clearInstanceListeners(trainMarker);
+
+              google.maps.event.addListener(trainMarker, 'click', function() {
+                showTrainInfo(trainMarker, nextStation);
+              })
+              testFalse= true;
+              break;
+            }
           }
-          else{
+          if (testFalse==false){
             var trainMarker = new google.maps.Marker({
                 position:newPos,
                 map: map,
@@ -395,12 +426,12 @@ function updateTrainPosition(responseJSON){
                 // label: response.trip_id + ' PERCENT ' + percentToUse,
                 identifier: response.trip_id
               });
-            trainMarker.addListener('click', function() {
+              google.maps.event.addListener(trainMarker, 'click', function() {
               showTrainInfo(trainMarker, nextStation);
             })
             newTrains.push(trainMarker);
             showOrHideMarkers(trainLinesToHide, trainMarker);
-          };
+          }
           // var trainMarker = new google.maps.Marker({
           //     position:newPos,
           //     map: map,
@@ -443,27 +474,6 @@ function showTrainInfo(marker, nextStation, percentage, direction) {
   infoWindow.open(map, marker)
 }
 
-
-function isOnTrack(trainObj, customImg, nextStation)
-{
-  for (var i=0; i <trains.length;i++){
-    if(trains[i].identifier === trainObj.identifier)
-    {
-      trains[i].setPosition(trainObj.position);
-      trains[i].setIcon(customImg);
-      trains[i].station = trainObj.station;
-
-      trainMarker = trains.splice(i,1)[0];
-      newTrains.push(trainMarker);
-      google.maps.event.clearListeners(trainMarker, 'click');
-      trainMarker.addListener('click', function() {
-        showTrainInfo(trainMarker, nextStation);
-      })
-      return true;
-      break;
-    }
-  }
-}
 
 
 function getFinalPoint(point, offset, degHeading){
