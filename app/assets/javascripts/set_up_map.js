@@ -21,10 +21,16 @@ function initStations(args){
       label: String(station.stop_id),
       trainLines: String(station.train_lines)
     });
+    var symbolTwo = {
+          path: 'M -5,0 0,-5 5,0 0,5 z',
+          strokeColor: '#FFC',
+          fillColor: '#FFC',
+          fillOpacity: 1
+        };
     var marker2 = new google.maps.Marker({
       position: stationPos,
       map: map,
-      icon: symbolOne,
+      icon: symbolTwo,
       // title: String(station.name),
       title: String(station.stop_id),
       // label: String(station.stop_id),

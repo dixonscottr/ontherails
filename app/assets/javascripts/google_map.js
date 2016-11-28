@@ -16,11 +16,13 @@ function initMap(){
    google.maps.event.addListener(map, 'zoom_changed', function(e) {
      $('form#train-updater').submit(); //ensures updates to train/station icon sizes
      zoomLevel = map.getZoom();
-     if(zoomLevel >= 13) {
+     if(zoomLevel >= 14) {
+       newTrains.forEach(function(train) { train.setLabel(train.zoom_in_label)});
        stations2.forEach(function(station) { station.setVisible(true) });
        // console.log("Zoom level at or greater than 13");
      }
      else {
+       newTrains.forEach(function(train) { train.setLabel(train.zoom_out_label)});
        stations2.forEach(function(station) { station.setVisible(false) });
      }
    });

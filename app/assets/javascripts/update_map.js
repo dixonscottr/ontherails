@@ -382,6 +382,18 @@ function updateTrainPosition(responseJSON){
             strokeColor:"#B40404",
             rotation: rotation
           };
+          // function setLabelViaZoom(zoomLevel) {
+          //   var labelsToZooms = {
+          //     12: '',
+          //     13: '',
+          //     14: routeId,
+          //     15: routeId,
+          //     16: routeId
+          //   };
+          //  return labelsToZooms[zoomLevel];
+          // };
+
+          // labelViaZoomLevel = setLabelViaZoom(map.getZoom())
           var trainMarker = new google.maps.Marker({
               position:newPos,
               map: map,
@@ -389,7 +401,9 @@ function updateTrainPosition(responseJSON){
               label: routeId,
               // label: routeId + direction + " " + response.trip_id.substr(0,6) +" " +String(percentToUse).substr(1,4) + " FROM " +prevStation[0].title + " TO "+ nextStation[0].title + "IN"+ String(waitTime).substr(0,3),
               // label: response.trip_id + ' PERCENT ' + percentToUse,
-              identifier: response.trip_id
+              identifier: response.trip_id,
+              zoom_in_label: routeId,
+              zoom_out_label: ''
             });
           trainMarker.addListener('click', function() {
             showTrainInfo(trainMarker, nextStation);
