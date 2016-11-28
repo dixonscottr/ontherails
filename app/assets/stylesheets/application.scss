@@ -100,6 +100,7 @@ margin-left: 3em;
     border-radius: 50%;
     margin-top: 15px;
     opacity: 0.4;
+    color: #FFF;
 }
   #start {
     position: absolute;
@@ -148,32 +149,27 @@ margin-left: 3em;
 }
 
 .btn.purple {
-  background-color: #9400D3;
+  background-color: #f47671;
 }
 
 .btn.blue {
-  background-color: #0000FF;
-  color: #fff;
+  background-color: #EE352E;
 }
 
 .btn.green {
-  background-color: #00FF00;
-  color: #fff;
+  background-color: #d41811;
 }
 
 .btn.yellow {
-  background-color: #FFFF00;
-  color: #000;
+  background-color: #00cc52;
 }
 
 .btn.orange {
-  background-color: #FF7F00;
-  color: #fff;
+  background-color: #00933C;
 }
 
 .btn.red {
-  background-color: #FF0000;
-  color: #fff;
+  background-color: #004d1f;
 }
 
 
@@ -189,7 +185,7 @@ margin-left: 3em;
 
 .btn.raised:active, .active {
     background-color: #eee;
-    color: white;
+    color: #FFF;
 }
 
 .floating {

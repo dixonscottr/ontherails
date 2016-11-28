@@ -69,13 +69,13 @@ function initRoutes(args)
 
 function setLineColor(lineID) {
       var lineColors = {
-        '1': '#9400D3',
-        '2': '#0000FF',
-        '3': '#00FF00',
-        '4': '#FFFF00',
-        '5': '#FF7F00',
-        '5X': '#FF7F00',
-        '6': '#FF0000'
+        '1': '#f47671',
+        '2': '#EE352E',
+        '3': '#d41811',
+        '4': '#00cc52',
+        '5': '#00933C',
+        '5X': '#00933C',
+        '6': '#004d1f'
       };
       Object.keys(lineColors).forEach(function (key) {
         if (lineID === key) {
@@ -87,13 +87,13 @@ function setLineColor(lineID) {
 
 function setLineWeight(lineID) {
   var lineWeights = {
-    '1': 3,
-    '2': 3,
-    '3': 3,
-    '4': 3,
-    '5': 3,
-    '5X': 3,
-    '6': 3
+    '1': 4,
+    '2': 4,
+    '3': 4,
+    '4': 4,
+    '5': 4,
+    '5X': 4,
+    '6': 4
   };
   Object.keys(lineWeights).forEach(function (key) {
     if (lineID === key) {
