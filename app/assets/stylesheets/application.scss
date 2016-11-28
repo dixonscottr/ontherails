@@ -48,6 +48,7 @@ html, body {
 width: auto;
 margin-left: 3em;
 }
+
 #map {
   display: inline-block;
   height: 90%;
@@ -67,13 +68,9 @@ margin-left: 3em;
     width: 100%;
   }
 
-  .badge {
-
-  }
-
   .btn-circle.checked {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     padding-bottom: 100%;
     -moz-border-radius: 50%;
     -webkit-border-radius: 50%;
@@ -81,15 +78,16 @@ margin-left: 3em;
     text-align: center;
     padding: 5px 0;
     font-size: 70%;
-    line-height: 2.00;
+    font-weight: bold;
+    line-height: 2.5;
     border-radius: 50%;
     margin-top: 15px;
 
   }
 
   .btn-circle.opaque {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     padding-bottom: 100%;
     -moz-border-radius: 50%;
     -webkit-border-radius: 50%;
@@ -97,10 +95,11 @@ margin-left: 3em;
     text-align: center;
     padding: 5px 0;
     font-size: 70%;
-    line-height: 2.00;
+    font-weight: bold;
+    line-height: 2.5;
     border-radius: 50%;
     margin-top: 15px;
-    opacity: 0.5;
+    opacity: 0.4;
 }
   #start {
     position: absolute;
@@ -240,6 +239,7 @@ margin-left: 3em;
 
 .label {
   font-size: .35em;
+  margin-top: 10px;
 }
 
 .centered-content {
