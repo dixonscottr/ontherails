@@ -191,6 +191,7 @@ function updateTrainPosition(responseJSON){
     if (diff.length > 4)
       {        // THIS ISNT AN ERROR THIS IS JUST CHECKING IF THIS EVER HAPPENS
         clearTrainLocations(diff);
+        debugger
       }
     trains = newTrains.slice();
     totalTrains.push(trains)
@@ -448,12 +449,12 @@ function isOnTrack(trainObj, customImg, nextStation)
       trains[i].setIcon(customImg);
       trains[i].station = trainObj.station;
 
-      newTrains.push(trains[i]);
-      google.maps.event.clearListeners(trains[i], 'click');
-      trains[i].addListener('click', function() {
+      trainMarker = trains.splice(i,1)[0];
+      newTrains.push(trainMarker);
+      google.maps.event.clearListeners(trainMarker, 'click');
+      trainMarker.addListener('click', function() {
         showTrainInfo(trainMarker, nextStation);
       })
-      trains.splice(i,1);
       return true;
       break;
     }
