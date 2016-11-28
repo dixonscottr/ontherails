@@ -46,7 +46,7 @@ class StupidController < ApplicationController
         end
       end
       if current_station_line == nil
-        debugger
+        # debugger SORRY JASON
       end
       curSLid = current_station_line.id
 
