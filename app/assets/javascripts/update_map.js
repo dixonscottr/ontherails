@@ -369,10 +369,13 @@ function updateTrainPosition(responseJSON){
               position:newPos,
               map: map,
               icon: customImage,
-              label: routeId + direction,
+              label: routeId,
               // label: response.trip_id + ' PERCENT ' + percentToUse,
               identifier: response.trip_id
             });
+          trainMarker.addListener('click', function() {
+            showTrainInfo(trainMarker, nextStation);
+          })
           newTrains.push(trainMarker);
           isOnTrack(trainMarker);
           x = showOrHideMarkers(trainLinesToHide, trainMarker);
@@ -383,6 +386,18 @@ function updateTrainPosition(responseJSON){
   }//END IF THE IF INTERSECTION STATEMENT
   })
 }
+
+function showTrainInfo(marker, nextStation) {
+  var nextStationName = findStationName(nextStation[0].title)
+  var trainName = marker.label + ' train'
+  // var nextStationID = nextStation[0].title;
+  var infoWindow = new google.maps.InfoWindow({
+    content: trainName + ' heading to: ' + nextStationName
+  });
+  infoWindow.open(map, marker)
+}
+
+
 function isOnTrack(currentTrain)
 {
   for (var i=0; i <trains.length;i++){
@@ -438,6 +453,12 @@ function showStationInfo(marker, station) {
         var fileTimeFormat;
         var suspended;
         var ageOfDataAtRead;
+        function tryAgain() {
+          var infoWindow = new google.maps.InfoWindow({
+            content: 'Data not avaiable. Please try again.'
+          });
+          infoWindow.open(map, marker)
+        }
         eval(data);
         var nextDirection1TrainTime = direction1[0].split(',')[1];
         var nextDirection1TrainName = direction1[0][0];
