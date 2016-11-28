@@ -367,10 +367,13 @@ function updateTrainPosition(responseJSON){
               position:newPos,
               map: map,
               icon: customImage,
-              label: routeId + direction,
+              label: routeId,
               // label: response.trip_id + ' PERCENT ' + percentToUse,
               identifier: response.trip_id
             });
+          trainMarker.addListener('click', function() {
+            showTrainInfo(trainMarker, nextStation);
+          })
           newTrains.push(trainMarker);
           isOnTrack(trainMarker);
           x = showOrHideMarkers(trainLinesToHide, trainMarker);
@@ -381,6 +384,17 @@ function updateTrainPosition(responseJSON){
   }//END IF THE IF INTERSECTION STATEMENT
   })
 }
+
+function showTrainInfo(marker, nextStation) {
+  var nextStationName = findStationName(nextStation[0].title)
+  // var nextStationID = nextStation[0].title;
+  var infoWindow = new google.maps.InfoWindow({
+    content: 'Heading to: ' + nextStationName
+  });
+  infoWindow.open(map, marker)
+}
+
+
 function isOnTrack(currentTrain)
 {
   for (var i=0; i <trains.length;i++){
