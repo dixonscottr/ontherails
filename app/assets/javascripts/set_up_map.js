@@ -7,7 +7,7 @@ function initStations(args){
   args.forEach(function(station){
     var stationPos = station.stationPos
     var symbolOne = {
-          path: 'M -2,0 0,-2 2,0 0,2 z',
+          path: 'M -10,0 0,-10 10,0 0,10 z',
           strokeColor: '#FFC',
           fillColor: '#FFC',
           fillOpacity: 1
@@ -87,13 +87,13 @@ function setLineColor(lineID) {
 
 function setLineWeight(lineID) {
   var lineWeights = {
-    '1': 1,
-    '2': 5,
-    '3': 2,
-    '4': 5,
+    '1': 3,
+    '2': 3,
+    '3': 3,
+    '4': 3,
     '5': 3,
     '5X': 3,
-    '6': 1
+    '6': 3
   };
   Object.keys(lineWeights).forEach(function (key) {
     if (lineID === key) {
