@@ -350,26 +350,6 @@ function updateTrainPosition(responseJSON){
             rotation = heading + 180;
           }
 
-          // function setTrainIconSize(zoomLevel) {
-          //       var sizesAndZooms = {
-          //         '1': '#9400D3',
-          //         '2': '#0000FF',
-          //         '3': '#00FF00',
-          //         '4': '#FFFF00',
-          //         '5': '#FF7F00',
-          //         '5X': '#FF7F00',
-          //         '6': '#FF0000'
-          //       };
-          //       Object.keys(lineColors).forEach(function (key) {
-          // //         console.log(key);
-          // //         console.log(key==lineID);
-          //         if (lineID === key) {
-          //           lineColor = lineColors[key]
-          //         }
-          //       })
-          //  return lineColor;
-          // }
-
           var customImage = {
             path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
             scale: 4,

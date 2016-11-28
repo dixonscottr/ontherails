@@ -16,13 +16,10 @@ function initMap(){
      zoomLevel = map.getZoom();
      if(zoomLevel >= 13) {
        stations2.forEach(function(station) { station.setVisible(true) });
-      //  debugger
-      //  newTrains.forEach(function(train){ train.setProperty(name:'scale', newValue: 4) });
        // console.log("Zoom level at or greater than 13");
      }
      else {
        stations2.forEach(function(station) { station.setVisible(false) });
-      //  newTrains.forEach(function(train){ train.setProperty(name:'scale', newValue: 2) });
      }
    });
    // rename this later
