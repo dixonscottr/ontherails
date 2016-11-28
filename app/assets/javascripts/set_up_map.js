@@ -87,13 +87,13 @@ function setLineColor(lineID) {
 
 function setLineWeight(lineID) {
   var lineWeights = {
-    '1': 3,
-    '2': 3,
-    '3': 3,
-    '4': 3,
-    '5': 3,
-    '5X': 3,
-    '6': 3
+    '1': 4,
+    '2': 4,
+    '3': 4,
+    '4': 4,
+    '5': 4,
+    '5X': 4,
+    '6': 4
   };
   Object.keys(lineWeights).forEach(function (key) {
     if (lineID === key) {
