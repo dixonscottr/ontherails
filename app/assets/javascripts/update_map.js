@@ -185,6 +185,7 @@ function showOrHideMarkers(markersToShow, marker) {
 }
 
 function updateTrainPosition(responseJSON){
+  var currentTrainsTracked =["1","2","3","4","5","5X","6"];
   if (newTrains.length != 0)
   {
     clearTrainLocations(trains);
@@ -196,7 +197,11 @@ function updateTrainPosition(responseJSON){
   var keys1 = Object.keys(responseJSON).slice(0,-1);
   var timestamp = responseJSON.time_updated;
   keys1.forEach(function(key){
+    if (key)
     var train = responseJSON[key]
+
+    if ((intersection([train.route_id],currentTrainsTracked).length>0) && train.route_id!=''){
+
     // take the x from 6x
     var fullrouteID = train.route_id
     var routeId = train.route_id[0];
@@ -210,13 +215,12 @@ function updateTrainPosition(responseJSON){
         return (station.title === stopId)
       })
       var trip_id = train.trip_id
-
       $.ajax({
         url: '/find_previous_station',
         method: 'post',
         data: {
           'station': stopId,
-          'line': routeId,
+          'line': fullrouteID,
           'time': timestamp,
           'direction': direction,
           'fullrouteID': fullrouteID,
@@ -283,10 +287,10 @@ function updateTrainPosition(responseJSON){
           var waitTime = response.arrivalTime - response.time;
           var currentTimeArray = timesArray.filter(function(timeArr){
             return (timeArr.line_id === response.fullrouteID)
-          })[0]
+          })
           var station1Time = '';
           var station2Time ='';
-          var tempVal = currentTimeArray.data;
+          var tempVal = currentTimeArray[0].data;
           for (var i=0; i <tempVal.length;i++){
 
             if (tempVal[i].stop_id == response.prev_station){
@@ -337,6 +341,10 @@ function updateTrainPosition(responseJSON){
           }
 
           var offset = 0.000025;
+          if (response.line[0] == "1" || response.line[0] == '4'){offset = 0.000015;}
+          if (response.line[0] == "2" || response.line[0] == '5'){offset = 0.000025;}
+          if (response.line[0] == "3" || response.line[0] == '6'){offset = 0.000035;}
+
           //DEBUGGER TO CATCH ERRORS. DO NOT REMOVE. IT WILL ONLY HIT IF WE HAVE ISSUE
           if (currentPos == null){
             debugger
@@ -370,6 +378,7 @@ function updateTrainPosition(responseJSON){
 
       });
     }
+  }//END IF THE IF INTERSECTION STATEMENT
   })
 }
 function isOnTrack(currentTrain)
