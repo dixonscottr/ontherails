@@ -14,7 +14,7 @@ function initMap(){
    });
 
    google.maps.event.addListener(map, 'zoom_changed', function(e) {
-     $('form#train-updater').submit();
+     $('form#train-updater').submit(); //ensures updates to train/station icon sizes
      zoomLevel = map.getZoom();
      if(zoomLevel >= 13) {
        stations2.forEach(function(station) { station.setVisible(true) });
