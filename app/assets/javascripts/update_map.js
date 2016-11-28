@@ -310,14 +310,30 @@ function updateTrainPosition(responseJSON){
           var percentToUse = Math.abs((waitTime/travelTime))
           if (response.direction == "N"){
             percentToUse = Math.abs(1-percentToUse);
+            if (percentToUse > 1)
+            {
+              percentToUse =.98;
+            }
+            else if (percentToUse == 0)
+            {
+              percentToUse = 1;
+            }
+            else if (percentToUse <0)
+            {
+              console.log("TRAIN DELAY");
+              percentToUse = .98;
+            }
           }
-          if (percentToUse > 1)
-          {
-            percentToUse =.90;
-          }
-          if (percentToUse == 0)
-          {
-            percentToUse = 1;
+
+          else if (response.direction == "S"){
+            if (percentToUse > 1)
+            {
+              percentToUse =1;
+            }
+            if (percentToUse == 0)
+            {
+              percentToUse = 0.02;
+            }
           }
           if (response.arrivalTime != response.departureTime){
             percentToUse = .001
@@ -395,7 +411,7 @@ function updateTrainPosition(responseJSON){
                 // label: response.trip_id + ' PERCENT ' + percentToUse,
                 identifier: response.trip_id
               });
-            trainMarker.addListener('click', function() {
+          google.maps.event.addListener(trainMarker, 'click', function() {
               showTrainInfo(trainMarker, nextStation);
             })
             newTrains.push(trainMarker);
@@ -455,8 +471,9 @@ function isOnTrack(trainObj, customImg, nextStation)
 
       trainMarker = trains.splice(i,1)[0];
       newTrains.push(trainMarker);
-      google.maps.event.clearListeners(trainMarker, 'click');
-      trainMarker.addListener('click', function() {
+      google.maps.event.clearInstanceListeners(trainMarker);
+
+      google.maps.event.addListener(trainMarker, 'click', function() {
         showTrainInfo(trainMarker, nextStation);
       })
       return true;

@@ -416,6 +416,14 @@ google.maps.Polygon.prototype.GetPointAtDistance = function(metres) {
   }
   var p1= this.getPath().getAt(i-2);
   var p2= this.getPath().getAt(i-1);
+  if (typeof p1 === 'undefined' || !p1)
+  {
+    debugger
+  }
+  if (typeof p2 === 'undefined' || !p2)
+  {
+    debugger
+  }
   var m = (metres-olddist)/(dist-olddist);
   return new google.maps.LatLng( p1.lat() + (p2.lat()-p1.lat())*m, p1.lng() + (p2.lng()-p1.lng())*m);
 }
