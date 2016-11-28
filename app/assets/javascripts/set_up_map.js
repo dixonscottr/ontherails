@@ -67,15 +67,6 @@ function initRoutes(args)
   return linePaths
 }
 
-// function setLineColor(lineID) {
-//   if(lineID === "1" || lineID === "2" || lineID === "3"){
-//     lineColor = 'Red';
-//   }
-//   else {
-//     lineColor = 'Green';
-//   }
-//   return lineColor;
-// }
 function setLineColor(lineID) {
       var lineColors = {
         '1': '#9400D3',
@@ -87,8 +78,6 @@ function setLineColor(lineID) {
         '6': '#FF0000'
       };
       Object.keys(lineColors).forEach(function (key) {
-//         console.log(key);
-//         console.log(key==lineID);
         if (lineID === key) {
           lineColor = lineColors[key]
         }
@@ -97,13 +86,21 @@ function setLineColor(lineID) {
 }
 
 function setLineWeight(lineID) {
-  if(lineID === "1" || lineID === "2" || lineID === "3"){
-    lineWeight = 5;
-  }
-  else {
-    lineWeight = 2;
-  }
-  return lineWeight;
+  var lineWeights = {
+    '1': 1,
+    '2': 5,
+    '3': 2,
+    '4': 5,
+    '5': 3,
+    '5X': 3,
+    '6': 1
+  };
+  Object.keys(lineWeights).forEach(function (key) {
+    if (lineID === key) {
+      lineWeight= lineWeights[key]
+    }
+  })
+return lineWeight;
 }
 
 function initCurves(args)
@@ -117,10 +114,8 @@ function initCurves(args)
       path: curve.coordinates,
       geodesic: true,
       strokeColor: lineColor,
-      // strokeColor: 'Red',
       strokeOpacity: 1.0,
       strokeWeight: lineWeight,
-      // strokeWeight: 2,
       title: curve.curveId
     });
     coordinates = [];
