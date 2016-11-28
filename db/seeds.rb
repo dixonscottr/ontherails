@@ -271,10 +271,10 @@ csv.each do |row|
   sequence = row['shape_pt_sequence']
 
   if shape_id[0]=="1" || shape_id[0]=="4"
-    longitude = longitude - 0.0005
+    longitude = longitude - 0.0004
 
   elsif shape_id[0]=="2" || shape_id[0]=="6"
-    longitude = longitude + 0.0005
+    longitude = longitude + 0.0004
   else
     longitude
   end
