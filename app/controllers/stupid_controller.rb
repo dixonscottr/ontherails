@@ -28,7 +28,8 @@ class StupidController < ApplicationController
       end
       # prev_stn = line_found.poopsicle(stop_id, direction)
 
-      curS = Station.find_by(stop_id: stop_id).id
+      curS_station = Station.find_by(stop_id: stop_id)
+      curS = curS_station.id
       new_line_id = ''
       current_station_line = Stationline.find_by(line_id: line_found.id.to_s, station_id: curS)
       if (current_station_line==nil)
@@ -45,26 +46,26 @@ class StupidController < ApplicationController
         # else
         # end
         linesArray =["1","2","3","4","5","5X","6"];
-        tempVal = curS.train_lines
-        until current_station_line || tempVal.length==0
+        tempVal = curS_station.train_lines
+        until (current_station_line != nil) || tempVal.length==0
           if (tempVal.include?("5X"))
-            new_lines_to_search = Line.where(line_identifier: "5X")
+            lines_to_search = Line.where(line_identifier: "5X")
             new_line_id = "5X"
             line_found = find_current_running_line(lines_to_search, timestamp)
             current_station_line = Stationline.find_by(line_id: line_found.id.to_s, station_id: curS)
             tempVal.remove("5X")
           else
-            tempVal = tempVal.chars.uniq
-            new_lines_to_search = Line.where(line_identifier: tempVal[0])
-            new_line_id = tempVal.shift
+            tempVal = tempVal.split('').uniq
+            lines_to_search = Line.where(line_identifier: tempVal[0])
+            new_line_id = tempVal.shift[0]
             line_found = find_current_running_line(lines_to_search, timestamp)
             current_station_line = Stationline.find_by(line_id: line_found.id.to_s, station_id: curS)
           end
         end
       end
-      if current_station_line == nil
-        debugger
-      end
+      # if current_station_line == nil
+      #   debugger
+      # end
       curSLid = current_station_line.id
 
       if direction == 'N'
