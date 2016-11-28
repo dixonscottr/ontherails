@@ -392,7 +392,7 @@ function updateTrainPosition(responseJSON){
               direction: direction
             });
           trainMarker.addListener('click', function() {
-            showTrainInfo(trainMarker, nextStation, trainMarker.percentage);
+            showTrainInfo(trainMarker, nextStation, trainMarker.percentage, direction);
           })
           newTrains.push(trainMarker);
           isOnTrack(trainMarker);
@@ -405,17 +405,20 @@ function updateTrainPosition(responseJSON){
   })
 }
 
-function showTrainInfo(args) {
-  var marker = args.marker
-  var nextStation = args.nextStation
-  var percentage = args.percentage
-  var direction = args.direction
-  var nextStationName = findStationName(nextStation[0].title)
-  debugger
-  var trainName = marker.label + ' train'
-  // var nextStationID = nextStation[0].title;
+function showTrainInfo(marker, nextStation, percentage, direction) {
+  var nextStationName = findStationName(nextStation[0].title);
+  var trainName = marker.label + ' train';
+  var percentageleft;
+  if(direction == "N") {
+    percentageleft = (percentage * 100).toFixed(2);
+  }
+  else {
+    percentageleft = (100 - (percentage * 100)).toFixed(2);
+  }
+  var msg1 = trainName + ' heading to: ' + nextStationName + "<br />"
+  var msg2 = percentageleft + "% of the way there!"
   var infoWindow = new google.maps.InfoWindow({
-    content: trainName + ' heading to: ' + nextStationName
+    content: msg1 + msg2
   });
   infoWindow.open(map, marker)
 }
@@ -483,18 +486,18 @@ function showStationInfo(marker, station) {
           infoWindow.open(map, marker)
         }
         eval(data);
+        console.log('new train time')
         var nextDirection1TrainTime = direction1[0].split(',')[1];
-        var nextDirection1TrainName = direction1[0][0];
-        debugger
+        var nextDirection1TrainName = direction1[0].split(',')[0];
         if(minutesFromNow(nextDirection1TrainTime) < 0) {
           nextDirection1TrainTime = direction1[1].split(',')[1];
-          nextDirection1TrainName = direction1[1][0];
+          nextDirection1TrainName = direction1[1].split(',')[0];
         }
         var nextDirection2TrainTime = direction2[0].split(',')[1];
-        var nextDirection2TrainName = direction2[0][0];
+        var nextDirection2TrainName = direction2[0].split(',')[0];
         if(minutesFromNow(nextDirection2TrainTime) < 0) {
           nextDirection2TrainTime = direction2[1].split(',')[1];
-          nextDirection2TrainName = direction2[1][0];
+          nextDirection2TrainName = direction2[1].split(',')[0];
         }
         var messagePart1 = 'Next ' + direction1Label + ' train in ' + minutesFromNow(nextDirection1TrainTime) + ' minutes'
         var messagePart2 = 'Next ' + direction2Label + ' train in ' + minutesFromNow(nextDirection2TrainTime) + ' minutes'
@@ -516,6 +519,6 @@ function showStationInfo(marker, station) {
       arrival = new Date(timeArray[1]);
       return minutesFromNow(arrival) > 0
     });
-    
+
     return nextTrain;
   }
