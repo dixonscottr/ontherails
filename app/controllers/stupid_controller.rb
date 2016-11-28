@@ -33,16 +33,33 @@ class StupidController < ApplicationController
       current_station_line = Stationline.find_by(line_id: line_found.id.to_s, station_id: curS)
       if (current_station_line==nil)
         # debugger
-        if line_found.id == 17
-          current_station_line = Stationline.find_by(line_id: "18", station_id: curS)
-          new_line_id= '5X'
-        elsif line_found.id ==18
-          current_station_line = Stationline.find_by(line_id: "17", station_id: curS)
-          new_line_id= '5'
-        elsif line_found.id ==2
-          current_station_line = Stationline.find_by(line_id: "18", station_id: curS)
-          new_line_id= '5X'
-        else
+        # if line_found.id == 17
+        #   current_station_line = Stationline.find_by(line_id: "18", station_id: curS)
+        #   new_line_id= '5X'
+        # elsif line_found.id ==18
+        #   current_station_line = Stationline.find_by(line_id: "17", station_id: curS)
+        #   new_line_id= '5'
+        # elsif line_found.id ==2
+        #   current_station_line = Stationline.find_by(line_id: "18", station_id: curS)
+        #   new_line_id= '5X'
+        # else
+        # end
+        linesArray =["1","2","3","4","5","5X","6"];
+        tempVal = curS.train_lines
+        until current_station_line || tempVal.length==0
+          if (tempVal.include?("5X"))
+            new_lines_to_search = Line.where(line_identifier: "5X")
+            new_line_id = "5X"
+            line_found = find_current_running_line(lines_to_search, timestamp)
+            current_station_line = Stationline.find_by(line_id: line_found.id.to_s, station_id: curS)
+            tempVal.remove("5X")
+          else
+            tempVal = tempVal.chars.uniq
+            new_lines_to_search = Line.where(line_identifier: tempVal[0])
+            new_line_id = tempVal.shift
+            line_found = find_current_running_line(lines_to_search, timestamp)
+            current_station_line = Stationline.find_by(line_id: line_found.id.to_s, station_id: curS)
+          end
         end
       end
       # if current_station_line == nil
