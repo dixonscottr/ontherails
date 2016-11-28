@@ -352,6 +352,8 @@ function updateTrainPosition(responseJSON){
           var customImage = {
             path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
             scale: 4,
+            strokeWeight: 2,
+            strokeColor:"#B40404",
             rotation: rotation
           };
 
