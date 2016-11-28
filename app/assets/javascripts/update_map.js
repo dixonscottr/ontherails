@@ -39,7 +39,6 @@ $('document').ready(function() {
         var $status = $('#' + line + '-service');
         $status.removeClass('label-success');
         $status.removeClass('label-warning');
-        // debugger;
         if(responseJSON[line] === 'Good Service'){
           $status.addClass('label-success');
         }
@@ -397,23 +396,44 @@ function updateTrainPosition(responseJSON){
             newTrains.push(trainMarker);
             showOrHideMarkers(trainLinesToHide, trainMarker);
           };
-
-
+          var trainMarker = new google.maps.Marker({
+              position:newPos,
+              map: map,
+              icon: customImage,
+              label: routeId,
+              // label: routeId + direction + " " + response.trip_id.substr(0,6) +" " +String(percentToUse).substr(1,4) + " FROM " +prevStation[0].title + " TO "+ nextStation[0].title + "IN"+ String(waitTime).substr(0,3),
+              // label: response.trip_id + ' PERCENT ' + percentToUse,
+              identifier: response.trip_id,
+              percentage: percentToUse,
+              direction: direction
+            });
+          trainMarker.addListener('click', function() {
+            showTrainInfo(trainMarker, nextStation, trainMarker.percentage, direction);
+          })
+          newTrains.push(trainMarker);
+          isOnTrack(trainMarker);
+          x = showOrHideMarkers(trainLinesToHide, trainMarker);
         }
-
-
     });
     }
   }//END IF THE IF INTERSECTION STATEMENT
   })
 }
 
-function showTrainInfo(marker, nextStation) {
-  var nextStationName = findStationName(nextStation[0].title)
-  var trainName = marker.label + ' train'
-  // var nextStationID = nextStation[0].title;
+function showTrainInfo(marker, nextStation, percentage, direction) {
+  var nextStationName = findStationName(nextStation[0].title);
+  var trainName = marker.label + ' train';
+  var percentageleft;
+  if(direction == "N") {
+    percentageleft = (percentage * 100).toFixed(0);
+  }
+  else {
+    percentageleft = (100 - (percentage * 100)).toFixed(0);
+  }
+  var msg1 = trainName + ' heading to: ' + nextStationName + "<br />"
+  var msg2 = percentageleft + "% of the way there!"
   var infoWindow = new google.maps.InfoWindow({
-  content: trainName + ' heading to: ' + nextStationName
+    content: msg1 + msg2
   });
   infoWindow.open(map, marker)
 }
@@ -493,20 +513,27 @@ function showStationInfo(marker, station) {
           infoWindow.open(map, marker)
         }
         eval(data);
-        var nextDirection1TrainTime = direction1[0].split(',')[1];
-        var nextDirection1TrainName = direction1[0][0];
-        if(minutesFromNow(nextDirection1TrainTime) < 0) {
-          nextDirection1TrainTime = direction1[1].split(',')[1];
-          nextDirection1TrainName = direction1[1][0];
-        }
-        var nextDirection2TrainTime = direction2[0].split(',')[1];
-        var nextDirection2TrainName = direction2[0][0];
-        if(minutesFromNow(nextDirection2TrainTime) < 0) {
-          nextDirection2TrainTime = direction2[1].split(',')[1];
-          nextDirection2TrainName = direction2[1][0];
-        }
-        var messagePart1 = 'Next ' + direction1Label + ' train in ' + minutesFromNow(nextDirection1TrainTime) + ' minutes'
-        var messagePart2 = 'Next ' + direction2Label + ' train in ' + minutesFromNow(nextDirection2TrainTime) + ' minutes'
+        console.log('new train time')
+        // var nextDirection1TrainTime = direction1[0].split(',')[1];
+        // var nextDirection1TrainName = direction1[0].split(',')[0];
+        // if(minutesFromNow(nextDirection1TrainTime) < 0) {
+        //   nextDirection1TrainTime = direction1[1].split(',')[1];
+        //   nextDirection1TrainName = direction1[1].split(',')[0];
+        // }
+        // var nextDirection2TrainTime = direction2[0].split(',')[1];
+        // var nextDirection2TrainName = direction2[0].split(',')[0];
+        // if(minutesFromNow(nextDirection2TrainTime) < 0) {
+        //   nextDirection2TrainTime = direction2[1].split(',')[1];
+        //   nextDirection2TrainName = direction2[1].split(',')[0];
+        // }
+        var uptownTrain = findNextTrain(Math.floor(new Date() / 1000), direction1)
+        var downtownTrain = findNextTrain(Math.floor(new Date() / 1000), direction2)
+        var uptownTrainName = uptownTrain.split(',')[0]
+        var uptownTrainTime = uptownTrain.split(',')[1]
+        var downtownTrainName = downtownTrain.split(',')[0]
+        var downtownTrainTime = downtownTrain.split(',')[1]
+        var messagePart1 = 'Next ' + direction1Label + ' train in ' + minutesFromNow(uptownTrainName) + ' minutes'
+        var messagePart2 = 'Next ' + direction2Label + ' train in ' + minutesFromNow(downtownTrainTime) + ' minutes'
         var infoWindow = new google.maps.InfoWindow({
           content: messagePart1 + "<br />" + messagePart2
         });
@@ -515,4 +542,16 @@ function showStationInfo(marker, station) {
     .fail(function(failure){
       debugger;
     });
+  }
+
+  function findNextTrain(currentTime, trainArrivals) {
+    var currentTime = new Date();
+    var futureTrains = trainArrivals.filter(function(train){
+      timeArray = train.split(',');
+      // arrivingTrain = timeArray[0];
+      arrival = new Date(Number(timeArray[1]));
+      debugger;
+      return minutesFromNow(arrival) > 0
+    });
+    return futureTrains[0];
   }
