@@ -45,9 +45,9 @@ class StupidController < ApplicationController
         else
         end
       end
-      if current_station_line == nil
-        debugger
-      end
+      # if current_station_line == nil
+      #   debugger
+      # end
       curSLid = current_station_line.id
 
       if direction == 'N'
