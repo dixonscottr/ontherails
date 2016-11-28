@@ -1,5 +1,6 @@
 function initMap(){
-  center = {lat: 40.774, lng: -73.955}
+  // center = {lat: 40.774, lng: -73.955}
+  center = {lat: 40.733, lng: -73.988}
   timesArray=[];
   var map = new google.maps.Map(document.getElementById('map'), {
     center: center,

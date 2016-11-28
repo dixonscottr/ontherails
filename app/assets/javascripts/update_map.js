@@ -374,6 +374,8 @@ function updateTrainPosition(responseJSON){
             rotation = heading + 180;
           }
 
+
+
           var customImage = {
             path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
             scale: 4,
