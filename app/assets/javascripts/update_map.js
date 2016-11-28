@@ -387,9 +387,10 @@ function updateTrainPosition(responseJSON){
 
 function showTrainInfo(marker, nextStation) {
   var nextStationName = findStationName(nextStation[0].title)
+  var trainName = marker.label + ' train'
   // var nextStationID = nextStation[0].title;
   var infoWindow = new google.maps.InfoWindow({
-    content: 'Heading to: ' + nextStationName
+    content: trainName + ' heading to: ' + nextStationName
   });
   infoWindow.open(map, marker)
 }
