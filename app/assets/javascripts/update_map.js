@@ -338,7 +338,6 @@ function updateTrainPosition(responseJSON){
       });
     }
   })
-
 }
 function isOnTrack(currentTrain)
 {
