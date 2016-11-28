@@ -56,6 +56,15 @@ function updateStations(options) {
       marker.setVisible(false);
     }
   })
+  stations2.forEach(function(marker){
+    if (intersection(options, marker.trainLines.split('').sort()).length)
+    {
+      marker.setVisible(true);
+    }
+    else {
+      marker.setVisible(false);
+    }
+  })
 }
 
 function intersection(a, b) {
