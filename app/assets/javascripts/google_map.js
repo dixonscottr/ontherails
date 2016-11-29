@@ -33,6 +33,10 @@ function initMap(){
               marker.setMap(map);
             }
           }
+          else {
+            marker.setMap(null)
+            marker.setMap(map)
+          }
 
         }
        });
@@ -46,6 +50,10 @@ function initMap(){
            if (marker.getMap() != null){
              marker.setMap(null);
              marker = null;
+           }
+           else {
+             marker.setMap(null)
+             marker.setMap(map)
            }
 
          }
