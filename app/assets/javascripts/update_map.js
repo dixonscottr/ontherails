@@ -80,21 +80,39 @@ function handleClick(line) {
 
 function updateStations(options) {
   stations.forEach(function(marker){
-    if (intersection(options, marker.trainLines.split('').sort()).length)
+    if (intersection(options, marker.trainLines.split('').sort()).length && inBounds(marker))
     {
-      marker.setVisible(true);
+      if (marker.getMap() == null){
+        // marker.setVisible(true);
+        marker.setMap(map);
+      }
     }
     else {
-      marker.setVisible(false);
+      // marker.setVisible(false);
+      if (marker.getMap() != null){
+        marker.setMap(null);
+        marker = null;
+
+      }
     }
   })
   stations2.forEach(function(marker){
-    if (intersection(options, marker.trainLines.split('').sort()).length)
+    if (intersection(options, marker.trainLines.split('').sort()).length && inBounds(marker))
     {
-      marker.setVisible(true);
+      if (marker.getMap() == null){
+        // marker.setVisible(true);
+        marker.setMap(map);
+      }
+      // marker.setMap(map)
+
     }
     else {
-      marker.setVisible(false);
+      // marker.setMap(null)
+      if (marker.getMap() != null){
+        // marker.setVisible(false);
+        marker.setMap(null);
+        marker = null;
+      }
     }
   })
 }
@@ -121,21 +139,50 @@ function updateRoutes(options)
   curvePaths.forEach(function(line){
     if (options.indexOf(line.title[0]) === -1)
     {
-      line.setVisible(false);
+      // line.setVisible(false);
+      if (line.getMap() != null){
+        // marker.setVisible(false);
+        line.setMap(null);
+        line = null;
+      }
+      // line.setMap(null)
+
     }
     else{
-      line.setVisible(true);
+      // line.setVisible(true);
+      if (line.getMap() == null){
+        line.setMap(map)
+        // marker.setVisible(false);
+        // marker.setMap(null);
+        // marker = null;
+      }
+
     }
   })
 }
+function inBounds(marker){
+  return map.getBounds().contains(marker.getPosition());
+}
+
 
 function updateTrainsForLine(lineID_array, lineToHide) {
   newTrains.forEach(function(marker) {
-    if(lineID_array.indexOf(marker.label[0]) === -1) {
-      marker.setVisible(false);
+    if(lineID_array.indexOf(marker.label2[0]) === -1) {
+      // marker.setVisible(false);
+      if (marker.getMap() != null){
+        // marker.setVisible(false);
+        marker.setMap(null);
+        marker = null;
+      }
+
     }
     else {
-      marker.setVisible(true);
+      // marker.setVisible(true);
+      if (marker.getMap() == null && inBounds(marker)){
+        // marker.setVisible(false);
+        marker.setMap(map)
+      }
+
     }
   });
 }
@@ -162,20 +209,34 @@ function updateTimestamp(unixTimestamp) {
 
 function clearTrainLocations(trainsArray) {
   trainsArray.forEach(function(train) {
-    train.setMap(null);
+    if (train.getMap() != null){
+      // marker.setVisible(false);
+      train.setMap(null);
+      train = null;
+    }
   });
 }
 
 function hideMarker(marker) {
-  marker.setVisible(false);
+  // marker.setVisible(false);
+
+  if (marker.getMap()!=null){
+    marker.setMap(null);
+    marker = null;
+  }
+
 }
 
 function showMarker(marker) {
-  marker.setVisible(true);
+  // marker.setVisible(true);
+  if (marker.getMap()==null){
+    marker.setMap(map);
+  }
+
 }
 
 function showOrHideMarkers(markersToShow, marker) {
-  if(markersToShow.indexOf(marker.label[0]) === -1 ) {
+  if((inBounds(marker)==false) || (markersToShow.indexOf(marker.label2[0]) === -1 )) {
     hideMarker(marker)
   }
   else {
@@ -395,6 +456,7 @@ function updateTrainPosition(responseJSON){
             map: map,
             icon: customImage,
             label: routeId,
+            label2: routeId,
             station: response.prev_station,
             identifier: response.trip_id,
             zoom_in_label: routeId,
@@ -427,6 +489,7 @@ function updateTrainPosition(responseJSON){
                 map: map,
                 icon: customImage,
                 label: routeId,
+                label2: routeId,
                 station: response.prev_station,
                 percentage: percentToUse,
                 // label: response.trip_id + ' PERCENT ' + percentToUse,
@@ -463,6 +526,7 @@ function updateTrainPosition(responseJSON){
   })
 }
 
+// <<<<<<< HEAD
 function showTrainInfo(marker, nextStation) {
   var nextStationName = nextStation[0].fullName;
   var percentage = marker.percentage;
