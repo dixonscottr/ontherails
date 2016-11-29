@@ -459,15 +459,17 @@ function updateTrainPosition(responseJSON){
           var customImage = {
             path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
             scale: scaleSizeByZoomLevel,
+            fillColor: setLineColor(response.line),
+            fillOpacity:1,
             strokeWeight: 2,
-            strokeColor:"#B40404",
+            strokeColor:"Black",
             rotation: rotation
           };
           var trainObj={
             position: newPos,
             map: map,
             icon: customImage,
-            label: routeId,
+            // label: routeId,
             label2: routeId,
             station: response.prev_station,
             nxtStation: response.station,
@@ -507,7 +509,7 @@ function updateTrainPosition(responseJSON){
                 position:newPos,
                 map: map,
                 icon: customImage,
-                label: routeId,
+                // label: routeId,
                 label2: routeId,
                 station: response.prev_station,
                 nxtStation: response.station,
@@ -591,7 +593,7 @@ function showStationInfo(marker, station) {
         timeUntilArrive = "Now."
       }
       else {
-        timeUntilArrive = "in " + timeUntilArrive.toString() + " seconds."
+        timeUntilArrive = "in " + timeUntilArrive.toFixed(2).toString() + " seconds."
       }
       message.push({
         direction: train.direction,
@@ -601,7 +603,7 @@ function showStationInfo(marker, station) {
     }
   })
   var messageDisplay = message.map(function(m){
-    return m.trainType + m.direction + " Train is arriving " + m.arrivalTime.toFixed(2) + "<br />"
+    return m.trainType + m.direction + " Train is arriving " + m.arrivalTime + "<br />"
   })
   var infoWindow = new google.maps.InfoWindow({
     content: station.name + "<br />" + messageDisplay.join('')

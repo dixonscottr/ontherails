@@ -42,6 +42,9 @@ function initStations(args){
     marker2.addListener('click', function() {
       showStationInfo(marker, station);
     })
+    marker.addListener('click', function() {
+      showStationInfo(marker, station);
+    })
     stations.push(marker2)
     stations2.push(marker)
 
