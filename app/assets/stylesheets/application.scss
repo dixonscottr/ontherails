@@ -17,6 +17,12 @@
  @import "bootstrap-sprockets";
  @import "bootstrap";
 
+ @grid-float-breakpoint (max-width: 1px) {
+   body {
+     background-color: blue;
+   }
+ }
+
 html, body {
   height: 100%;
   min-width:  560px;
