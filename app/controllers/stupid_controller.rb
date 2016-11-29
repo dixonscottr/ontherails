@@ -1,19 +1,20 @@
 class StupidController < ApplicationController
 
     def update_line_service
-
       mta_service_txt_file = 'http://web.mta.info/status/serviceStatus.txt'
       uri = URI.parse(mta_service_txt_file)
       html_txt = Net::HTTP.get(uri)
       clean_data = html_txt.gsub(/(\n|\r)/, "")
       service_txt = Nokogiri::HTML(clean_data)
       lines = service_txt.css('line')
-      train_status = {}
-      west_side_status = lines[0].css('status').text
+      train_status_hash = {}
       east_side_status = lines[1].css('status').text
-      update_train_status(west_side_status, east_side_status, train_status)
-      # debugger
-      render json: train_status
+      west_side_status = lines[0].css('status').text
+      # text_123 = lines[0].css('text').text
+      # text_456 = lines[1].css('text').text
+      # service_details = text_123 + text_456
+      update_train_status(west_side_status, east_side_status, train_status_hash)
+      render json: train_status_hash
     end
 
     def find_previous_station
@@ -26,7 +27,6 @@ class StupidController < ApplicationController
       if (line_found==nil)
         debugger
       end
-      # prev_stn = line_found.poopsicle(stop_id, direction)
 
       curS_station = Station.find_by(stop_id: stop_id)
       curS = curS_station.id
@@ -115,8 +115,36 @@ class StupidController < ApplicationController
       found_lines.first
     end
 
-    def update_train_status(status_for_123, status_for_456, status_hash)
+    def mentions_train?(text, train)
+      word_found = text.split(' ').find do |word|
+        word == "[#{word}]"
+      end
+      !!word_found
+    end
+    #
+    # def update_train_status(train_service_text, status_for_123, status_for_456, status_hash)
+    #
+    #   trains_to_check = ['1','2','3','4','5','6']
+    #
+    #   trains_to_check.each do |train_line|
+    #     if (train_line == '1' || train_line == '2' || train_line == '3')
+    #       status = status_for_123
+    #       link = 'http://www.mta.info/status/subway/123'
+    #     else
+    #       status = status_for_456
+    #       link = 'http://www.mta.info/status/subway/456'
+    #     end
+    #
+    #     if mentions_train?(train_service_text, train_line)
+    #       status_hash[train_line] = "On Time"
+    #     else
+    #       status_hash[train_line] = "<a href='#{link}' target='_blank'>#{status.capitalize}</a>"
+    #     end
+    #   end
+    #
+    # end
 
+    def update_train_status(status_for_123, status_for_456, status_hash)
       if status_for_123 == 'GOOD SERVICE'
         status_hash[:'1'] = 'On Time'
         status_hash[:'2'] = 'On Time'
@@ -135,6 +163,5 @@ class StupidController < ApplicationController
         status_hash[:'5'] = "<a href='http://www.mta.info/status/subway/456' target='_blank'>#{status_for_456.capitalize}</a>"
         status_hash[:'6'] = "<a href='http://www.mta.info/status/subway/456' target='_blank'>#{status_for_456.capitalize}</a>"
       end
-
     end
 end
