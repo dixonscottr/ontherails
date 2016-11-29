@@ -7,7 +7,7 @@ function initMap(){
     zoom: 14,
     styles: custom_styles
   });
-  map.setOptions({ minZoom: 12, maxZoom: 16, streetViewControl: false, mapTypeControl: false });
+  map.setOptions({ minZoom: 12, maxZoom: 16, streetViewControl: false, mapTypeControl: false});
    google.maps.event.addDomListener(window, "resize", function() {
        google.maps.event.trigger(map, "resize");
        map.setCenter(center);
