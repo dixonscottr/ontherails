@@ -295,8 +295,16 @@ body {
  body {
    width: 100%;
  }
- navBar {
-   padding-top: 0px;
-   margin-top: 0px;
+ div.navbar-header {
+   display: none;
  }
+ // // Can't get this thing to not have empty space in mobile view
+ // #navBar {
+ //   margin-bottom: 0px;
+ //   padding-bottom: 0px;
+ // }
+ //  .mapContainer, #map, #map-canvas {
+ //    margin-top: 0px;
+ //    padding-top: 0px;
+ // }
 }
