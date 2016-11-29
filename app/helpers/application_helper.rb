@@ -39,7 +39,6 @@ module ApplicationHelper
 
   def convertTimes(times)
     train_routes=["1","2","3","4","5","5X","6"]
-    debugger
     time_hash = times.map.with_index do |time, i|
       {
         line_id: train_routes[i],
