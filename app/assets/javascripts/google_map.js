@@ -13,6 +13,8 @@ function initMap(){
        map.setCenter(center);
    });
 
+   setPanningBounds(map)
+
    //Only show stations currently in the bounds
    google.maps.event.addListener(map, "dragend", function() {
      updateDrag();
