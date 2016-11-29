@@ -1,6 +1,6 @@
 //SCOTTS BUTTON
 $('document').ready(function() {
-  $('form').submit(function(event) {
+  $('form#train-updater').submit(function(event) {
     event.preventDefault();
     var $form = $(this);
     var url = $form.attr('action');
@@ -23,6 +23,12 @@ $('document').ready(function() {
       showErrorMessage();
     });
   });
+
+  $('form#reset-button').submit(function(event) {
+    event.preventDefault();
+    $('form#train-updater').submit();
+    $('form#service-updater').submit();
+  })
 
   $('form#train-updater').submit();
 
