@@ -546,7 +546,7 @@ function showTrainInfo(marker, nextStation) {
   var percentageleft = determinePercentageLeft(direction, percentage);
   var msg1 = trainName + ' train heading to: ' + nextStationName + "<br />"
   var msg2 = percentageleft + "% of the way there!"
-  infoWindow.setContent(msg1 + msg2);
+  infoWindow.setContent("<div class='info-window'>" + msg1 + msg2 + "</div>");
   infoWindow.open(map, marker)
 }
 
