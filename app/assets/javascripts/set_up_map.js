@@ -3,6 +3,7 @@ function initStations(args){
   stations = []
   stations2 = []
   totalTrains =[]
+  infoWindow = new google.maps.InfoWindow();
 
 
   args.forEach(function(station){

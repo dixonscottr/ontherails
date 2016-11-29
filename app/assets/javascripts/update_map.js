@@ -540,9 +540,7 @@ function showTrainInfo(marker, nextStation) {
   var percentageleft = determinePercentageLeft(direction, percentage);
   var msg1 = trainName + ' train heading to: ' + nextStationName + "<br />"
   var msg2 = percentageleft + "% of the way there!"
-  var infoWindow = new google.maps.InfoWindow({
-    content: msg1 + msg2
-  });
+  infoWindow.setContent(msg1 + msg2);
   infoWindow.open(map, marker)
 }
 
@@ -605,9 +603,7 @@ function showStationInfo(marker, station) {
   var messageDisplay = message.map(function(m){
     return m.trainType + m.direction + " Train is arriving " + m.arrivalTime + "<br />"
   })
-  var infoWindow = new google.maps.InfoWindow({
-    content: station.name + "<br />" + messageDisplay.join('')
-  });
+  infoWindow.setContent(station.name + "<br />" + messageDisplay.join(''));
   infoWindow.open(map, marker)
 
 
@@ -638,9 +634,7 @@ function showStationInfo(marker, station) {
     var suspended;
     var ageOfDataAtRead;
     function tryAgain() {
-      var infoWindow = new google.maps.InfoWindow({
-        content: 'Data not avaiable. Please try again.'
-      });
+      infoWindow.setContent('Data not avaiable. Please try again.')
       infoWindow.open(map, marker)
     }
     eval(data);
@@ -654,9 +648,7 @@ function showStationInfo(marker, station) {
       var downtownTrainTime = downtownTrain.split(',')[1]
       var messagePart1 = 'Next ' + direction1Label + ' train in ' + minutesFromNow(uptownTrainName) + ' minutes'
       var messagePart2 = 'Next ' + direction2Label + ' train in ' + minutesFromNow(downtownTrainTime) + ' minutes'
-      var infoWindow = new google.maps.InfoWindow({
-        content: messagePart1 + "<br />" + messagePart2
-      });
+      infoWindow.setContent(messagePart1 + "<br />" + messagePart2)
       infoWindow.open(map, marker)
     }
     else{
