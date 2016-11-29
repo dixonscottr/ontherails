@@ -25,8 +25,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'bcrypt', '~> 3.1.7'
 gem 'react-rails'
 gem 'better_errors'
-gem 'bootstrap-sass'
-
+gem 'materialize-sass'
 gem 'gtfs-realtime-bindings'
 
 gem 'figaro'
