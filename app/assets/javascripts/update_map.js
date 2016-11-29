@@ -398,7 +398,9 @@ function updateTrainPosition(responseJSON){
             station: response.prev_station,
             identifier: response.trip_id,
             zoom_in_label: routeId,
-            zoom_out_label: ''
+            zoom_out_label: '',
+            percentage: percentToUse,
+            direction: direction
           };
           var testFalse = false;
           for (var i=0; i <trains.length;i++){
@@ -426,8 +428,10 @@ function updateTrainPosition(responseJSON){
                 icon: customImage,
                 label: routeId,
                 station: response.prev_station,
+                percentage: percentToUse,
                 // label: response.trip_id + ' PERCENT ' + percentToUse,
-                identifier: response.trip_id
+                identifier: response.trip_id,
+                direction: direction
               });
               google.maps.event.addListener(trainMarker, 'click', function() {
               showTrainInfo(trainMarker, nextStation);
@@ -459,22 +463,28 @@ function updateTrainPosition(responseJSON){
   })
 }
 
-function showTrainInfo(marker, nextStation, percentage, direction) {
-  var nextStationName = findStationName(nextStation[0].title);
-  var trainName = marker.label + ' train';
-  var percentageleft;
-  if(direction == "N") {
-    percentageleft = (percentage * 100).toFixed(0);
-  }
-  else {
-    percentageleft = (100 - (percentage * 100)).toFixed(0);
-  }
-  var msg1 = trainName + ' heading to: ' + nextStationName + "<br />"
+function showTrainInfo(marker, nextStation) {
+  var nextStationName = nextStation[0].fullName;
+  var percentage = marker.percentage;
+  var trainName = marker.label2;
+  var direction = marker.direction;
+  var percentageleft = determinePercentageLeft(direction, percentage);
+  var msg1 = trainName + ' train heading to: ' + nextStationName + "<br />"
   var msg2 = percentageleft + "% of the way there!"
   var infoWindow = new google.maps.InfoWindow({
     content: msg1 + msg2
   });
   infoWindow.open(map, marker)
+}
+
+function determinePercentageLeft(direction, percentage) {
+  if(direction == "N") {
+    var percentageleft = (percentage * 100).toFixed(0);
+  }
+  else {
+    var percentageleft = (100 - (percentage * 100)).toFixed(0);
+  }
+  return percentageleft;
 }
 
 
@@ -513,52 +523,55 @@ function showStationInfo(marker, station) {
       method: 'get',
     })
     .done(function(responseJSON){
-        var data = responseJSON.replace('loadNewData()', '')
-        var direction1 = [];
-        var direction2 = [];
-        var direction1Label;
-        var direction2Label;
-        var serverTimeStamp;
-        var fileTimeStamp;
-        var fileTimeFormat;
-        var suspended;
-        var ageOfDataAtRead;
-        function tryAgain() {
-          var infoWindow = new google.maps.InfoWindow({
-            content: 'Data not avaiable. Please try again.'
-          });
-          infoWindow.open(map, marker)
-        }
-        eval(data);
-        if(direction1.length && direction2.length){
-          console.log('Check station for upcoming trains')
-          var uptownTrain = findNextTrain(Math.floor(new Date() / 1000), direction1)
-          var downtownTrain = findNextTrain(Math.floor(new Date() / 1000), direction2)
-          var uptownTrainName = uptownTrain.split(',')[0]
-          var uptownTrainTime = uptownTrain.split(',')[1]
-          var downtownTrainName = downtownTrain.split(',')[0]
-          var downtownTrainTime = downtownTrain.split(',')[1]
-          var messagePart1 = 'Next ' + direction1Label + ' train in ' + minutesFromNow(uptownTrainName) + ' minutes'
-          var messagePart2 = 'Next ' + direction2Label + ' train in ' + minutesFromNow(downtownTrainTime) + ' minutes'
-          var infoWindow = new google.maps.InfoWindow({
-            content: messagePart1 + "<br />" + messagePart2
-          });
-          infoWindow.open(map, marker)
-        }
-        else{
-          tryAgain();
-        }
+      determineNextTrains(marker, responseJSON);
     })
     .fail(function(failure){
-      debugger;
+      showErrorMessage();
     });
+  }
+
+  function determineNextTrains(marker, responseJSON) {
+    var data = responseJSON.replace('loadNewData()', '')
+    var direction1 = [];
+    var direction2 = [];
+    var direction1Label;
+    var direction2Label;
+    var serverTimeStamp;
+    var fileTimeStamp;
+    var fileTimeFormat;
+    var suspended;
+    var ageOfDataAtRead;
+    function tryAgain() {
+      var infoWindow = new google.maps.InfoWindow({
+        content: 'Data not avaiable. Please try again.'
+      });
+      infoWindow.open(map, marker)
+    }
+    eval(data);
+    if(direction1.length && direction2.length){
+      console.log('Check station for upcoming trains')
+      var uptownTrain = findNextTrain(Math.floor(new Date() / 1000), direction1)
+      var downtownTrain = findNextTrain(Math.floor(new Date() / 1000), direction2)
+      var uptownTrainName = uptownTrain.split(',')[0]
+      var uptownTrainTime = uptownTrain.split(',')[1]
+      var downtownTrainName = downtownTrain.split(',')[0]
+      var downtownTrainTime = downtownTrain.split(',')[1]
+      var messagePart1 = 'Next ' + direction1Label + ' train in ' + minutesFromNow(uptownTrainName) + ' minutes'
+      var messagePart2 = 'Next ' + direction2Label + ' train in ' + minutesFromNow(downtownTrainTime) + ' minutes'
+      var infoWindow = new google.maps.InfoWindow({
+        content: messagePart1 + "<br />" + messagePart2
+      });
+      infoWindow.open(map, marker)
+    }
+    else{
+      tryAgain();
+    }
   }
 
   function findNextTrain(currentTime, trainArrivals) {
     var currentTime = new Date();
     var futureTrains = trainArrivals.filter(function(train){
       timeArray = train.split(',');
-      // arrivingTrain = timeArray[0];
       arrival = new Date(Number(timeArray[1]));
       return minutesFromNow(arrival) > 0
     });

@@ -18,7 +18,7 @@ function initStations(args){
       map: map,
       icon: symbolOne,
       title: String(station.stop_id),
-      // label: String(station.name),
+      fullName: station.name,
       label: String(station.stop_id),
       trainLines: String(station.train_lines)
     });
@@ -32,6 +32,7 @@ function initStations(args){
       position: stationPos,
       map: map,
       icon: symbolTwo,
+      fullName: station.name,
       // title: String(station.name),
       title: String(station.stop_id),
       // label: String(station.stop_id),
