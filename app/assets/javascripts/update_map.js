@@ -455,7 +455,6 @@ function updateTrainPosition(responseJSON){
           else{
             rotation = heading + 180;
           }
-
           scaleSizeByZoomLevel = setTrainIconSize(map.getZoom())
           var customImage = {
             path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
@@ -471,7 +470,9 @@ function updateTrainPosition(responseJSON){
             label: routeId,
             label2: routeId,
             station: response.prev_station,
+            nxtStation: response.station,
             identifier: response.trip_id,
+            arrival_time: response.arrivalTime,
             zoom_in_label: routeId,
             zoom_out_label: '',
             percentage: percentToUse,
@@ -484,6 +485,11 @@ function updateTrainPosition(responseJSON){
               trains[i].setPosition(trainObj.position);
               trains[i].setIcon(customImage);
               trains[i].station = trainObj.station;
+              trains[i].nxtStation = trainObj.nxtStation;
+              trains[i].arrival_time = trainObj.arrival_time;
+              trains[i].percentage = trainObj.percentage;
+
+
 
               trainMarker = trains.splice(i,1)[0];
               newTrains.push(trainMarker);
@@ -504,6 +510,8 @@ function updateTrainPosition(responseJSON){
                 label: routeId,
                 label2: routeId,
                 station: response.prev_station,
+                nxtStation: response.station,
+                arrival_time: response.arrivalTime,
                 percentage: percentToUse,
                 // label: response.trip_id + ' PERCENT ' + percentToUse,
                 identifier: response.trip_id,
@@ -573,18 +581,47 @@ function getCoordinatesOfStation(station){
 }
 
 function showStationInfo(marker, station) {
-    var proxy = 'https://cors-anywhere.herokuapp.com/';
-    var url = "http://apps.mta.info/trainTime/getTimesByStation.aspx?stationID="+station.stop_id+"&time="+ (new Date).getTime();
-    $.ajax({
-      url: proxy + url,
-      method: 'get',
-    })
-    .done(function(responseJSON){
-      determineNextTrains(marker, responseJSON);
-    })
-    .fail(function(failure){
-      showErrorMessage();
-    });
+  var message = []
+  newTrains.forEach(function(train){
+    if (train.nxtStation == station.stop_id){
+      var timestamp = new Date().getTime()/1000;
+      var timeUntilArrive = parseInt(train.arrival_time)-timestamp;
+      if (timeUntilArrive<0)
+      {
+        timeUntilArrive = "Now."
+      }
+      else {
+        timeUntilArrive = "in " + timeUntilArrive.toString() + " seconds."
+      }
+      message.push({
+        direction: train.direction,
+        arrivalTime: timeUntilArrive,
+        trainType: train.label2
+      })
+    }
+  })
+  var messageDisplay = message.map(function(m){
+    return m.trainType + m.direction + " Train is arriving " + m.arrivalTime.toFixed(2) + "<br />"
+  })
+  var infoWindow = new google.maps.InfoWindow({
+    content: station.name + "<br />" + messageDisplay.join('')
+  });
+  infoWindow.open(map, marker)
+
+
+
+    // var proxy = 'https://cors-anywhere.herokuapp.com/';
+    // var url = "http://apps.mta.info/trainTime/getTimesByStation.aspx?stationID="+station.stop_id+"&time="+ (new Date).getTime();
+    // $.ajax({
+    //   url: proxy + url,
+    //   method: 'get',
+    // })
+    // .done(function(responseJSON){
+    //   determineNextTrains(marker, responseJSON);
+    // })
+    // .fail(function(failure){
+    //   showErrorMessage();
+    // });
   }
 
   function determineNextTrains(marker, responseJSON) {
