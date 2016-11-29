@@ -7,7 +7,7 @@ function initMap(){
     zoom: 14,
     styles: custom_styles
   });
-  map.setOptions({ minZoom: 12, maxZoom: 16 });
+  map.setOptions({ minZoom: 12, maxZoom: 16, streetViewControl: false, mapTypeControl: false });
    google.maps.event.addDomListener(window, "resize", function() {
        google.maps.event.trigger(map, "resize");
        map.setCenter(center);
@@ -43,7 +43,7 @@ function initMap(){
 
         }
        });
-       console.log("Zoom level at or greater than 13");
+
      }
      else {
        newTrains.forEach(function(train) {
