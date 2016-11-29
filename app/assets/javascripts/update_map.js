@@ -2,7 +2,7 @@
 $('document').ready(function() {
   $('form#train-updater').submit(function(event) {
     event.preventDefault();
-    var $form = $(this);
+    var $form = $('form#train-updater');
     var url = $form.attr('action');
     $.ajax({
       url: url,
@@ -34,7 +34,7 @@ $('document').ready(function() {
 
   $('form#service-updater').submit(function(event){
     event.preventDefault();
-    var $form = $(this);
+    var $form = $('form#service-updater');
     var url = $form.attr('action');
     $.ajax({
       url: url,
