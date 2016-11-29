@@ -281,7 +281,7 @@ stop_id,terminal_station,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,
 401,1,Woodlawn,,40.886037,-73.878751,,,1,
 401N,1,Woodlawn,,40.886037,-73.878751,,,0,401
 401S,1,Woodlawn,,40.886037,-73.878751,,,0,401
-4020,,Mosholu Pkwy,,40.87975,-73.884655,,,1,
+402,0,Mosholu Pkwy,,40.87975,-73.884655,,,1,
 402N,0,Mosholu Pkwy,,40.87975,-73.884655,,,0,402
 402S,0,Mosholu Pkwy,,40.87975,-73.884655,,,0,402
 405,0,Bedford Park Blvd - Lehman College,,40.873412,-73.890064,,,1,
