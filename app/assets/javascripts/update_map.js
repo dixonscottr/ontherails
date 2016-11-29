@@ -617,18 +617,42 @@ function showStationInfo(marker, station) {
   var sortedSouthBoundMessages = southBoundMessages.sort(dynamicSortMultiple("direction", "-arrivalTime"));
 
 
-  var messageDisplay = station.name+"<br />" + "-----------------------------"+"<br />";
+  var messageDisplay = "<div class='text-center'>" + station.name + "<br />" + "-----------------------------"+"<br /></div>";
   messageDisplay=messageDisplay.concat("North Bound Trains:<br />")
-  messageDisplay=messageDisplay.concat(sortedNorthBoundMessages.map(function(m){
-    return m.trainType + " Train is arriving " + m.arrivalTime + "<br />"
-  }).join(''));
-  messageDisplay=messageDisplay.concat("<br />South Bound Trains:<br />");
-  messageDisplay=messageDisplay.concat(sortedSouthBoundMessages.map(function(m){
-    return m.trainType + " Train is arriving " + m.arrivalTime + "<br />"
-  }).join(''));
 
-  infoWindow.setContent(messageDisplay);
+  if(sortedSouthBoundMessages.length > 0) {
+    messageDisplay = addEmptyDataMessage(messageDisplay)
+  }
+  else {
+    messageDisplay=messageDisplay.concat(sortedNorthBoundMessages.map(function(m){
+      return m.trainType + " Train is arriving " + m.arrivalTime + "<br />"
+    }).join(''));
+  }
+
+  messageDisplay=messageDisplay.concat("<br />South Bound Trains:<br />");
+
+  if(sortedNorthBoundMessages.length > 0) {
+    messageDisplay = addEmptyDataMessage(messageDisplay)
+  }
+  else {
+    messageDisplay=messageDisplay.concat(sortedSouthBoundMessages.map(function(m){
+      return m.trainType + " Train is arriving " + m.arrivalTime + "<br />"
+    }).join(''));
+  }
+  // messageDisplay=messageDisplay.concat(sortedNorthBoundMessages.map(function(m){
+  //   return m.trainType + " Train is arriving " + m.arrivalTime + "<br />"
+  // }).join(''));
+  // messageDisplay=messageDisplay.concat(sortedSouthBoundMessages.map(function(m){
+  //   return m.trainType + " Train is arriving " + m.arrivalTime + "<br />"
+  // }).join(''));
+
+  infoWindow.setContent("<div class='info-window'>" + messageDisplay + "</div>");
   infoWindow.open(map, marker)
+  }
+
+  function addEmptyDataMessage(messagesArray) {
+    var errorMessage = '<em>No information available.</em><br />';
+    return messagesArray.concat(errorMessage);
   }
 
   function dynamicSortMultiple() {
