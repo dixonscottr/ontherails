@@ -414,6 +414,9 @@ function updateTrainPosition(responseJSON){
           }
           //Current place on the curve
           var currentPos =  segmentLine.GetPointAtDistance(segmentLine.Distance()*(percentToUse));
+          if (currentPos == null){
+            debugger
+          }
           if (segmentLine.Distance()*(percentToUse) == 0){
             debugger
           }
