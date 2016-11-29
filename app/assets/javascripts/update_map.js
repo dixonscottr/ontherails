@@ -2,10 +2,11 @@
 $('document').ready(function() {
   $(".button-collapse").sideNav({
     menuWidth: 100,
-      edge: 'left',
-      closeOnClick: true,
-      draggable: true
-  });
+     edge: 'left',
+     closeOnClick: true,
+     draggable: true
+   });
+
   $('form#train-updater').submit(function(event) {
     event.preventDefault();
     var $form = $('form#train-updater');
@@ -209,6 +210,7 @@ function trainLineChecker() {
   linesToCheck.each(function(i){
     checkedLines[i] = $(linesToCheck[i]).text();
   });
+
   return checkedLines;
 }
 
