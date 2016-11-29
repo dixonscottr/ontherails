@@ -1,22 +1,26 @@
 <div class='container-fluid footer'>
   <div class="row">
-    <div class="col-sm-3">
+    <div class="col-sm-2">
       <form id='train-updater' action='/update_trains' method='get'>
-        <input type='submit' class='bottom-button' value='Update these trains' />
+        <input type='submit' class='bottom-button' value='Update trains' />
       </form>
+    </div>
+    <div class="col-sm-2">
       <form id='service-updater' action='/update_line_service' method='get'>
-        <input type='submit' class='bottom-button' value='Check latest service statuses' />
+        <input type='submit' class='bottom-button' value='MTA service status' />
       </form>
+    </div>
+    <div class="col-sm-2">
       <form>
-        <input type='submit' class='bottom-button' id='reset-button' value='RESET!' />
+        <input type='submit' class='bottom-button' id='reset-button' value='RESET' />
       </form>
     </div>
-    <div class="col-sm-6" id='mta-timestamp'>
-        <p>Train locations last updated by MTA at </p><h5><span id="update_time"><%= Time.now.strftime("%m/%d/%Y %H:%M") %></span></h5>
+    <div class="col-sm-2" id='mta-timestamp' id="update_time">
+        <p class="small">Train locations last updated by MTA at <%= Time.now.strftime("%m/%d/%Y %H:%M") %></p>
     </div>
-</div>
-<div class="col-sm-3 errors">
-  <% if @error%>
-    <p><%= @error %></p>
-  <% end %>
+    <div class="col-sm-2 errors">
+      <% if @error%>
+        <p><%= @error %></p>
+      <% end %>
+    </div>
 </div>
