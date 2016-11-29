@@ -1,11 +1,14 @@
 <div class='container-fluid footer'>
   <div class="row">
     <div class="col-sm-3">
-        <form id='train-updater' action='/update_trains' method='get'>
-          <input type='submit' value='Update these trains' />
-        </form>
+      <form id='train-updater' action='/update_trains' method='get'>
+        <input type='submit' class='bottom-button' value='Update these trains' />
+      </form>
       <form id='service-updater' action='/update_line_service' method='get'>
-        <input type='submit' value='Check latest service statuses' />
+        <input type='submit' class='bottom-button' value='Check latest service statuses' />
+      </form>
+      <form id='reset-button' action='/update_line_service' method='get'>
+        <input type='submit' class='bottom-button' value='RESET!' />
       </form>
     </div>
     <div class="col-sm-6" id='mta-timestamp'>
