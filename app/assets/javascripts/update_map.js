@@ -591,7 +591,7 @@ function showStationInfo(marker, station) {
         timeUntilArrive = "Now."
       }
       else {
-        timeUntilArrive = "in " + timeUntilArrive.toString() + " seconds."
+        timeUntilArrive = "in " + timeUntilArrive.toFixed(2).toString() + " seconds."
       }
       message.push({
         direction: train.direction,
@@ -601,7 +601,7 @@ function showStationInfo(marker, station) {
     }
   })
   var messageDisplay = message.map(function(m){
-    return m.trainType + m.direction + " Train is arriving " + m.arrivalTime.toFixed(2) + "<br />"
+    return m.trainType + m.direction + " Train is arriving " + m.arrivalTime + "<br />"
   })
   var infoWindow = new google.maps.InfoWindow({
     content: station.name + "<br />" + messageDisplay.join('')
