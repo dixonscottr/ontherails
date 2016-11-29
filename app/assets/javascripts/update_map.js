@@ -258,11 +258,17 @@ function updateTrainPosition(responseJSON){
   var currentTrainsTracked =["1","2","3","4","5","5X","6"];
   if (newTrains.length != 0)
   {
-    var diff = $(trains).not(newTrains).get();
-    if (diff.length > 4)
-      {        // THIS ISNT AN ERROR THIS IS JUST CHECKING IF THIS EVER HAPPENS
-        clearTrainLocations(diff);
-        // debugger
+     diffTrains = diffTrains.concat($(trains).not(newTrains).get());
+
+    if (diffTrains.length > 0 && diffTrains.length <4)
+      {
+        diffTrains.forEach(function(train){
+          train.icon.fillColor = 'black'
+        })
+      }
+      else if (diffTrains.length>4) {
+        clearTrainLocations(diffTrains);
+        diffTrains = [];
       }
     trains = newTrains.slice();
     totalTrains.push(trains)
@@ -439,9 +445,9 @@ function updateTrainPosition(responseJSON){
           }
 
           var offset = 0.000025;
-          if (response.line[0] == "1" || response.line[0] == '4'){offset = 0.000015;}
+          if (response.line[0] == "1" || response.line[0] == '6'){offset = 0.000015;}
           if (response.line[0] == "2" || response.line[0] == '5'){offset = 0.000025;}
-          if (response.line[0] == "3" || response.line[0] == '6'){offset = 0.000035;}
+          if (response.line[0] == "3" || response.line[0] == '4'){offset = 0.000035;}
 
           //DEBUGGER TO CATCH ERRORS. DO NOT REMOVE. IT WILL ONLY HIT IF WE HAVE ISSUE
           if (currentPos == null){

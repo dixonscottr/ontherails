@@ -85,10 +85,7 @@ function initMap(){
              marker.setMap(null);
              marker = null;
            }
-           else {
-             marker.setMap(null)
-             marker.setMap(map)
-           }
+
 
          }
         });
@@ -123,25 +120,29 @@ function updateDrag(station){
   }
   })
 
-  stations2.forEach(function(marker){
-    if (intersection(options, marker.trainLines.split('').sort()).length)
-    {
+  zoomLevel = map.getZoom();
 
-      if (marker.getMap() == null){
-        if(inBounds(marker)){
+  if(zoomLevel >= 14) {
+    stations2.forEach(function(marker){
+      if (intersection(options, marker.trainLines.split('').sort()).length)
+      {
 
-          marker.setMap(map);
+        if (marker.getMap() == null){
+          if(inBounds(marker)){
+
+            marker.setMap(map);
+          }
+        }
+        else{
+          if (inBounds(marker)==false){
+
+          marker.setMap(null);
+          marker = null;
         }
       }
-      else{
-        if (inBounds(marker)==false){
-
-        marker.setMap(null);
-        marker = null;
-      }
     }
-  }
-  })
+    })
+}
   newTrains.forEach(function(train){
     showOrHideMarkers(options, train);
   })
