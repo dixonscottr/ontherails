@@ -1,6 +1,6 @@
 //SCOTTS BUTTON
 $('document').ready(function() {
-  $('form').submit(function(event) {
+  $('form#train-updater').submit(function(event) {
     event.preventDefault();
     var $form = $(this);
     var url = $form.attr('action');
@@ -207,8 +207,11 @@ function updateTrainPosition(responseJSON){
 
     if ((intersection([train.route_id],currentTrainsTracked).length>0) && train.route_id!=''){
 
-    // take the x from 6x
     var fullrouteID = train.route_id
+    // take the x from 6x
+    if(train.route_id === undefined){
+      debugger;
+    }
     var routeId = train.route_id[0];
     var stopTimes = train.stop_time;
     if (stopTimes[0].arrival && stopTimes[0].departure){
