@@ -87,14 +87,12 @@ function updateDrag(station){
 
       if (marker.getMap() == null){
         if(inBounds(marker)){
-          console.log("Set" + marker.title + "to visible")
 
           marker.setMap(map);
         }
       }
       else{
         if (inBounds(marker)==false){
-        console.log("Set" + marker.title + "to hidden")
 
         marker.setMap(null);
         marker = null;
@@ -496,10 +494,12 @@ google.maps.Polygon.prototype.GetPointAtDistance = function(metres) {
   if (typeof p1 === 'undefined' || !p1)
   {
     debugger
+    return null
   }
   if (typeof p2 === 'undefined' || !p2)
   {
     debugger
+    return null
   }
   var m = (metres-olddist)/(dist-olddist);
   return new google.maps.LatLng( p1.lat() + (p2.lat()-p1.lat())*m, p1.lng() + (p2.lng()-p1.lng())*m);
