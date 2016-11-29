@@ -13,22 +13,99 @@ function initMap(){
        map.setCenter(center);
    });
 
+   //Only show stations currently in the bounds
+   google.maps.event.addListener(map, "dragend", function() {
+     updateDrag();
+   });
+
    google.maps.event.addListener(map, 'zoom_changed', function(e) {
     //  $('form#train-updater').submit(); //ensures updates to train/station icon sizes
      zoomLevel = map.getZoom();
+     var options = trainLineChecker();
+
      if(zoomLevel >= 14) {
-       newTrains.forEach(function(train) { train.setLabel(train.zoom_in_label)});
-       stations2.forEach(function(station) { station.setVisible(true) });
-       // console.log("Zoom level at or greater than 13");
+      newTrains.forEach(function(train) { train.setLabel(train.zoom_in_label)});
+      stations2.forEach(function(marker){
+        if (intersection(options, marker.trainLines.split('').sort()).length)
+        {
+          if (marker.getMap() == null){
+            if(inBounds(marker)){
+              marker.setMap(map);
+            }
+          }
+
+        }
+       });
+       console.log("Zoom level at or greater than 13");
      }
      else {
        newTrains.forEach(function(train) { train.setLabel(train.zoom_out_label)});
-       stations2.forEach(function(station) { station.setVisible(false) });
-     }
-   });
+       stations2.forEach(function(marker){
+         if (intersection(options, marker.trainLines.split('').sort()).length)
+         {
+           if (marker.getMap() != null){
+             marker.setMap(null);
+             marker = null;
+           }
+
+         }
+        });
+      }
+      updateDrag();
+
+     });
    // rename this later
    doStuff();
 return map
+}
+function updateDrag(station){
+  var options = trainLineChecker();
+
+  stations.forEach(function(marker){
+    if (intersection(options, marker.trainLines.split('').sort()).length)
+    {
+
+      if (marker.getMap() == null){
+        if(inBounds(marker)){
+
+          marker.setMap(map);
+        }
+      }
+      else{
+        if (inBounds(marker)==false){
+
+        marker.setMap(null);
+        marker = null;
+      }
+    }
+  }
+  })
+
+  stations2.forEach(function(marker){
+    if (intersection(options, marker.trainLines.split('').sort()).length)
+    {
+
+      if (marker.getMap() == null){
+        if(inBounds(marker)){
+          console.log("Set" + marker.title + "to visible")
+
+          marker.setMap(map);
+        }
+      }
+      else{
+        if (inBounds(marker)==false){
+        console.log("Set" + marker.title + "to hidden")
+
+        marker.setMap(null);
+        marker = null;
+      }
+    }
+  }
+  })
+  newTrains.forEach(function(train){
+    showOrHideMarkers(options, train);
+  })
+
 }
 
 var custom_styles = [
