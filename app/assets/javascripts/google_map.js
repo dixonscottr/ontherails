@@ -7,11 +7,38 @@ function initMap(){
     zoom: 14,
     styles: custom_styles
   });
-  map.setOptions({ minZoom: 12, maxZoom: 16, streetViewControl: false, mapTypeControl: false });
+  map.setOptions({ minZoom: 12, maxZoom: 16, streetViewControl: false, mapTypeControl: false});
    google.maps.event.addDomListener(window, "resize", function() {
        google.maps.event.trigger(map, "resize");
        map.setCenter(center);
    });
+
+   // PANNING BOUNDARIES FOR NYC:
+   // Bounds for New York City
+   var allowedBounds = new google.maps.LatLngBounds(
+     new google.maps.LatLng(40.63, -74.10),
+     new google.maps.LatLng(40.91, -73.81));
+   // Listen for the dragend event
+   google.maps.event.addListener(map, 'dragend', function() {
+     if (allowedBounds.contains(map.getCenter())) return;
+     // Out of bounds - Move the map back within the bounds
+     var c = map.getCenter(),
+         x = c.lng(),
+         y = c.lat(),
+         maxX = allowedBounds.getNorthEast().lng(),
+         maxY = allowedBounds.getNorthEast().lat(),
+         minX = allowedBounds.getSouthWest().lng(),
+         minY = allowedBounds.getSouthWest().lat();
+
+     if (x < minX) x = minX;
+     if (x > maxX) x = maxX;
+     if (y < minY) y = minY;
+     if (y > maxY) y = maxY;
+
+     map.setCenter(new google.maps.LatLng(y, x));
+   });
+
+
 
    //Only show stations currently in the bounds
    google.maps.event.addListener(map, "dragend", function() {
