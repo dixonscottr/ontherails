@@ -45,13 +45,13 @@ $('document').ready(function() {
         var $status = $('#' + line + '-service');
         $status.removeClass('label-success');
         $status.removeClass('label-warning');
-        if(responseJSON[line] === 'Good Service'){
+        if(responseJSON[line] === 'On Time'){
           $status.addClass('label-success');
         }
         else {
           $status.addClass('label-warning')
-          $status.html(responseJSON[line]);
         }
+        $status.html(responseJSON[line]);
         showSuccessMessage();
       })
     })
@@ -71,6 +71,10 @@ function showSuccessMessage() {
 }
 
 function showErrorMessage() {
+  toastr.options = {
+    "positionClass": "toast-bottom-right",
+    "preventDuplicates": true
+  }
   $('p#mta-timestamp').text('Caution: MTA data could not be accessed');
   toastr.error('MTA data was not updated. Try again later.');
 }
@@ -508,23 +512,6 @@ function updateTrainPosition(responseJSON){
             newTrains.push(trainMarker);
             showOrHideMarkers(trainLinesToHide, trainMarker);
           }
-          // var trainMarker = new google.maps.Marker({
-          //     position:newPos,
-          //     map: map,
-          //     icon: customImage,
-          //     label: routeId,
-          //     // label: routeId + direction + " " + response.trip_id.substr(0,6) +" " +String(percentToUse).substr(1,4) + " FROM " +prevStation[0].title + " TO "+ nextStation[0].title + "IN"+ String(waitTime).substr(0,3),
-          //     // label: response.trip_id + ' PERCENT ' + percentToUse,
-          //     identifier: response.trip_id,
-          //     percentage: percentToUse,
-          //     direction: direction
-          //   });
-          // trainMarker.addListener('click', function() {
-          //   showTrainInfo(trainMarker, nextStation, trainMarker.percentage, direction);
-          // })
-          // newTrains.push(trainMarker);
-          // isOnTrack(trainMarker);
-          // x = showOrHideMarkers(trainLinesToHide, trainMarker);
         }
     });
     }
@@ -532,7 +519,6 @@ function updateTrainPosition(responseJSON){
   })
 }
 
-// <<<<<<< HEAD
 function showTrainInfo(marker, nextStation) {
   var nextStationName = nextStation[0].fullName;
   var percentage = marker.percentage;
@@ -556,8 +542,6 @@ function determinePercentageLeft(direction, percentage) {
   }
   return percentageleft;
 }
-
-
 
 function getFinalPoint(point, offset, degHeading){
     Math.degrees = function(rad) {

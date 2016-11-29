@@ -10,9 +10,10 @@ class StupidController < ApplicationController
       lines = service_txt.css('line')
       train_status = {}
       west_side_status = lines[0].css('status').text
+      text_123 = lines[0].css('text').text
+      text_456 = lines[1].css('text').text
       east_side_status = lines[1].css('status').text
       update_train_status(west_side_status, east_side_status, train_status)
-      # debugger
       render json: train_status
     end
 
@@ -115,8 +116,14 @@ class StupidController < ApplicationController
       found_lines.first
     end
 
-    def update_train_status(status_for_123, status_for_456, status_hash)
+    def mentions_train?(service_text, train)
+      word_found = service_text.split(' ').find do |word|
+        word == "[#{word}]"
+      end
+      !!word_found
+    end
 
+    def update_train_status(status_for_123, status_for_456, status_hash)
       if status_for_123 == 'GOOD SERVICE'
         status_hash[:'1'] = 'On Time'
         status_hash[:'2'] = 'On Time'
@@ -135,6 +142,5 @@ class StupidController < ApplicationController
         status_hash[:'5'] = "<a href='http://www.mta.info/status/subway/456' target='_blank'>#{status_for_456.capitalize}</a>"
         status_hash[:'6'] = "<a href='http://www.mta.info/status/subway/456' target='_blank'>#{status_for_456.capitalize}</a>"
       end
-
     end
 end
