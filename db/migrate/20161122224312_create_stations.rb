@@ -30,6 +30,7 @@ class CreateStations < ActiveRecord::Migration[5.0]
       t.string :stop_desc
       t.string :parent_station
       t.string :train_lines, default: ""
+      t.boolean :terminal_station
 
 
       t.timestamps

@@ -64,16 +64,17 @@ ActiveRecord::Schema.define(version: 20161125230528) do
   end
 
   create_table "stations", force: :cascade do |t|
-    t.string   "stop_id",                     null: false
+    t.string   "stop_id",                       null: false
     t.string   "code"
     t.string   "name"
-    t.string   "latitude",                    null: false
-    t.string   "longitude",                   null: false
+    t.string   "latitude",                      null: false
+    t.string   "longitude",                     null: false
     t.string   "stop_desc"
     t.string   "parent_station"
-    t.string   "train_lines",    default: ""
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.string   "train_lines",      default: ""
+    t.boolean  "terminal_station"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
   end
 
   create_table "stoptimes", force: :cascade do |t|
