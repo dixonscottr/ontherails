@@ -24,7 +24,10 @@ function initMap(){
      var options = trainLineChecker();
 
      if(zoomLevel >= 14) {
-      newTrains.forEach(function(train) { train.setLabel(train.zoom_in_label)});
+      newTrains.forEach(function(train) {
+        train.setLabel(train.zoom_in_label)
+        train.icon.scale=setTrainIconSize(map.getZoom());
+      });
       stations2.forEach(function(marker){
         if (intersection(options, marker.trainLines.split('').sort()).length)
         {
@@ -43,7 +46,11 @@ function initMap(){
        console.log("Zoom level at or greater than 13");
      }
      else {
-       newTrains.forEach(function(train) { train.setLabel(train.zoom_out_label)});
+       newTrains.forEach(function(train) {
+         train.setLabel(train.zoom_out_label)
+         train.icon.scale=setTrainIconSize(map.getZoom());
+
+       });
        stations2.forEach(function(marker){
          if (intersection(options, marker.trainLines.split('').sort()).length)
          {
