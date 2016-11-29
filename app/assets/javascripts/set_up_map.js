@@ -3,6 +3,7 @@ function initStations(args){
   stations = []
   stations2 = []
   totalTrains =[]
+  diffTrains = []
   infoWindow = new google.maps.InfoWindow();
 
 

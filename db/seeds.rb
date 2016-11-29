@@ -1,27 +1,5 @@
 require 'csv'
-#OTHER DATAT SET FROM WEBSITE
-# csv_text = File.read(Rails.root.join('lib', 'seeds', 'StationEntrances.csv'))
-# csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
-# csv.each do |row|
-#   station = Station.new
-#   station.division = row['Division'];
-#   station.line = row['Line'];
-#   station.name = row['Station_Name'];
-#   station.latitude = row['Station_Latitude'];
-#   station.longitude = row['Station_Longitude'];
-#   station.r1 = row['Route_1'];
-#   station.r2 = row['Route_2'];
-#   station.r3 = row['Route_3'];
-#   station.r4 = row['Route_4'];
-#   station.r5 = row['Route_5'];
-#   station.r6 = row['Route_6'];
-#   station.r7 = row['Route_7'];
-#   station.r8 = row['Route_8'];
-#   station.r9 = row['Route_9'];
-#   station.r10 = row['Route_10'];
-#   station.r11 = row['Route_11'];
-#   station.save
-# end
+
 
 
 csv_text = File.read(Rails.root.join('lib', 'seeds', 'stops.csv'))
@@ -261,12 +239,6 @@ Stationline.all.each do |stationline|
   stationline.station.train_lines += stationline.line.line_identifier
   stationline.station.save
 end
-# Station.all.each do |station|
-#   station.train_lines = station.train_lines.chars.uniq.join
-#   station.save
-# end
-
-
 
 
 csv_text = File.read(Rails.root.join('lib', 'seeds', 'newShapes.csv'))
@@ -277,48 +249,9 @@ csv.each do |row|
   longitude = row['shape_pt_lon'].to_f
   sequence = row['shape_pt_sequence']
 
-  # if shape_id[0]=="1" || shape_id[0]=="4"
-  #   longitude = longitude - 0.0004
-  #
-  # elsif shape_id[0]=="2" || shape_id[0]=="6"
-  #   longitude = longitude + 0.0004
-  # else
-  #   longitude
-  # end
 
   point = Point.create(shape_id: shape_id, latitude: latitude, longitude: longitude.round(6), sequence: sequence)
 end
-
-
-# csv_text = File.read(Rails.root.join('lib', 'seeds', 'trips.csv'))
-# csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
-# csv.each do |row|
-#   trip = Trip.new
-#   trip.route_id = row['route_id'];
-#   trip.service_id = row['service_id'];
-#   trip.trip_id = row['trip_id'];
-#   trip.trip_headsign = row['trip_headsign'];
-#   trip.direction_id = row['direction_id'];
-#   trip.block_id = row['block_id'];
-#   trip.shape_id = row['shape_id'];
-#   trip.save
-# end
-#
-# csv_text = File.read(Rails.root.join('lib', 'seeds', 'routes.csv'))
-# csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
-# csv.each do |row|
-#   route = Route.new
-#   route.route_id = row['route_id'];
-#   route.agency_id = row['agency_id'];
-#   route.route_short_name = row['route_short_name'];
-#   route.route_long_name = row['route_long_name'];
-#   route.route_desc = row['route_desc'];
-#   route.route_type = row['route_type'];
-#   route.route_url = row['route_url'];
-#   route.route_text_color = row['route_text_color'];
-#
-#   route.save
-# end
 
 csv_text = File.read(Rails.root.join('lib', 'seeds', 'times.csv'))
 csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
