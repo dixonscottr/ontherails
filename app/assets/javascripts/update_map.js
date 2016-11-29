@@ -2,7 +2,7 @@
 $('document').ready(function() {
   $('form#train-updater').submit(function(event) {
     event.preventDefault();
-    var $form = $(this);
+    var $form = $('form#train-updater');
     var url = $form.attr('action');
     $.ajax({
       url: url,
@@ -34,7 +34,7 @@ $('document').ready(function() {
 
   $('form#service-updater').submit(function(event){
     event.preventDefault();
-    var $form = $(this);
+    var $form = $('form#service-updater');
     var url = $form.attr('action');
     $.ajax({
       url: url,
@@ -474,7 +474,7 @@ function updateTrainPosition(responseJSON){
             station: response.prev_station,
             nxtStation: response.station,
             identifier: response.trip_id,
-            arrival_time: response.arrivalTime,
+            wait: waitTime,
             zoom_in_label: routeId,
             zoom_out_label: '',
             percentage: percentToUse,
@@ -488,7 +488,7 @@ function updateTrainPosition(responseJSON){
               trains[i].setIcon(customImage);
               trains[i].station = trainObj.station;
               trains[i].nxtStation = trainObj.nxtStation;
-              trains[i].arrival_time = trainObj.arrival_time;
+              trains[i].wait = trainObj.wait;
               trains[i].percentage = trainObj.percentage;
 
 
@@ -513,7 +513,7 @@ function updateTrainPosition(responseJSON){
                 label2: routeId,
                 station: response.prev_station,
                 nxtStation: response.station,
-                arrival_time: response.arrivalTime,
+                wait: waitTime,
                 percentage: percentToUse,
                 // label: response.trip_id + ' PERCENT ' + percentToUse,
                 identifier: response.trip_id,
@@ -540,9 +540,7 @@ function showTrainInfo(marker, nextStation) {
   var percentageleft = determinePercentageLeft(direction, percentage);
   var msg1 = trainName + ' train heading to: ' + nextStationName + "<br />"
   var msg2 = percentageleft + "% of the way there!"
-  var infoWindow = new google.maps.InfoWindow({
-    content: msg1 + msg2
-  });
+  infoWindow.setContent(msg1 + msg2);
   infoWindow.open(map, marker)
 }
 
@@ -586,45 +584,71 @@ function showStationInfo(marker, station) {
   var message = []
   newTrains.forEach(function(train){
     if (train.nxtStation == station.stop_id){
-      var timestamp = new Date().getTime()/1000;
-      var timeUntilArrive = parseInt(train.arrival_time)-timestamp;
-      if (timeUntilArrive<0)
+      var waitTime = parseInt(train.wait);
+      if (waitTime<=0)
       {
-        timeUntilArrive = "Now."
+        waitTime = "now."
       }
       else {
-        timeUntilArrive = "in " + timeUntilArrive.toFixed(2).toString() + " seconds."
+        waitTime = "in " + waitTime.toFixed(0).toString() + " seconds."
       }
       message.push({
         direction: train.direction,
-        arrivalTime: timeUntilArrive,
+        arrivalTime: waitTime,
         trainType: train.label2
       })
     }
   })
-  var messageDisplay = message.map(function(m){
-    return m.trainType + m.direction + " Train is arriving " + m.arrivalTime + "<br />"
+  var northBoundMessages = message.filter(function(x){
+    return x.direction == "N"
   })
-  var infoWindow = new google.maps.InfoWindow({
-    content: station.name + "<br />" + messageDisplay.join('')
-  });
+
+  var southBoundMessages = message.filter(function(x){
+    return x.direction == "S"
+  })
+
+  var sortedNorthBoundMessages = northBoundMessages.sort(dynamicSortMultiple("direction", "-arrivalTime"));
+  var sortedSouthBoundMessages = southBoundMessages.sort(dynamicSortMultiple("direction", "-arrivalTime"));
+
+
+  var messageDisplay = station.name+"<br />" + "-----------------------------"+"<br />";
+  messageDisplay=messageDisplay.concat("North Bound Trains:<br />")
+  messageDisplay=messageDisplay.concat(sortedNorthBoundMessages.map(function(m){
+    return m.trainType + " Train is arriving " + m.arrivalTime + "<br />"
+  }).join(''));
+  messageDisplay=messageDisplay.concat("<br />South Bound Trains:<br />");
+  messageDisplay=messageDisplay.concat(sortedSouthBoundMessages.map(function(m){
+    return m.trainType + " Train is arriving " + m.arrivalTime + "<br />"
+  }).join(''));
+
+  infoWindow.setContent(messageDisplay);
   infoWindow.open(map, marker)
-
-
-
-    // var proxy = 'https://cors-anywhere.herokuapp.com/';
-    // var url = "http://apps.mta.info/trainTime/getTimesByStation.aspx?stationID="+station.stop_id+"&time="+ (new Date).getTime();
-    // $.ajax({
-    //   url: proxy + url,
-    //   method: 'get',
-    // })
-    // .done(function(responseJSON){
-    //   determineNextTrains(marker, responseJSON);
-    // })
-    // .fail(function(failure){
-    //   showErrorMessage();
-    // });
   }
+
+  function dynamicSortMultiple() {
+
+      var props = arguments;
+      return function (obj1, obj2) {
+          var i = 0, result = 0, numberOfProperties = props.length;
+          while(result === 0 && i < numberOfProperties) {
+              result = dynamicSort(props[i])(obj1, obj2);
+              i++;
+          }
+          return result;
+      }
+  }
+  function dynamicSort(property) {
+    var sortOrder = 1;
+    if(property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function (a,b) {
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
+}
+
 
   function determineNextTrains(marker, responseJSON) {
     var data = responseJSON.replace('loadNewData()', '')
@@ -638,9 +662,7 @@ function showStationInfo(marker, station) {
     var suspended;
     var ageOfDataAtRead;
     function tryAgain() {
-      var infoWindow = new google.maps.InfoWindow({
-        content: 'Data not avaiable. Please try again.'
-      });
+      infoWindow.setContent('Data not avaiable. Please try again.')
       infoWindow.open(map, marker)
     }
     eval(data);
@@ -654,9 +676,7 @@ function showStationInfo(marker, station) {
       var downtownTrainTime = downtownTrain.split(',')[1]
       var messagePart1 = 'Next ' + direction1Label + ' train in ' + minutesFromNow(uptownTrainName) + ' minutes'
       var messagePart2 = 'Next ' + direction2Label + ' train in ' + minutesFromNow(downtownTrainTime) + ' minutes'
-      var infoWindow = new google.maps.InfoWindow({
-        content: messagePart1 + "<br />" + messagePart2
-      });
+      infoWindow.setContent(messagePart1 + "<br />" + messagePart2)
       infoWindow.open(map, marker)
     }
     else{
