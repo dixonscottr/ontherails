@@ -511,7 +511,6 @@ function showStationInfo(marker, station) {
     })
     .done(function(responseJSON){
         var data = responseJSON.replace('loadNewData()', '')
-        // var data = responseJSON.replace('tryAgain()', '')
         var direction1 = [];
         var direction2 = [];
         var direction1Label;
@@ -528,31 +527,24 @@ function showStationInfo(marker, station) {
           infoWindow.open(map, marker)
         }
         eval(data);
-        console.log('new train time')
-        // var nextDirection1TrainTime = direction1[0].split(',')[1];
-        // var nextDirection1TrainName = direction1[0].split(',')[0];
-        // if(minutesFromNow(nextDirection1TrainTime) < 0) {
-        //   nextDirection1TrainTime = direction1[1].split(',')[1];
-        //   nextDirection1TrainName = direction1[1].split(',')[0];
-        // }
-        // var nextDirection2TrainTime = direction2[0].split(',')[1];
-        // var nextDirection2TrainName = direction2[0].split(',')[0];
-        // if(minutesFromNow(nextDirection2TrainTime) < 0) {
-        //   nextDirection2TrainTime = direction2[1].split(',')[1];
-        //   nextDirection2TrainName = direction2[1].split(',')[0];
-        // }
-        var uptownTrain = findNextTrain(Math.floor(new Date() / 1000), direction1)
-        var downtownTrain = findNextTrain(Math.floor(new Date() / 1000), direction2)
-        var uptownTrainName = uptownTrain.split(',')[0]
-        var uptownTrainTime = uptownTrain.split(',')[1]
-        var downtownTrainName = downtownTrain.split(',')[0]
-        var downtownTrainTime = downtownTrain.split(',')[1]
-        var messagePart1 = 'Next ' + direction1Label + ' train in ' + minutesFromNow(uptownTrainName) + ' minutes'
-        var messagePart2 = 'Next ' + direction2Label + ' train in ' + minutesFromNow(downtownTrainTime) + ' minutes'
-        var infoWindow = new google.maps.InfoWindow({
-          content: messagePart1 + "<br />" + messagePart2
-        });
-        infoWindow.open(map, marker)
+        if(direction1.length && direction2.length){
+          console.log('Check station for upcoming trains')
+          var uptownTrain = findNextTrain(Math.floor(new Date() / 1000), direction1)
+          var downtownTrain = findNextTrain(Math.floor(new Date() / 1000), direction2)
+          var uptownTrainName = uptownTrain.split(',')[0]
+          var uptownTrainTime = uptownTrain.split(',')[1]
+          var downtownTrainName = downtownTrain.split(',')[0]
+          var downtownTrainTime = downtownTrain.split(',')[1]
+          var messagePart1 = 'Next ' + direction1Label + ' train in ' + minutesFromNow(uptownTrainName) + ' minutes'
+          var messagePart2 = 'Next ' + direction2Label + ' train in ' + minutesFromNow(downtownTrainTime) + ' minutes'
+          var infoWindow = new google.maps.InfoWindow({
+            content: messagePart1 + "<br />" + messagePart2
+          });
+          infoWindow.open(map, marker)
+        }
+        else{
+          tryAgain();
+        }
     })
     .fail(function(failure){
       debugger;
@@ -565,7 +557,6 @@ function showStationInfo(marker, station) {
       timeArray = train.split(',');
       // arrivingTrain = timeArray[0];
       arrival = new Date(Number(timeArray[1]));
-      debugger;
       return minutesFromNow(arrival) > 0
     });
     return futureTrains[0];
