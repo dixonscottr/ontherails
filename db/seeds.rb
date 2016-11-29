@@ -32,9 +32,9 @@ csv.each do |row|
   station.code = row['stop_code'];
   station.name = row['stop_name'];
   if row['terminal_station'] == '0'
-    station.terminal_station = 'false'
+    station.terminal_station = false
   elsif row['terminal_station'] == '1'
-    station.terminal_station = 'true'
+    station.terminal_station = true
   end
   if (row['stop_lat'].length == 9)
     station.latitude = row['stop_lat'];
