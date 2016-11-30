@@ -1,21 +1,31 @@
 <nav>
   <div id='mta-timestamp' id="update_time">
-      <p class="small">Last update from MTA: <%= Time.now.strftime("%m/%d/%Y %H:%M") %></p>
+      <p class="small topMta">Last update from MTA: <%= Time.now.strftime("%m/%d/%Y %H:%M") %></p>
   </div>
   <div class="nav-wrapper">
 
-    <a class="brand-logo"><img src="img/rails.jpg" width="150px"/></a>
+    <a class="brand-logo"><h1 class='title'>On The Rails</h1></a>
     <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="large material-icons">menu</i></a>
     <ul class="side-nav" id="mobile-demo">
       <% lines = { 1 => "one", 2 => "two", 3 => "three", 4 => "four", 5 => "five", 6 => "six" } %>
       <% lines.each do |line , name| %>
         <div class="col-sm-2">
           <li><a class="btn btn-circle raised <%= lines[line] %> checked center-block" onclick="handleClick(this)" name="line" value="<%=line.to_s%>"><%=line.to_s%></a>
-          <span id='<%=line%>-service' class="serviceStatus">On Time
+          <span id='<%=line%>-service' class="serviceStatus subheader">On Time
           </span>
           </li>
         </div>
       <% end %>
+      <li>
+      <form id='train-updater' class='updater' action='/update_trains' method='get'>
+        <input type='submit' class='bottom-button' value='Update trains' />
+      </form>
+    </li>
+    <li>
+      <form id='service-updater' class='updater' action='/update_line_service' method='get'>
+        <input type='submit' class='bottom-button' value='MTA service&#x00A; status' />
+      </form>
+    </li>
     </ul>
   </div>
 </nav>

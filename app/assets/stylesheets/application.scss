@@ -56,19 +56,22 @@ body {
 }
 
 .bottom-button {
-  display: inline-block;
-  padding: 10px 20px;
-  font-size: 14px;
+  width: 100%;
+  height:40px;
+ // padding: 10px 20px;
+  font-size: 13px;
   cursor: pointer;
   text-align: center;
   text-decoration: none;
+  font-weight: bold;
   outline: none;
-  color: #fff;
+  color: #800000;
   background-color: #4CAF50;
   border: none;
   border-radius: 15px;
   box-shadow: 0 5px #999;
-  float: left;
+  white-space: normal;
+  // word-wrap: break-word;
 }
 
 .bottom-button:hover {background-color: #3e8e41}
@@ -78,11 +81,17 @@ body {
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
-
+.topMta{
+  position: relative;
+  top:0px;
+}
 #mta-timestamp {
+  padding-top: 0px;
   float: right;
+
   padding-bottom: 0px;
-  margin-bottom: 0px;
+  margin-top: 0px;
+
   margin-right: 10px;
 }
 
@@ -361,6 +370,16 @@ body {
 .centered-content {
   margin: 0 auto;
 }
+.title{
+  margin-top: 0;
+  padding-top: 0;
+  color: #800000;
+  font-family: "Helvetica Neue", Helvetica, serif;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+
+}
 
 // NEW DROP MENU GUY
 
@@ -412,7 +431,7 @@ body {
 //// END NEW NAV
 .brand-logo{
   left: 50%;
-  transform: translateX(-50%)
+  transform: translateX(-50%);
 }
 nav.button-collapse{
   float: left;
@@ -425,6 +444,18 @@ nav.button-collapse{
 .side-nav{
   background-color: #d6cfb4;
   opacity: .8;
+}
+
+.serviceStatus{
+  text-align: center;
+  font-family: "Helvetica Neue", Helvetica, serif;
+  color: #800000 !important;
+  padding-left:17%;
+  position: relative;
+  top:-18px;
+}
+li{
+  margin-bottom: 0px;
 }
 @media only screen and (max-width: 767px) {
  body {
