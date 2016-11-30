@@ -13,9 +13,13 @@
  *= require_tree .
  *= require_self
  */
-
- @import "bootstrap-sprockets";
- @import "bootstrap";
+@import "materialize/components/color";
+$primary-color: color("blue", "lighten-2") !default;
+$secondary-color: color("yellow", "base") !default;
+@import "materialize";
+@import "materialize/extras/nouislider";
+ // @import "bootstrap-sprockets";
+ // @import "bootstrap";
 
  .info-window {
    font-size: 20px;
@@ -57,13 +61,17 @@ body {
   float: left;
 }
 
+// #grad1 {
+//     height: 100%;
+//     background: #D4E5CF; /* For browsers that do not support gradients */
+//     background: -webkit-linear-gradient(#D4E5CF, #BECEBA); /* For Safari 5.1 to 6.0 */
+//     background: -o-linear-gradient(#D4E5CF, #BECEBA); /* For Opera 11.1 to 12.0 */
+//     background: -moz-linear-gradient(#D4E5CF, #BECEBA); /* For Firefox 3.6 to 15 */
+//     background: linear-gradient(#D4E5CF, #BECEBA); /* Standard syntax (must be last) */
+// }
+
 #grad1 {
-    height: 100%;
-    background: #00cdcd; /* For browsers that do not support gradients */
-    background: -webkit-linear-gradient(#00cdcd, #009a9a); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#00cdcd, #009a9a); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#00cdcd, #009a9a); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#00cdcd, #009a9a); /* Standard syntax (must be last) */
+  background-color: #D4E5CF;
 }
 
 .bottom-button:hover {background-color: #3e8e41}
