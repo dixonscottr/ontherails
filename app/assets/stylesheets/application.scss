@@ -40,7 +40,7 @@ html, body {
 }
 
 body {
-  width: 90%;
+  width: 100%;
   margin: auto;
   background-color: #adcab4;
 }
@@ -57,19 +57,22 @@ body {
 }
 
 .bottom-button {
-  display: inline-block;
-  padding: 10px 20px;
-  font-size: 14px;
+  width: 100%;
+  height:40px;
+ // padding: 10px 20px;
+  font-size: 13px;
   cursor: pointer;
   text-align: center;
   text-decoration: none;
+  font-weight: bold;
   outline: none;
-  color: #fff;
+  color: #800000;
   background-color: #4CAF50;
   border: none;
   border-radius: 15px;
   box-shadow: 0 5px #999;
-  float: left;
+  white-space: normal;
+  // word-wrap: break-word;
 }
 
 .bottom-button:hover {background-color: #3e8e41}
@@ -79,13 +82,19 @@ body {
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
-
-#mta-timestamp {
-  float: left;
-  margin-top: 2px;
+.topMta{
+  position: relative;
+  top:0px;
 }
+#mta-timestamp {
+  padding-top: 0px;
+  float: right;
 
+  padding-bottom: 0px;
+  margin-top: 0px;
 
+  margin-right: 10px;
+}
 
 #navbar{
   display: inline-block;;
@@ -106,9 +115,9 @@ nav{
 }
 
 ul.credits {
-  margin-top: 0px;
+  margin-top: 4px;
   padding-top: 0px;
-  text-align: center;
+  text-align: right;
 }
 
 div.row {
@@ -137,7 +146,7 @@ nav, .footer {
   display: block;
   height: 90%;
   min-height: 800px;
-  width: 100%;
+  width: 80%;
   border-radius: 16px 16px;
   border-color: #141f17;
   border-style: solid;
@@ -359,6 +368,16 @@ nav, .footer {
 .centered-content {
   margin: 0 auto;
 }
+.title{
+  margin-top: 0;
+  padding-top: 0;
+  color: #800000;
+  font-family: "Helvetica Neue", Helvetica, serif;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+
+}
 
 // NEW DROP MENU GUY
 
@@ -410,7 +429,7 @@ nav, .footer {
 //// END NEW NAV
 .brand-logo{
   left: 50%;
-  transform: translateX(-50%)
+  transform: translateX(-50%);
 }
 nav.button-collapse{
   float: left;
@@ -424,15 +443,28 @@ nav.button-collapse{
   background-color: #d6cfb4;
   opacity: .8;
 }
+
+.serviceStatus{
+  text-align: center;
+  font-family: "Helvetica Neue", Helvetica, serif;
+  color: #800000 !important;
+  padding-left:17%;
+  position: relative;
+  top:-18px;
+}
+li{
+  margin-bottom: 0px;
+}
 @media only screen and (max-width: 767px) {
  body {
    width: 100%;
+  //  font-size: 2em;
  }
  div.navbar-header {
    display: none;
  }
- body {
-   font-size: 2em;
+ p.small {
+   font-size: 1em;
  }
 
  // // Can't get this thing to not have empty space in mobile view
