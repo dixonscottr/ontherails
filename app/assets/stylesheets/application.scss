@@ -81,11 +81,17 @@ body {
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
-
+.topMta{
+  position: relative;
+  top:0px;
+}
 #mta-timestamp {
+  padding-top: 0px;
   float: right;
+
   padding-bottom: 0px;
-  margin-bottom: 0px;
+  margin-top: 0px;
+
   margin-right: 10px;
 }
 
