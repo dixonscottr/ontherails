@@ -550,9 +550,10 @@ function showTrainInfo(marker, nextStation) {
   var trainName = marker.label2;
   var direction = marker.direction;
   var percentageleft = determinePercentageLeft(direction, percentage);
-  var msg1 = trainName + ' train heading to: ' + nextStationName + "<br />"
-  var msg2 = percentageleft + "% of the way there!"
-  infoWindow.setContent("<div class='info-window'>" + msg1 + msg2 + "</div>");
+  var msg1 = "<h5 class='center-align'>" + trainName + ' train</h5>'
+  var msg2 = "Next station: " + nextStationName
+  // var msg2 = percentageleft + "% of the way there!"
+  infoWindow.setContent("<div class='black-text info-window'>" + msg1 + msg2 + "</div>");
   infoWindow.open(map, marker)
 }
 
@@ -599,7 +600,7 @@ function showStationInfo(marker, station) {
       var waitTime = parseInt(train.wait);
       if (waitTime<=0)
       {
-        waitTime = "now.";
+        waitTime = "now";
       }
       else if(waitTime < 120) {
         waitTime = "in < 1 minute";
@@ -626,15 +627,9 @@ function showStationInfo(marker, station) {
   var sortedSouthBoundMessages = southBoundMessages.sort(dynamicSortMultiple("direction", "-arrivalTime"));
 
 
-  var messageDisplay = "<h3 class='text-center'>" + station.name + "<br />" + "-----------------------------"+"<br /></h3>";
+  var messageDisplay = "<h5 class='center-align'>" + station.name + "<hr /></h5>";
 
-  console.log('north', sortedNorthBoundMessages);
-  console.log(sortedNorthBoundMessages.length);
-  console.log('south', sortedSouthBoundMessages);
-  console.log(sortedSouthBoundMessages.length);
-  console.log('------');
-
-  messageDisplay=messageDisplay.concat("Northbound Trains:<br />")
+  messageDisplay=messageDisplay.concat("<i class='material-icons'>call_made</i> Northbound Trains:<br />")
 
   var errorMessage = '<em>No information available.</em><br />';
 
@@ -647,7 +642,7 @@ function showStationInfo(marker, station) {
     messageDisplay= messageDisplay.concat(errorMessage)
   }
 
-  messageDisplay=messageDisplay.concat("<br />Southbound Trains:<br />");
+  messageDisplay=messageDisplay.concat("<br /><i class='material-icons'>call_received</i> Southbound Trains:<br />");
 
   if(sortedSouthBoundMessages.length > 0) {
     messageDisplay=messageDisplay.concat(sortedSouthBoundMessages.map(function(m){
@@ -665,7 +660,7 @@ function showStationInfo(marker, station) {
   //   return m.trainType + " Train is arriving " + m.arrivalTime + "<br />"
   // }).join(''));
 
-  infoWindow.setContent("<div class='info-window'>" + messageDisplay + "</div>");
+  infoWindow.setContent("<div class='black-text info-window'>" + messageDisplay + "</div>");
   infoWindow.open(map, marker)
   }
 
