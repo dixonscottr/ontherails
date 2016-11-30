@@ -593,10 +593,13 @@ function showStationInfo(marker, station) {
       var waitTime = parseInt(train.wait);
       if (waitTime<=0)
       {
-        waitTime = "now."
+        waitTime = "now.";
+      }
+      else if(waitTime < 120) {
+        waitTime = "in < 1 minute";
       }
       else {
-        waitTime = "in " + waitTime.toFixed(0).toString() + " seconds."
+        waitTime = "in " + (waitTime / 60).toFixed(0).toString() + " minutes."
       }
       message.push({
         direction: train.direction,
@@ -625,7 +628,7 @@ function showStationInfo(marker, station) {
   console.log(sortedSouthBoundMessages.length);
   console.log('------');
 
-  messageDisplay=messageDisplay.concat("North Bound Trains:<br />")
+  messageDisplay=messageDisplay.concat("Northbound Trains:<br />")
 
   var errorMessage = '<em>No information available.</em><br />';
 
@@ -638,7 +641,7 @@ function showStationInfo(marker, station) {
     messageDisplay= messageDisplay.concat(errorMessage)
   }
 
-  messageDisplay=messageDisplay.concat("<br />South Bound Trains:<br />");
+  messageDisplay=messageDisplay.concat("<br />Southbound Trains:<br />");
 
   if(sortedSouthBoundMessages.length > 0) {
     messageDisplay=messageDisplay.concat(sortedSouthBoundMessages.map(function(m){
