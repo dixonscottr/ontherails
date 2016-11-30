@@ -1,4 +1,4 @@
-class StupidController < ApplicationController
+class LineController < ApplicationController
 
     def update_line_service
       mta_service_txt_file = 'http://web.mta.info/status/serviceStatus.txt'

@@ -1,16 +1,13 @@
 <div class='container-fluid footer'>
   <div class="row">
-
-    <div class="col-sm-2">
-      <form id='reset-button'>
-        <input type='submit' class='bottom-button' value='Update Everything' />
-      </form>
-    </div>
-
     <div class="col-sm-2 errors">
       <% if @error%>
         <p><%= @error %></p>
       <% end %>
     </div>
+    <div id='mta-timestamp' id="update_time">
+        <p class="small topMta">Last update from MTA: <%= Time.now.strftime("%m/%d/%Y %H:%M") %></p>
+    </div>
 </div>
+
 </div>
