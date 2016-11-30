@@ -21,8 +21,12 @@ $secondary-color: color("yellow", "base") !default;
  // @import "bootstrap-sprockets";
  // @import "bootstrap";
 
- .info-window {
+ .train-info-window {
    font-size: 20px;
+ }
+
+ .station-info-window {
+   font-size: 15px;
  }
 
  #toast-container {

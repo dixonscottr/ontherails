@@ -550,9 +550,10 @@ function showTrainInfo(marker, nextStation) {
   var trainName = marker.label2;
   var direction = marker.direction;
   var percentageleft = determinePercentageLeft(direction, percentage);
-  var msg1 = trainName + ' train heading to: ' + nextStationName + "<br />"
-  var msg2 = percentageleft + "% of the way there!"
-  infoWindow.setContent("<div class='info-window'>" + msg1 + msg2 + "</div>");
+  var msg1 = trainName + ' train<br />'
+  var msg2 = "Next Stop: " + nextStationName
+  // var msg2 = percentageleft + "% of the way there!"
+  infoWindow.setContent("<div class='black-text train-info-window'>" + msg1 + msg2 + "</div>");
   infoWindow.open(map, marker)
 }
 
@@ -659,7 +660,7 @@ function showStationInfo(marker, station) {
   //   return m.trainType + " Train is arriving " + m.arrivalTime + "<br />"
   // }).join(''));
 
-  infoWindow.setContent("<div class='black-text'>" + messageDisplay + "</div>");
+  infoWindow.setContent("<div class='black-text station-info-window'>" + messageDisplay + "</div>");
   infoWindow.open(map, marker)
   }
 
