@@ -70,20 +70,14 @@ $('document').ready(function() {
 });
 
 function showSuccessMessage() {
-  toastr.options = {
-    "positionClass": "toast-bottom-right",
-    "preventDuplicates": true
-  }
-  toastr.success('MTA data was successfully updated');
+  $('#toast-container').empty();
+  Materialize.toast('<i class="material-icons">done</i> MTA data was successfully updated', 3000, 'green rounded toast-message')
 }
 
 function showErrorMessage() {
-  toastr.options = {
-    "positionClass": "toast-bottom-right",
-    "preventDuplicates": true
-  }
+  $('#toast-container').empty();
   $('p#mta-timestamp').text('Caution: MTA data could not be accessed');
-  toastr.error('MTA data was not updated. Try again later.');
+  Materialize.toast('<i class="material-icons">warning</i> MTA data was not updated. Try again later.', 3000, 'red rounded toast-message');
 }
 
 function handleClick(line) {
