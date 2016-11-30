@@ -599,7 +599,7 @@ function showStationInfo(marker, station) {
       var waitTime = parseInt(train.wait);
       if (waitTime<=0)
       {
-        waitTime = "now.";
+        waitTime = "now";
       }
       else if(waitTime < 120) {
         waitTime = "in < 1 minute";
@@ -626,9 +626,9 @@ function showStationInfo(marker, station) {
   var sortedSouthBoundMessages = southBoundMessages.sort(dynamicSortMultiple("direction", "-arrivalTime"));
 
 
-  var messageDisplay = "<h3 class='text-center'>" + station.name + "<br />" + "-----------------------------"+"<br /></h3>";
+  var messageDisplay = "<h5 class='center-align'>" + station.name + "<hr /></h5>";
 
-  messageDisplay=messageDisplay.concat("Northbound Trains:<br />")
+  messageDisplay=messageDisplay.concat("<i class='material-icons'>call_made</i> Northbound Trains:<br />")
 
   var errorMessage = '<em>No information available.</em><br />';
 
@@ -641,7 +641,7 @@ function showStationInfo(marker, station) {
     messageDisplay= messageDisplay.concat(errorMessage)
   }
 
-  messageDisplay=messageDisplay.concat("<br />Southbound Trains:<br />");
+  messageDisplay=messageDisplay.concat("<br /><i class='material-icons'>call_received</i> Southbound Trains:<br />");
 
   if(sortedSouthBoundMessages.length > 0) {
     messageDisplay=messageDisplay.concat(sortedSouthBoundMessages.map(function(m){
@@ -659,7 +659,7 @@ function showStationInfo(marker, station) {
   //   return m.trainType + " Train is arriving " + m.arrivalTime + "<br />"
   // }).join(''));
 
-  infoWindow.setContent("<div class='card blue-grey darken-1'>" + messageDisplay + "</div>");
+  infoWindow.setContent("<div class='black-text'>" + messageDisplay + "</div>");
   infoWindow.open(map, marker)
   }
 
