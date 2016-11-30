@@ -54,15 +54,7 @@ $('document').ready(function() {
     .done(function(responseJSON){
       Object.keys(responseJSON).forEach(function(line){
         var $status = $('#' + line + '-service');
-        $status.removeClass('label-success');
-        $status.removeClass('label-warning');
-        if(responseJSON[line] === 'On Time'){
-          $status.addClass('label-success');
-        }
-        else {
-          $status.addClass('label-warning')
-        }
-        $status.html(responseJSON[line]);
+        $status.children().html(responseJSON[line]);
         showSuccessMessage();
       })
     })

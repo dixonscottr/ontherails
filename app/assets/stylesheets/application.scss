@@ -19,11 +19,20 @@ $secondary-color: color("yellow", "base") !default;
 @import "materialize";
 @import "materialize/extras/nouislider";
 
- // .train-info-window {
- //   font-size: 20px;
- // }
  .info-window {
    font-size: 20px;
+ }
+
+ .service-status-icon {
+   white-space: nowrap;
+   overflow: hidden;
+   height: 120px;
+ }
+
+ .status-icon {
+   line-height: 1;
+   position: relative;
+   top: -20px;
  }
 
 html, body {
