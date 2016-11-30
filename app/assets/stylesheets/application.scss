@@ -97,6 +97,21 @@ body {
   background-color:white;
 }
 
+ul.credits {
+  margin-top: 0px;
+  padding-top: 0px;
+  text-align: center;
+}
+
+div.row {
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+}
+
+ul.credits li {
+    display: inline;
+}
+
 nav, .footer {
   max-width: 1280px;
   margin:auto;
