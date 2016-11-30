@@ -624,12 +624,6 @@ function showStationInfo(marker, station) {
 
   var messageDisplay = "<h3 class='text-center'>" + station.name + "<br />" + "-----------------------------"+"<br /></h3>";
 
-  console.log('north', sortedNorthBoundMessages);
-  console.log(sortedNorthBoundMessages.length);
-  console.log('south', sortedSouthBoundMessages);
-  console.log(sortedSouthBoundMessages.length);
-  console.log('------');
-
   messageDisplay=messageDisplay.concat("Northbound Trains:<br />")
 
   var errorMessage = '<em>No information available.</em><br />';
@@ -661,7 +655,7 @@ function showStationInfo(marker, station) {
   //   return m.trainType + " Train is arriving " + m.arrivalTime + "<br />"
   // }).join(''));
 
-  infoWindow.setContent("<div class='info-window'>" + messageDisplay + "</div>");
+  infoWindow.setContent("<div class='card blue-grey darken-1'>" + messageDisplay + "</div>");
   infoWindow.open(map, marker)
   }
 
