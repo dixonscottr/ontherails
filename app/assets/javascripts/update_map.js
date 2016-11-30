@@ -617,28 +617,38 @@ function showStationInfo(marker, station) {
   var sortedSouthBoundMessages = southBoundMessages.sort(dynamicSortMultiple("direction", "-arrivalTime"));
 
 
-  var messageDisplay = "<div class='text-center'>" + station.name + "<br />" + "-----------------------------"+"<br /></div>";
+  var messageDisplay = "<h3 class='text-center'>" + station.name + "<br />" + "-----------------------------"+"<br /></h3>";
+
+  console.log('north', sortedNorthBoundMessages);
+  console.log(sortedNorthBoundMessages.length);
+  console.log('south', sortedSouthBoundMessages);
+  console.log(sortedSouthBoundMessages.length);
+  console.log('------');
+
   messageDisplay=messageDisplay.concat("North Bound Trains:<br />")
 
-  if(sortedSouthBoundMessages.length > 0) {
-    messageDisplay = addEmptyDataMessage(messageDisplay)
-  }
-  else {
+  var errorMessage = '<em>No information available.</em><br />';
+
+  if(sortedNorthBoundMessages.length > 0) {
     messageDisplay=messageDisplay.concat(sortedNorthBoundMessages.map(function(m){
       return m.trainType + " Train is arriving " + m.arrivalTime + "<br />"
     }).join(''));
   }
+  else {
+    messageDisplay= messageDisplay.concat(errorMessage)
+  }
 
   messageDisplay=messageDisplay.concat("<br />South Bound Trains:<br />");
 
-  if(sortedNorthBoundMessages.length > 0) {
-    messageDisplay = addEmptyDataMessage(messageDisplay)
-  }
-  else {
+  if(sortedSouthBoundMessages.length > 0) {
     messageDisplay=messageDisplay.concat(sortedSouthBoundMessages.map(function(m){
       return m.trainType + " Train is arriving " + m.arrivalTime + "<br />"
     }).join(''));
   }
+  else {
+    messageDisplay= messageDisplay.concat(errorMessage)
+  }
+
   // messageDisplay=messageDisplay.concat(sortedNorthBoundMessages.map(function(m){
   //   return m.trainType + " Train is arriving " + m.arrivalTime + "<br />"
   // }).join(''));
