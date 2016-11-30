@@ -4,8 +4,9 @@ function initStations(args){
   stations2 = []
   totalTrains =[]
   diffTrains = []
-  infoWindow = new google.maps.InfoWindow();
-
+  infoWindow = new google.maps.InfoWindow({
+    minWidth : 300
+  });
 
   args.forEach(function(station){
     var stationPos = station.stationPos
