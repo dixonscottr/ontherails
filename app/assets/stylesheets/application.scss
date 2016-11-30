@@ -95,22 +95,21 @@ body {
   margin-right: 10px;
 }
 
-#navbar{
-  display: inline-block;;
-  width: 100%;
-  max-width: 800px;
-  line-height:1em;
-  margin-top:0em;
-  color:white;
-  border-radius: 16px 16px;
-  border-color: #fff;
-  border-style: solid;
-  box-shadow: 2px 2px 10px #B1B1B1;
-  border-width: 7px;
-  background-color:white;
-}
 nav{
   background-color: #d6cfb4 !important;
+  // height: 00px;
+}
+
+.nav-butt {
+  font: bold 11px Arial;
+  text-decoration: none;
+  background-color: #d6d6d6;
+  color: #333333;
+  padding: 2px 6px 2px 6px;
+  border-top: 1px solid #CCCCCC;
+  border-right: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+  border-left: 1px solid #CCCCCC;
 }
 
 ul.credits {
