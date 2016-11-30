@@ -551,14 +551,14 @@ function showTrainInfo(marker, nextStation) {
   var direction = marker.direction;
   var percentageleft = determinePercentageLeft(direction, percentage);
   var msg1 = "<h5 class='center-align'>" + trainName + ' train</h5>'
-  var msg2 = "Next station: " + nextStationName
+  var msg2 = "Next Stop:<br />" + nextStationName
   // var msg2 = percentageleft + "% of the way there!"
   infoWindow.setContent("<div class='black-text info-window'>" + msg1 + msg2 + "</div>");
   infoWindow.open(map, marker)
 }
 
 function determinePercentageLeft(direction, percentage) {
-  if(direction == "N") {
+  if(direction == "S") {
     var percentageleft = (percentage * 100).toFixed(0);
   }
   else {
@@ -598,20 +598,21 @@ function showStationInfo(marker, station) {
   newTrains.forEach(function(train){
     if (train.nxtStation == station.stop_id){
       var waitTime = parseInt(train.wait);
-      if (waitTime<=0)
+      if (waitTime<=50)
       {
-        waitTime = "now";
+        waitText = "in < 1 minute";
       }
-      else if(waitTime < 120) {
-        waitTime = "in < 1 minute";
+      else if(waitTime < 100) {
+        waitText = "in < 2 minutes";
       }
       else {
-        waitTime = "in " + (waitTime / 60).toFixed(0).toString() + " minutes."
+        waitText = "in " + (waitTime / 60).toFixed(0).toString() + " minutes."
       }
       message.push({
         direction: train.direction,
         arrivalTime: waitTime,
-        trainType: train.label2
+        trainType: train.label2,
+        displayArrivalTime: waitText
       })
     }
   })
@@ -623,8 +624,8 @@ function showStationInfo(marker, station) {
     return x.direction == "S"
   })
 
-  var sortedNorthBoundMessages = northBoundMessages.sort(dynamicSortMultiple("direction", "-arrivalTime"));
-  var sortedSouthBoundMessages = southBoundMessages.sort(dynamicSortMultiple("direction", "-arrivalTime"));
+  var sortedNorthBoundMessages = northBoundMessages.sort(dynamicSortMultiple("direction", "arrivalTime"));
+  var sortedSouthBoundMessages = southBoundMessages.sort(dynamicSortMultiple("direction", "arrivalTime"));
 
 
   var messageDisplay = "<h5 class='center-align'>" + station.name + "<hr /></h5>";
@@ -635,7 +636,7 @@ function showStationInfo(marker, station) {
 
   if(sortedNorthBoundMessages.length > 0) {
     messageDisplay=messageDisplay.concat(sortedNorthBoundMessages.map(function(m){
-      return m.trainType + " Train is arriving " + m.arrivalTime + "<br />"
+      return m.trainType + " Train is arriving " + m.displayArrivalTime + "<br />"
     }).join(''));
   }
   else {
@@ -646,7 +647,7 @@ function showStationInfo(marker, station) {
 
   if(sortedSouthBoundMessages.length > 0) {
     messageDisplay=messageDisplay.concat(sortedSouthBoundMessages.map(function(m){
-      return m.trainType + " Train is arriving " + m.arrivalTime + "<br />"
+      return m.trainType + " Train is arriving " + m.displayArrivalTime + "<br />"
     }).join(''));
   }
   else {
