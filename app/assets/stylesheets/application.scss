@@ -67,15 +67,6 @@ body {
   float: left;
 }
 
-// #grad1 {
-//     height: 100%;
-//     background: #D4E5CF; /* For browsers that do not support gradients */
-//     background: -webkit-linear-gradient(#D4E5CF, #BECEBA); /* For Safari 5.1 to 6.0 */
-//     background: -o-linear-gradient(#D4E5CF, #BECEBA); /* For Opera 11.1 to 12.0 */
-//     background: -moz-linear-gradient(#D4E5CF, #BECEBA); /* For Firefox 3.6 to 15 */
-//     background: linear-gradient(#D4E5CF, #BECEBA); /* Standard syntax (must be last) */
-// }
-
 .bottom-button:hover {background-color: #3e8e41}
 
 .bottom-button:active {
@@ -89,9 +80,12 @@ body {
   margin-top: 2px;
 }
 
+
+
 #navbar{
   display: inline-block;;
   width: 100%;
+  max-width: 800px;
   line-height:1em;
   margin-top:0em;
   color:white;
@@ -101,6 +95,12 @@ body {
   box-shadow: 2px 2px 10px #B1B1B1;
   border-width: 7px;
   background-color:white;
+}
+
+nav, .footer {
+  max-width: 1280px;
+  margin:auto;
+  margin-bottom: 4px;
 }
 
 #select-lines.checkboxes{
