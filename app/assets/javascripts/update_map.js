@@ -215,7 +215,6 @@ function trainLineChecker() {
 function updateTimestamp(unixTimestamp) {
   var readableTimestamp = timeConverter(unixTimestamp)
   var currentTime = Math.floor((new Date()).getTime() / 1000)
-  debugger
   if((currentTime - unixTimestamp) > 60) {
     $('p#mta-timestamp').text('Advisory: Train locations may not be accurate. MTA data was last updated at: ' + readableTimestamp);
   }
