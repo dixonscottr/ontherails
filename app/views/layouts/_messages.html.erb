@@ -5,8 +5,8 @@
         <p><%= @error %></p>
       <% end %>
     </div>
-    <div id='mta-timestamp' id="update_time">
-        <p class="small topMta">Last update from MTA: <%= Time.now.strftime("%m/%d/%Y %H:%M") %></p>
+    <div id='mta-timestamp' >
+        <p class="small topMta">Last update from MTA: <span id='update_time'><%= Time.now.strftime("%m/%d/%Y %H:%M") %></span></p>
     </div>
 </div>
 
