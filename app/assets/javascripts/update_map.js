@@ -7,6 +7,10 @@ $('document').ready(function() {
      draggable: true
    });
 
+ $('div.col-sm-2 a.btn').click(function(e) {
+    e.stopPropagation();
+});
+
   $('form#train-updater').submit(function(event) {
     event.preventDefault();
     var $form = $('form#train-updater');
