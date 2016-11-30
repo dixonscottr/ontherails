@@ -21,7 +21,7 @@ function initStations(args){
       icon: symbolOne,
       title: String(station.stop_id),
       fullName: station.name,
-      label: String(station.stop_id),
+      // label: String(station.stop_id),
       trainLines: String(station.train_lines)
     });
     var symbolTwo = {
@@ -37,7 +37,9 @@ function initStations(args){
       fullName: station.name,
       // title: String(station.name),
       title: String(station.stop_id),
-      // label: String(station.stop_id),
+      label: String(station.name),
+      zIndex: 999999999999,
+      // labelClass: "labels",
       trainLines: String(station.train_lines)
     });
     bounds.extend(marker.position);
