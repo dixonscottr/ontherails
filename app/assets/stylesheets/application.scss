@@ -116,16 +116,14 @@ body {
 
 #mta-timestamp {
   padding-top: 0px;
-  float: right;
   padding-bottom: 0px;
-  margin-top: 0px;
-  margin-right: 10px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 #navbar{
   display: inline-block;;
   width: 100%;
-  max-width: 800px;
   line-height:1em;
   margin-top:0em;
   color:white;
@@ -136,9 +134,14 @@ body {
   border-width: 7px;
   background-color:white;
 }
+
+p.small.topMta {
+  margin: 10px 0px 10px 0px;
+  padding: 0;
+}
+
 nav, footer{
   background-color: #d6cfb4 !important;
-  // height: 00px;
 }
 
 .nav-butt {
@@ -169,14 +172,12 @@ ul.credits li {
 }
 
 nav, .footer {
-  max-width: 1280px;
-  margin:auto;
+  margin: auto;
   margin-bottom: 4px;
 }
 
-.topMta{
-  position: relative;
-  top:0px;
+footer.page-footer {
+  margin-top: 0px;
 }
 
 #select-lines.checkboxes{
