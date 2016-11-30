@@ -33,8 +33,10 @@ function timeConverter(UNIX_timestamp){
   var month = a.getMonth() + 1;
   var date = a.getDate();
   var hour = a.getHours();
+  console.log(hour)
   var min = (a.getMinutes() < 10 ? '0' : '') + a.getMinutes();
   var time = month + '/' + date + '/' + year + ' ' + hour + ':' + min;
+  console.log(time)
   return time;
 }
 
