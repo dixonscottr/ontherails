@@ -25,6 +25,13 @@ $secondary-color: color("yellow", "base") !default;
    font-size: 20px;
  }
 
+ #toast-container {
+  top: auto !important;
+  right: 5%;
+  bottom: 6%;
+  left:auto !important;
+}
+
 html, body {
   height: 100%;
   min-width:  560px;
