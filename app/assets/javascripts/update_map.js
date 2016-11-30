@@ -551,7 +551,7 @@ function showTrainInfo(marker, nextStation) {
   var direction = marker.direction;
   var percentageleft = determinePercentageLeft(direction, percentage);
   var msg1 = "<h5 class='center-align'>" + trainName + ' train</h5>'
-  var msg2 = "Next station: " + nextStationName
+  var msg2 = "Next Stop:<br />" + nextStationName
   // var msg2 = percentageleft + "% of the way there!"
   infoWindow.setContent("<div class='black-text info-window'>" + msg1 + msg2 + "</div>");
   infoWindow.open(map, marker)
@@ -598,11 +598,11 @@ function showStationInfo(marker, station) {
   newTrains.forEach(function(train){
     if (train.nxtStation == station.stop_id){
       var waitTime = parseInt(train.wait);
-      if (waitTime<=0)
+      if (waitTime<=50)
       {
         waitText = "in < 1 minute";
       }
-      else if(waitTime < 120) {
+      else if(waitTime < 100) {
         waitText = "in < 2 minutes";
       }
       else {
