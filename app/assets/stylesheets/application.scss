@@ -146,8 +146,16 @@ p.small.topMta {
 
 nav, footer{
   background-color: #d6cfb4 !important;
+  width: 100%;
 }
 
+.footer-copyright {
+  width: 100%;
+}
+
+.page-footer {
+  width: 100%;
+}
 nav {
   height: 100px;
 }
@@ -176,9 +184,10 @@ ul.credits li {
     display: inline;
 }
 
-footer.page-footer {
-  margin-top: 0px;
-}
+// footer.page-footer, .footer-copyright.page-footer {
+//   margin-top: 0px;
+//   width: 100%;
+// }
 
 #select-lines.checkboxes{
   float: left;
@@ -387,7 +396,8 @@ footer.page-footer {
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 500;
-
+  position: relative;
+  top: -25px;
 }
 
 // NEW DROP MENU GUY
