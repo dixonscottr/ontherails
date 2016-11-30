@@ -1,10 +1,6 @@
 <nav>
-  <div id='mta-timestamp' id="update_time">
-      <p class="small topMta">Last update from MTA: <%= Time.now.strftime("%m/%d/%Y %H:%M") %></p>
-  </div>
   <div class="nav-wrapper">
-
-    <a class="brand-logo"><h1 class='title'>On The Rails</h1></a>
+    <a class="brand-logo"><h1 class='title'>On The Rails<img src='img/lilstickman.png'/></h1></a>
     <a href="#" data-activates="mobile-demo" class="button-collapse nav-butt"><img src='img/liltracks.png'/></a>
     <ul class="side-nav" id="mobile-demo">
       <% lines = { 1 => "one", 2 => "two", 3 => "three", 4 => "four", 5 => "five", 6 => "six" } %>
@@ -17,15 +13,15 @@
         </div>
       <% end %>
       <li>
-      <form id='train-updater' class='updater' action='/update_trains' method='get'>
-        <input type='submit' class='bottom-button' value='Update trains' />
-      </form>
-    </li>
-    <li>
-      <form id='service-updater' class='updater' action='/update_line_service' method='get'>
-        <input type='submit' class='bottom-button' value='MTA service&#x00A; status' />
-      </form>
-    </li>
+        <form id='train-updater' class='updater' action='/update_trains' method='get'>
+          <input type='submit' class='bottom-button' value='Update trains' />
+        </form>
+      </li>
+      <li>
+        <form id='service-updater' class='updater' action='/update_line_service' method='get'>
+          <input type='submit' class='bottom-button' value='MTA service&#x00A; status' />
+        </form>
+      </li>
     </ul>
   </div>
 </nav>
