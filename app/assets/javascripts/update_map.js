@@ -1,5 +1,12 @@
 //SCOTTS BUTTON
 $('document').ready(function() {
+  $(".button-collapse").sideNav({
+    menuWidth: 100,
+     edge: 'left',
+     closeOnClick: true,
+     draggable: true
+   });
+
   $('form#train-updater').submit(function(event) {
     event.preventDefault();
     var $form = $('form#train-updater');
@@ -199,10 +206,11 @@ function updateTrainsForLine(lineID_array, lineToHide) {
 
 function trainLineChecker() {
   var checkedLines = [];
-  var $linesToCheck = $('.checked')
-  $linesToCheck.each(function(i){
-    checkedLines[i] = $linesToCheck[i].value;
+  var linesToCheck = $('.checked')
+  linesToCheck.each(function(i){
+    checkedLines[i] = $(linesToCheck[i]).text();
   });
+
   return checkedLines;
 }
 

@@ -1,29 +1,28 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container-fluid" id='grad1'>
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-    <img src="img/rails.jpg" width="150px"/>
-    </div>
-    <div id="navbar" class="collapse navbar-collapse">
-        <div class="row">
-          <div class="col-sm-1"></div>
-          <ul class="nav navbar-nav">
-            <% lines = { 1 => "one", 2 => "two", 3 => "three", 4 => "four", 5 => "five", 6 => "six" } %>
-            <% lines.each do |line , name| %>
-              <div class="col-sm-2">
-                <li><button data-toggle="button" class="btn btn-circle raised <%= lines[line] %> checked center-block" onclick="handleClick(this)" name="line" value="<%=line.to_s%>"><%=line.to_s%></button>
-                <span id='<%=line%>-service' class="label center-block label-success">On Time
-                </span>
-                </li>
-              </div>
-            <% end %>
-          </ul>
+<nav>
+  <div class="nav-wrapper">
+
+    <a class="brand-logo"><img src="img/rails.jpg" width="150px"/></a>
+    <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="large material-icons">menu</i></a>
+
+    <!-- <ul class="right hide-on-med-and-down">
+        <% lines = { 1 => "one", 2 => "two", 3 => "three", 4 => "four", 5 => "five", 6 => "six" } %>
+        <% lines.each do |line , name| %>
+            <li><a class="btn btn-circle raised <%= lines[line] %> checked center-block" onclick="handleClick(this)" name="line" value="<%=line.to_s%>"><%=line.to_s%></a>
+            <span id='<%=line%>-service' class="label center-block label-success">On Time
+            </span>
+            </li>
+        <% end %>
+    </ul> -->
+    <ul class="side-nav" id="mobile-demo">
+      <% lines = { 1 => "one", 2 => "two", 3 => "three", 4 => "four", 5 => "five", 6 => "six" } %>
+      <% lines.each do |line , name| %>
+        <div class="col-sm-2">
+          <li><a class="btn btn-circle raised <%= lines[line] %> checked center-block" onclick="handleClick(this)" name="line" value="<%=line.to_s%>"><%=line.to_s%></a>
+          <span id='<%=line%>-service' class="label center-block label-success">On Time
+          </span>
+          </li>
         </div>
-    </div>
+      <% end %>
+    </ul>
   </div>
 </nav>
