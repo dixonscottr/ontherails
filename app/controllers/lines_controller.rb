@@ -1,4 +1,4 @@
-class LineController < ApplicationController
+class LinesController < ApplicationController
 
     def update_line_service
       mta_service_txt_file = 'http://web.mta.info/status/serviceStatus.txt'
@@ -146,22 +146,22 @@ class LineController < ApplicationController
 
     def update_train_status(status_for_123, status_for_456, status_hash)
       if status_for_123 == 'GOOD SERVICE'
-        status_hash[:'1'] = 'On Time'
-        status_hash[:'2'] = 'On Time'
-        status_hash[:'3'] = 'On Time'
+        status_hash[:'1'] = "<i class='material-icons'>check</i>"
+        status_hash[:'2'] = "<i class='material-icons'>check</i>"
+        status_hash[:'3'] = "<i class='material-icons'>check</i>"
       else
-        status_hash[:'1'] = "<a href='http://www.mta.info/status/subway/123' target='_blank'>#{status_for_123.capitalize}</a>"
-        status_hash[:'2'] = "<a href='http://www.mta.info/status/subway/123' target='_blank'>#{status_for_123.capitalize}</a>"
-        status_hash[:'3'] = "<a href='http://www.mta.info/status/subway/123' target='_blank'>#{status_for_123.capitalize}</a>"
+        status_hash[:'1'] = "<i class='material-icons'>warning</i>"
+        status_hash[:'1'] = "<i class='material-icons'>warning</i>"
+        status_hash[:'1'] = "<i class='material-icons'>warning</i>"
       end
       if status_for_456 == 'GOOD SERVICE'
-        status_hash[:'4'] = 'On Time'
-        status_hash[:'5'] = 'On Time'
-        status_hash[:'6'] = 'On Time'
+        status_hash[:'4'] = "<i class='material-icons'>check</i>"
+        status_hash[:'5'] = "<i class='material-icons'>check</i>"
+        status_hash[:'6'] = "<i class='material-icons'>check</i>"
       else
-        status_hash[:'4'] = "<a href='http://www.mta.info/status/subway/456' target='_blank'>#{status_for_456.capitalize}</a>"
-        status_hash[:'5'] = "<a href='http://www.mta.info/status/subway/456' target='_blank'>#{status_for_456.capitalize}</a>"
-        status_hash[:'6'] = "<a href='http://www.mta.info/status/subway/456' target='_blank'>#{status_for_456.capitalize}</a>"
+        status_hash[:'1'] = "<i class='material-icons'>warning</i>"
+        status_hash[:'1'] = "<i class='material-icons'>warning</i>"
+        status_hash[:'1'] = "<i class='material-icons'>warning</i>"
       end
     end
 end
