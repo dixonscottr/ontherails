@@ -1,36 +1,16 @@
 <div class='container-fluid footer'>
   <div class="row">
-    <div class="col-sm-2">
-      <form id='train-updater' action='/update_trains' method='get'>
-        <input type='submit' class='bottom-button' value='Update trains' />
-      </form>
-    </div>
-    <div class="col-sm-2">
-      <form id='service-updater' action='/update_line_service' method='get'>
-        <input type='submit' class='bottom-button' value='MTA service status' />
-      </form>
-    </div>
+
     <div class="col-sm-2">
       <form id='reset-button'>
         <input type='submit' class='bottom-button' value='Update Everything' />
       </form>
     </div>
+
     <div class="col-sm-2 errors">
       <% if @error%>
         <p><%= @error %></p>
       <% end %>
-    </div>
-    <div class='footer'>
-      <ul class='credits'>
-        <li>On the Rails:</li>
-        <li><a href="https://github.com/dixonscottr/ontherails"><img alt="Click to view the On The Rails GitHub Repository" src="/img/GitHub-Mark-32px.png" /></a></li>
-        <li>Coded by:</li>
-        <li><a href='https://github.com/dixonscottr'>Scott</a></li> -
-        <li><a href='https://github.com/nanutza'>Nan</a></li> -
-        <li><a href='https://github.com/jpperlm'>Jason</a></li> -
-        <li><a href='https://github.com/jacobgwilliams'>Jacob</a></li> -
-        <li><a href='https://github.com/google'>Google</a></li>
-      </ul>
     </div>
 </div>
 </div>
