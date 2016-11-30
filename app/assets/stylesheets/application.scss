@@ -21,6 +21,10 @@ $secondary-color: color("yellow", "base") !default;
  // @import "bootstrap-sprockets";
  // @import "bootstrap";
 
+ .info-window {
+   font-size: 20px;
+ }
+
 html, body {
   height: 100%;
   min-width:  560px;
