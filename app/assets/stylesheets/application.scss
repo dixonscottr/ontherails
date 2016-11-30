@@ -80,11 +80,11 @@ body {
 }
 
 #mta-timestamp {
-  float: left;
-  margin-top: 2px;
+  float: right;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  margin-right: 10px;
 }
-
-
 
 #navbar{
   display: inline-block;;
@@ -105,9 +105,9 @@ nav{
 }
 
 ul.credits {
-  margin-top: 0px;
+  margin-top: 4px;
   padding-top: 0px;
-  text-align: center;
+  text-align: right;
 }
 
 div.row {
@@ -429,12 +429,13 @@ nav.button-collapse{
 @media only screen and (max-width: 767px) {
  body {
    width: 100%;
+  //  font-size: 2em;
  }
  div.navbar-header {
    display: none;
  }
- body {
-   font-size: 2em;
+ p.small {
+   font-size: 1em;
  }
 
  // // Can't get this thing to not have empty space in mobile view
