@@ -22,9 +22,13 @@
 
 function timeConverter(UNIX_timestamp){
   var ax = new Date(UNIX_timestamp * 1000);
+  console.log(ax)
+
   var offset = -(ax.getTimezoneOffset()/60);
-  debugger
+  console.log(offset)
   var a = new Date(ax.getTime()+(offset+5)*3600*1000)
+  console.log(a)
+
   var year = a.getFullYear();
   var month = a.getMonth() + 1;
   var date = a.getDate();
