@@ -42,7 +42,6 @@ html, body {
 body {
   width: 90%;
   margin: auto;
-  padding-top: 100px;
 }
 
 .mapContainer{
@@ -77,10 +76,6 @@ body {
 //     background: linear-gradient(#D4E5CF, #BECEBA); /* Standard syntax (must be last) */
 // }
 
-#grad1 {
-  background-color: #D4E5CF;
-}
-
 .bottom-button:hover {background-color: #3e8e41}
 
 .bottom-button:active {
@@ -114,7 +109,7 @@ body {
   margin-left: 3em;
 }
 body {
-  background-color: red;
+  background-color: #D4E5CF;
 }
 
 #map {
