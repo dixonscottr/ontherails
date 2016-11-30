@@ -49,6 +49,10 @@ body {
   height: 80%;
   background-color: white;
   box-shadow: 2px 2px 10px #B1B1B1;
+
+  margin-top: 10px !important;
+
+
 }
 
 .bottom-button {
@@ -102,6 +106,9 @@ body {
   border-width: 7px;
   background-color:white;
 }
+nav{
+  background-color: #d6cfb4 !important;
+}
 
 #select-lines.checkboxes{
   float: left;
@@ -109,7 +116,7 @@ body {
   margin-left: 3em;
 }
 body {
-  background-color: #D4E5CF;
+  background-color: #adcab4;
 }
 
 #map {
@@ -119,11 +126,12 @@ body {
   min-height: 800px;
   width: 100%;
   border-radius: 16px 16px;
-  border-color: #fff;
+  border-color: #141f17;
   border-style: solid;
   box-shadow: 2px 2px 10px #B1B1B1;
   border-width: 7px;
   margin: auto;
+
 }
 
 // div.footer {
@@ -387,7 +395,22 @@ body {
 }
 
 //// END NEW NAV
-
+.brand-logo{
+  left: 50%;
+  transform: translateX(-50%)
+}
+nav.button-collapse{
+  float: left;
+    position: relative;
+    z-index: 1;
+}
+#sidenav-overlay {
+  opacity: .1 !important;
+}
+.side-nav{
+  background-color: #d6cfb4;
+  opacity: .8;
+}
 @media only screen and (max-width: 767px) {
  body {
    width: 100%;
@@ -408,4 +431,15 @@ body {
     margin-top: 0px;
     padding-top: 0px;
  }
+}
+
+@media only screen and (min-width: 993px){
+  nav a.button-collapse {
+    display:block;
+    float: left;
+    position: relative;
+    z-index: 1;
+    height: 56px;
+    margin: 0 18px;
+  }
 }
