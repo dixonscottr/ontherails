@@ -243,7 +243,7 @@ function showMarker(marker) {
 
 }
 
-function showOrHideMarkers(markersToShow, marker) {
+function showOrHideMarkers(marker) {
   if((inBounds(marker)==false) || (trainLineChecker().indexOf(marker.label2[0]) === -1 )) {
     hideMarker(marker)
   }
@@ -497,7 +497,7 @@ function updateTrainPosition(responseJSON){
 
               var trainMarker = trains.splice(i,1)[0];
               newTrains.push(trainMarker);
-              showOrHideMarkers(trainLinesToHide, trainMarker);
+              showOrHideMarkers(trainMarker);
               google.maps.event.clearInstanceListeners(trainMarker);
 
               google.maps.event.addListener(trainMarker, 'click', function() {
@@ -526,7 +526,7 @@ function updateTrainPosition(responseJSON){
               showTrainInfo(trainMarker, nextStation);
             })
             newTrains.push(trainMarker);
-            showOrHideMarkers(trainLineChecker(), trainMarker);
+            showOrHideMarkers(trainMarker);
           }
         }
     });
