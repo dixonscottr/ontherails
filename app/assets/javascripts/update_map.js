@@ -618,7 +618,9 @@ function showStationInfo(marker, station) {
   var sortedNorthBoundMessages = northBoundMessages.sort(dynamicSortMultiple("direction", "arrivalTime"));
   var sortedSouthBoundMessages = southBoundMessages.sort(dynamicSortMultiple("direction", "arrivalTime"));
 
-
+  if (station.stop_id ==="222"){
+    station.name = "149 St - Grand Concourse"
+  }
   var messageDisplay = "<h5 class='center-align'>" + station.name + "<hr /></h5>";
 
   messageDisplay=messageDisplay.concat("<i class='material-icons'>call_made</i> Northbound Trains:<br />")

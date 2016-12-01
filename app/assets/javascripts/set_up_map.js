@@ -43,6 +43,9 @@ function initStations(args){
       // labelClass: "labels",
       trainLines: String(station.train_lines)
     });
+    if (station.stop_id ==="222"){
+      marker2.setLabel(' ')
+    }
     bounds.extend(marker.position);
     marker2.addListener('click', function() {
       showStationInfo(marker, station);
