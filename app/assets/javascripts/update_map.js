@@ -55,8 +55,8 @@ $('document').ready(function() {
       Object.keys(responseJSON).forEach(function(line){
         var $status = $('#' + line + '-service');
         $status.children().html(responseJSON[line]);
-        showSuccessMessage();
       })
+      showSuccessMessage();
     })
     .fail(function(){
       showErrorMessage();
