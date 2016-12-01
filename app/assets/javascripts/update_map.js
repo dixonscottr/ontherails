@@ -35,13 +35,7 @@ $('document').ready(function() {
     });
   });
 
-  $('form#reset-button').submit(function(event) {
-    event.preventDefault();
-    $('form#train-updater').submit();
-    $('form#service-updater').submit();
-  })
 
-  $('form#train-updater').submit();
 
   $('form#service-updater').submit(function(event){
     event.preventDefault();
@@ -62,6 +56,8 @@ $('document').ready(function() {
       showErrorMessage();
     })
   });
+  $('form#train-updater').submit();
+  $('form#service-updater').submit();
 
 });
 
