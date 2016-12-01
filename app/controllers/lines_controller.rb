@@ -151,17 +151,17 @@ class LinesController < ApplicationController
         status_hash[:'3'] = "<i class='material-icons'>check</i>"
       else
         status_hash[:'1'] = "<i class='material-icons'>warning</i>"
-        status_hash[:'1'] = "<i class='material-icons'>warning</i>"
-        status_hash[:'1'] = "<i class='material-icons'>warning</i>"
+        status_hash[:'2'] = "<i class='material-icons'>warning</i>"
+        status_hash[:'3'] = "<i class='material-icons'>warning</i>"
       end
       if status_for_456 == 'GOOD SERVICE'
         status_hash[:'4'] = "<i class='material-icons'>check</i>"
         status_hash[:'5'] = "<i class='material-icons'>check</i>"
         status_hash[:'6'] = "<i class='material-icons'>check</i>"
       else
-        status_hash[:'1'] = "<i class='material-icons'>warning</i>"
-        status_hash[:'1'] = "<i class='material-icons'>warning</i>"
-        status_hash[:'1'] = "<i class='material-icons'>warning</i>"
+        status_hash[:'4'] = "<i class='material-icons'>warning</i>"
+        status_hash[:'5'] = "<i class='material-icons'>warning</i>"
+        status_hash[:'6'] = "<i class='material-icons'>warning</i>"
       end
     end
 end
