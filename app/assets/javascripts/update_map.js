@@ -7,7 +7,7 @@ $('document').ready(function() {
      draggable: true
    });
 
- $('div.col-sm-2 a.btn').click(function(e) {
+ $('.trainButtonToggle').click(function(e) {
     e.stopPropagation();
 });
 
@@ -174,7 +174,7 @@ function inBounds(marker){
 
 function updateTrainsForLine(lineID_array, lineToHide) {
   newTrains.forEach(function(marker) {
-    if(lineID_array.indexOf(marker.label2[0]) === -1) {
+    if(trainLineChecker().indexOf(marker.label2[0]) === -1) {
       // marker.setVisible(false);
       if (marker.getMap() != null){
         // marker.setVisible(false);
@@ -244,7 +244,7 @@ function showMarker(marker) {
 }
 
 function showOrHideMarkers(markersToShow, marker) {
-  if((inBounds(marker)==false) || (markersToShow.indexOf(marker.label2[0]) === -1 )) {
+  if((inBounds(marker)==false) || (trainLineChecker().indexOf(marker.label2[0]) === -1 )) {
     hideMarker(marker)
   }
   else {
@@ -272,8 +272,6 @@ function updateTrainPosition(responseJSON){
     totalTrains.push(trains)
   }
   newTrains = []
-  var trainLinesToHide = trainLineChecker();
-
   var keys1 = Object.keys(responseJSON).slice(0,-1);
   var timestamp = responseJSON.time_updated;
   keys1.forEach(function(key){
@@ -497,8 +495,9 @@ function updateTrainPosition(responseJSON){
 
 
 
-              trainMarker = trains.splice(i,1)[0];
+              var trainMarker = trains.splice(i,1)[0];
               newTrains.push(trainMarker);
+              showOrHideMarkers(trainLinesToHide, trainMarker);
               google.maps.event.clearInstanceListeners(trainMarker);
 
               google.maps.event.addListener(trainMarker, 'click', function() {
@@ -527,7 +526,7 @@ function updateTrainPosition(responseJSON){
               showTrainInfo(trainMarker, nextStation);
             })
             newTrains.push(trainMarker);
-            showOrHideMarkers(trainLinesToHide, trainMarker);
+            showOrHideMarkers(trainLineChecker(), trainMarker);
           }
         }
     });
