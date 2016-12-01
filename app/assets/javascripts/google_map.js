@@ -143,7 +143,7 @@ function updateDrag(station){
     })
 }
   newTrains.forEach(function(train){
-    showOrHideMarkers(options, train);
+    showOrHideMarkers(train);
   })
 
 }

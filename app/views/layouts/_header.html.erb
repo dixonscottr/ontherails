@@ -5,8 +5,7 @@
     <ul class="side-nav" id="mobile-demo">
       <% lines = { 1 => "one", 2 => "two", 3 => "three", 4 => "four", 5 => "five", 6 => "six" } %>
       <% lines.each do |line , name| %>
-
-          <li class='service-status-icon'><a class="btn btn-circle raised <%= lines[line] %> checked center-block" onclick="handleClick(this)" name="line" value="<%=line.to_s%>"><%=line.to_s%></a>
+          <li class='service-status-icon'><a class="btn btn-circle raised <%= lines[line] %> checked center-block trainButtonToggle" onclick="handleClick(this)" name="line" value="<%=line.to_s%>"><%=line.to_s%></a>
           <span id='<%=line%>-service' class="center-align subheader"><i class='material-icons status-icon'>check</i></span>
           </li>
 
