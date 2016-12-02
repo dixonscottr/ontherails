@@ -379,7 +379,7 @@ function updateTrainPosition(responseJSON){
           }
           //TOTAL TRAVEL TIME BETWEEN THE TWO stations
           var travelTime = Math.abs(station1Time - station2Time)
-          var percentToUse = Math.abs((waitTime/travelTime))
+          var percentToUse = (waitTime/travelTime)
           if (response.direction == "N"){
             percentToUse = Math.abs(1-percentToUse);
             if (percentToUse > 1)
@@ -396,13 +396,12 @@ function updateTrainPosition(responseJSON){
               percentToUse = .99;
             }
           }
-
           else if (response.direction == "S"){
             if (percentToUse > 1)
             {
               percentToUse =1;
             }
-            if (percentToUse == 0)
+            if (percentToUse <= 0)
             {
               percentToUse = 0.02;
             }
